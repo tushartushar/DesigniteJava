@@ -1,10 +1,10 @@
-package project.metrics;
+package Designite;
 
 import java.io.IOException;
-
+import Designite.SourceModel.*;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-public class Results {
+public class Application {
 	public static void main(String[] args) throws IOException{
 		ClassMetrics test = new ClassMetrics();
 		
