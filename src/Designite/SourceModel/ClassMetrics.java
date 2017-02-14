@@ -1,8 +1,8 @@
 package Designite.SourceModel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -16,8 +16,12 @@ public class ClassMetrics {
 	private int publicMethods = 0;
 	private int countFields = 0;
 	private int publicFields = 0;
+	private String sourcePath;
 	//private int properties = 0;
 
+	public ClassMetrics(String sourcePath){
+		this.sourcePath = sourcePath;
+	}
 	public int getNoMethods() {
 		return countMethods;
 	}
@@ -41,24 +45,14 @@ public class ClassMetrics {
 	public int getProperties() {
 		return countMethods + countFields;
 	}
-	
-	// temporary solution
-	public static String readFileToString(String filePath) throws IOException {
-		StringBuilder fileData = new StringBuilder(1000);
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
-		char[] buf = new char[10];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			// System.out.println(numRead);
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
+	public String readFileToString() {
+		try {
+			return new String(Files.readAllBytes(Paths.get(sourcePath)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new String();
 		}
-
-		reader.close();
-
-		return fileData.toString();
 	}
 	
 

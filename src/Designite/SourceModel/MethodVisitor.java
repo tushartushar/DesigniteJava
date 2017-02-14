@@ -21,7 +21,7 @@ public class MethodVisitor extends ASTVisitor {
 		return methods;
 	}
 	
-	public int countMethods(List<Method> methods) {
+	public int countMethods() {
 		return methods.size();
 	}
 	
