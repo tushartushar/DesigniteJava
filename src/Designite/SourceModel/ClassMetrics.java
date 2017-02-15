@@ -16,11 +16,11 @@ public class ClassMetrics {
 	private int publicMethods = 0;
 	private int countFields = 0;
 	private int publicFields = 0;
-	private String sourcePath;
+	private String pathToAnalyze;
 	//private int properties = 0;
 
-	public ClassMetrics(String sourcePath){
-		this.sourcePath = sourcePath;
+	public ClassMetrics(String pathToAnalyze){
+		this.pathToAnalyze = pathToAnalyze;
 	}
 	public int getNoMethods() {
 		return countMethods;
@@ -48,7 +48,7 @@ public class ClassMetrics {
 
 	public String readFileToString() {
 		try {
-			return new String(Files.readAllBytes(Paths.get(sourcePath)));
+			return new String(Files.readAllBytes(Paths.get(pathToAnalyze)));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new String();
