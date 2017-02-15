@@ -2,7 +2,6 @@ package Designite;
 
 import java.io.IOException;
 import Designite.SourceModel.*;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public class Application {
 	public static void main(String[] args) throws IOException{
