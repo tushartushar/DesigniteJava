@@ -9,12 +9,13 @@ public class SourceModel {
 		
 		for(String pathToAnalyze: files.getPathList()){
 			System.out.println(pathToAnalyze);
-			ClassMetrics classMetrics = new ClassMetrics(pathToAnalyze);
-			String fileToString = classMetrics.readFileToString();
-			CompilationUnit unit = classMetrics.createAST(fileToString);
-			classMetrics.visitAST(unit);
+			
+			ASTCreator ast = new ASTCreator(pathToAnalyze);
+			CompilationUnit unit = ast.createAST();
+			
+			ASTVisitor visitor = new ASTVisitor(unit);
+			visitor.visitAST();
 		}
 		
 	}
-
 }
