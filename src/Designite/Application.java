@@ -11,13 +11,14 @@ public class Application {
 			usage();
 			throw new IllegalArgumentException();
 		}
-		SourceModel sourceModel = new SourceModel();
-		sourceModel.create(args[0]);
+		InputArgs argsObj = new InputArgs(args[0]);
+		SourceModel sourceModel = new SourceModel(argsObj);
+		sourceModel.create();
 	}
 
 	private static void usage() {
-		System.err.println("First argument needs to be the path.");
+		System.err.println("First argument needs to be the path to a batch input file.");
 		System.out.println("Usage instructions:");
-		System.out.println("java Designite <file/folder of Java source code>");
+		System.out.println("java Designite <Path to a batch input file>");
 	}
 }
