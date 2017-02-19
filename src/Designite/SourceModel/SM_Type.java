@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jface.text.Document;
 
-public class ClassMetrics {
+public class SM_Type extends SM_SourceItem{
 
 	private int countMethods = 0;
 	private int publicMethods = 0;

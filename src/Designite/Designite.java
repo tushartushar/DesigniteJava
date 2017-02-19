@@ -12,8 +12,8 @@ public class Designite {
 			throw new IllegalArgumentException();
 		}
 		InputArgs argsObj = new InputArgs(args[0]);
-		SourceModel sourceModel = new SourceModel(argsObj);
-		sourceModel.create();
+		SM_Project sourceModel = new SM_Project(argsObj);
+		sourceModel.parse();
 	}
 
 	private static void usage() {

@@ -7,17 +7,17 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 public class MethodVisitor extends ASTVisitor {
-	List<Method> methods = new ArrayList<Method>();
+	List<SM_Method> methods = new ArrayList<SM_Method>();
 	
 	@Override
 	public boolean visit(MethodDeclaration method) {
-		Method newMethod = new Method(method);
+		SM_Method newMethod = new SM_Method(method);
 		methods.add(newMethod);
 		
 		return super.visit(method);
 	}
 	
-	public List<Method> getMethods(){
+	public List<SM_Method> getMethods(){
 		return methods;
 	}
 	

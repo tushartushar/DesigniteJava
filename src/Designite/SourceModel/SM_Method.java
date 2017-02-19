@@ -6,18 +6,17 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 
-public class Method {
+public class SM_Method extends SM_SourceItem{
 	private SimpleName name;
 	private boolean publicMethod;
 	private boolean abstractMethod;
 	private List parameters;
 	
-	Method(MethodDeclaration method) {
+	SM_Method(MethodDeclaration method) {
 		name = method.getName();
 		setPublicMethod(method);
 		setAbstractMethod(method);
 		setParameters(method);
-		
 	}
 	
 	public SimpleName getName() {

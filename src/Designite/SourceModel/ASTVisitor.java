@@ -10,7 +10,7 @@ public class ASTVisitor {
 	}
 	
 	public void visitAST() {
-		ClassMetrics classInfo = new ClassMetrics();
+		SM_Type classInfo = new SM_Type();
 		
 		MethodVisitor methodVisitor = new MethodVisitor();
 		cu.accept(methodVisitor);
