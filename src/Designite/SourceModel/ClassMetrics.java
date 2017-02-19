@@ -12,7 +12,6 @@ public class ClassMetrics {
 	private int publicMethods = 0;
 	private int countFields = 0;
 	private int publicFields = 0;
-	//private int properties = 0;
 	
 
 	public int getNoMethods() {
@@ -31,15 +30,7 @@ public class ClassMetrics {
 		return publicFields;
 	}
 
-/*	public void setProperties() {
-		properties = countMethods + countFields;
-	}*/
-	
-	public int getProperties() {
-		return countMethods + countFields;
-	}
-
-	public void computeMetrics(MethodVisitor visitor) {
+	void computeMetrics(MethodVisitor visitor) {
 		countMethods = visitor.countMethods();
 		for (int i = 0; i < countMethods; i++) {
 			if (visitor.methods.get(i).isPublic())
@@ -47,7 +38,7 @@ public class ClassMetrics {
 		}
 	}
 
-	public void computeMetrics(FieldVisitor visitor) {
+	void computeMetrics(FieldVisitor visitor) {
 		countFields = visitor.countFields();
 		for (int i = 0; i < countFields; i++) {
 			int fieldModifier = visitor.fields.get(i).getModifiers();
@@ -82,7 +73,6 @@ public class ClassMetrics {
 		System.out.println("NOPM: " + getPublicMethods());
 		System.out.println("NOF: " + getNoFields());
 		System.out.println("NOPF: " + getPublicFields());
-		System.out.println("NOP: " + getProperties());
 	}
 
 }

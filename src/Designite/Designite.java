@@ -3,7 +3,7 @@ package Designite;
 import java.io.IOException;
 import Designite.SourceModel.*;
 
-public class Application {
+public class Designite {
 	public static void main(String[] args) throws IOException{
 
 		//args[0]: filePath

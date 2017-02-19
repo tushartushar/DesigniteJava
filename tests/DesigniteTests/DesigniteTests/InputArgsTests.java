@@ -21,7 +21,7 @@ public class InputArgsTests {
 	}
 	@Test(expected = IllegalArgumentException.class)
 	public void testInputArgs_negative_invalidContents() {
-		new InputArgs(TESTS_PATH+"TestFiles/invalidBatchFile.txt");
+		new InputArgs(TESTS_PATH+"/TestFiles/invalidBatchFile.txt");
 	}
 	@Test
 	public void testInputArgs_sourceFolder() {
