@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.eclipse.jface.text.Document;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import Designite.InputArgs;
@@ -29,6 +31,13 @@ public class SM_Project extends SM_SourceItem{
 	public void parse() {
 		createCompilationUnits();
 		createPackageObjects();
+		parseAllPackages();
+	}
+
+	private void parseAllPackages() {
+		for(SM_Package pkg:packageList){
+			pkg.parse();
+		}
 	}
 
 	private void createPackageObjects() {
@@ -55,14 +64,21 @@ public class SM_Project extends SM_SourceItem{
 	private void createCompilationUnits() {
 		getFileList(inputArgs.getSourceFolder());
 		for(String file: sourceFileList) {
-			SM_Type classMetrics = new SM_Type();
 			String fileToString = readFileToString(file);
-			CompilationUnit unit = classMetrics.createAST(fileToString);
-			classMetrics.visitAST(unit);
+			CompilationUnit unit = createAST(fileToString);
 			compilationUnitList.add(unit);
 		}
 	}
 	
+	private CompilationUnit createAST(final String content) {
+ 		Document doc = new Document(content);
+ 		final ASTParser parser = ASTParser.newParser(AST.JLS8);
+ 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
+ 		parser.setSource(doc.get().toCharArray());
+ 		parser.setResolveBindings(true);
+ 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+ 		return cu;
+ 	}
 	private void getFileList(String path) {
 		File root = new File(path);
         File[] list = root.listFiles();

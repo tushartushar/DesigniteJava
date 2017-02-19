@@ -1,10 +1,8 @@
 package Designite.SourceModel;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jface.text.Document;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class SM_Type extends SM_SourceItem{
 
@@ -12,7 +10,14 @@ public class SM_Type extends SM_SourceItem{
 	private int publicMethods = 0;
 	private int countFields = 0;
 	private int publicFields = 0;
+	private TypeDeclaration typeDeclaration;
+	private CompilationUnit compilationUnit;
 	
+
+	SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
+		this.typeDeclaration = typeDeclaration;
+		this.compilationUnit = compilationUnit;
+	}
 
 	public int getNoMethods() {
 		return countMethods;
@@ -47,7 +52,7 @@ public class SM_Type extends SM_SourceItem{
 		}
 	}
 
-	public CompilationUnit createAST(final String content) {
+	/*public CompilationUnit createAST(final String content) {
  		Document doc = new Document(content);
  		final ASTParser parser = ASTParser.newParser(AST.JLS8);
  		parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -55,24 +60,26 @@ public class SM_Type extends SM_SourceItem{
  		parser.setResolveBindings(true);
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  		return cu;
- 	}
+ 	}*/
 	
-	public void visitAST(CompilationUnit cu) {
- 		MethodVisitor methodVisitor = new MethodVisitor();
- 		cu.accept(methodVisitor);
- 		computeMetrics(methodVisitor);
- 
- 		FieldVisitor fieldVisitor = new FieldVisitor();
- 		cu.accept(fieldVisitor);
- 		computeMetrics(fieldVisitor);
- 		
- 		printMetrics();
- 	}
 	public void printMetrics() {
 		System.out.println("NOM: " + getNoMethods());
 		System.out.println("NOPM: " + getPublicMethods());
 		System.out.println("NOF: " + getNoFields());
 		System.out.println("NOPF: " + getPublicFields());
+	}
+
+	//This has to be changed.
+	void parse() {
+		MethodVisitor methodVisitor = new MethodVisitor();
+ 		typeDeclaration.accept(methodVisitor);
+ 		computeMetrics(methodVisitor);
+ 
+ 		FieldVisitor fieldVisitor = new FieldVisitor();
+ 		typeDeclaration.accept(fieldVisitor);
+ 		computeMetrics(fieldVisitor);
+ 		
+ 		printMetrics();
 	}
 
 }
