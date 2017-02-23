@@ -1,5 +1,8 @@
 package Designite.SourceModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -12,7 +15,8 @@ public class SM_Type extends SM_SourceItem{
 	private int publicFields = 0;
 	private TypeDeclaration typeDeclaration;
 	private CompilationUnit compilationUnit;
-	
+	private List<SM_Method> methodList = new ArrayList<SM_Method>();
+	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
 	SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
 		this.typeDeclaration = typeDeclaration;
@@ -60,14 +64,14 @@ public class SM_Type extends SM_SourceItem{
  		parser.setResolveBindings(true);
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  		return cu;
- 	}*/
+ 	}
 	
 	public void printMetrics() {
 		System.out.println("NOM: " + getNoMethods());
 		System.out.println("NOPM: " + getPublicMethods());
 		System.out.println("NOF: " + getNoFields());
 		System.out.println("NOPF: " + getPublicFields());
-	}
+	}*/
 
 	//This has to be changed.
 	void parse() {
@@ -79,7 +83,16 @@ public class SM_Type extends SM_SourceItem{
  		typeDeclaration.accept(fieldVisitor);
  		computeMetrics(fieldVisitor);
  		
- 		printMetrics();
+ 		//printMetrics();
+	}
+
+	@Override
+	public void print() {
+		System.out.println("Type: " + name);
+		for(SM_Method method:methodList)
+			method.print();
+		for(SM_Field field:fieldList)
+			field.print();
 	}
 
 }

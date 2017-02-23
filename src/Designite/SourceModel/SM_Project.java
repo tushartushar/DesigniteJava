@@ -103,4 +103,12 @@ public class SM_Project extends SM_SourceItem{
 		 	return new String();
 		}
 	}
+
+	@Override
+	public void print() {
+		System.out.println("Project: " + name);
+		for(SM_Package pkg:packageList)
+			pkg.print();
+	}
+
 }

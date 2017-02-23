@@ -14,6 +14,7 @@ public class Designite {
 		InputArgs argsObj = new InputArgs(args[0]);
 		SM_Project project = new SM_Project(argsObj);
 		project.parse();
+		project.print();
 	}
 
 	private static void usage() {

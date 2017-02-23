@@ -39,4 +39,11 @@ public class SM_Package extends SM_SourceItem{
 		}
 	}
 
+	@Override
+	public void print() {
+		System.out.println("Package: " + name);
+		for(SM_Type type:typeList)
+			type.print();
+	}
+
 }

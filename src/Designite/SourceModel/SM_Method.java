@@ -1,6 +1,7 @@
 package Designite.SourceModel;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -10,7 +11,8 @@ public class SM_Method extends SM_SourceItem{
 	private SimpleName name;
 	private boolean publicMethod;
 	private boolean abstractMethod;
-	private List parameters;
+	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
+	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	
 	SM_Method(MethodDeclaration method) {
 		name = method.getName();
@@ -48,19 +50,21 @@ public class SM_Method extends SM_SourceItem{
 	}
 	
 	public void setParameters(MethodDeclaration method) {
-		parameters = method.parameters();
+		//TODO: Need to change; create appropriate parameter object with type identified
+		//parameters = method.parameters();
 	}
 	
-	public List getParameters() {
-		return parameters;
+	public List<SM_Parameter> getParameters() {
+		return parameterList;
 	}
-	
-	public int countParameters(List parameters) {
-		return parameters.size();
-	}
-	
-	public String toString() {
-		return "Method: " + getName() + "\n" + "Parameters: " + parameters + " (" + countParameters(parameters) + ")\n";
+
+	@Override
+	public void print() {
+		System.out.println("Method: " + name);
+		for(SM_Parameter param:parameterList)
+			param.print();
+		for(SM_LocalVar var:localVarList)
+			var.print();
 	}
 
 }
