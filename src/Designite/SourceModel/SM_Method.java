@@ -5,24 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class SM_Method extends SM_SourceItem{
-	private SimpleName name;
+public class SM_Method extends SM_SourceItem {
 	private boolean publicMethod;
 	private boolean abstractMethod;
+	private TypeDeclaration typeDeclaration;
+	private MethodDeclaration methodDeclaration;
 	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
 	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	
-	SM_Method(MethodDeclaration method) {
-		name = method.getName();
-		setPublicMethod(method);
-		setAbstractMethod(method);
-		setParameters(method);
-	}
-	
-	public SimpleName getName() {
-		return name;
+	SM_Method(MethodDeclaration methodDeclaration, TypeDeclaration typeDeclaration) {
+		name = methodDeclaration.getName().toString();
+		this.typeDeclaration = typeDeclaration; 
+		this.methodDeclaration = methodDeclaration;
+		setPublicMethod(methodDeclaration );
+		setAbstractMethod(methodDeclaration );
 	}
 	
 	public void setPublicMethod(MethodDeclaration method){
@@ -49,15 +48,23 @@ public class SM_Method extends SM_SourceItem{
 		return this.abstractMethod;
 	}
 	
-	public void setParameters(MethodDeclaration method) {
-		//TODO: Need to change; create appropriate parameter object with type identified
-		//parameters = method.parameters();
-	}
-	
-	public List<SM_Parameter> getParameters() {
-		return parameterList;
+	void parse() {
+		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
+		for(SingleVariableDeclaration var: variableList) {
+			VariableVisitor parameterVisitor = new VariableVisitor(methodDeclaration, typeDeclaration);
+			methodDeclaration.accept(parameterVisitor);
+			List<SM_Parameter> pList = parameterVisitor.getParameters();
+			if (pList.size()>0)
+				parameterList.addAll(pList);
+	 		//parseParameters();
+		}
 	}
 
+/*	private void parseParameters() {
+		for(SM_Parameter param: parameterList)
+			param.parse();
+	}*/
+	
 	@Override
 	public void print() {
 		System.out.println("Method: " + name);

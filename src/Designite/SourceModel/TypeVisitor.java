@@ -14,6 +14,7 @@ public class TypeVisitor extends ASTVisitor{
 		super();
 		this.compilationUnit = cu;
 	}
+	
 	@Override
 	public boolean visit(TypeDeclaration typeDeclaration){
 		SM_Type newType = new SM_Type(typeDeclaration, compilationUnit);
@@ -21,6 +22,7 @@ public class TypeVisitor extends ASTVisitor{
 		
 		return super.visit(typeDeclaration);
 	}
+	
 	List<SM_Type> getTypeList() {
 		return types;
 	}

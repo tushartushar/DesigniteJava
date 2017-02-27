@@ -12,6 +12,8 @@ public class InputArgs {
 	private static final String OUTPUT = "[OUTPUT FOLDER]";
 	private String batchFilePath;
 	private String sourceFolder;
+	private String outputFolder;
+	
 	public String getSourceFolder() {
 		return sourceFolder;
 	}
@@ -19,8 +21,6 @@ public class InputArgs {
 	public String getOutputFolder() {
 		return outputFolder;
 	}
-
-	private String outputFolder;
 
 	public InputArgs(String batchFilePath) {
 		this.batchFilePath = batchFilePath;
@@ -84,8 +84,7 @@ public class InputArgs {
 			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-		catch(IOException e){
+		} catch(IOException e){
 			e.printStackTrace();
 		}
 	}

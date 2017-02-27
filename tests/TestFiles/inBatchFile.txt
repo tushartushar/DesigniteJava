@@ -1,5 +1,5 @@
 [Source folder]
-/Users/Tushar/Documents/Workspace/DesigniteJava/src/
+C:\Users\Alex\workspace\DesigniteJava\src
 
 [Output folder]
-/Users/Tushar/Documents/Workspace/DesigniteJava/tests/temp/
+C:\Users\Alex\workspace\DesigniteJava\tests\temp

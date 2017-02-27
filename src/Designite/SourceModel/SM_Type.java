@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class SM_Type extends SM_SourceItem{
@@ -19,6 +20,7 @@ public class SM_Type extends SM_SourceItem{
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
 	SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
+		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
 	}
@@ -47,43 +49,39 @@ public class SM_Type extends SM_SourceItem{
 		}
 	}
 
-	void computeMetrics(FieldVisitor visitor) {
+/*	void computeMetrics(FieldVisitor visitor) {
 		countFields = visitor.countFields();
 		for (int i = 0; i < countFields; i++) {
 			int fieldModifier = visitor.fields.get(i).getModifiers();
 			if (Modifier.isPublic(fieldModifier))
 				publicFields++;
 		}
-	}
-
-	/*public CompilationUnit createAST(final String content) {
- 		Document doc = new Document(content);
- 		final ASTParser parser = ASTParser.newParser(AST.JLS8);
- 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
- 		parser.setSource(doc.get().toCharArray());
- 		parser.setResolveBindings(true);
- 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
- 		return cu;
- 	}
-	
-	public void printMetrics() {
-		System.out.println("NOM: " + getNoMethods());
-		System.out.println("NOPM: " + getPublicMethods());
-		System.out.println("NOF: " + getNoFields());
-		System.out.println("NOPF: " + getPublicFields());
 	}*/
 
 	//This has to be changed.
-	void parse() {
-		MethodVisitor methodVisitor = new MethodVisitor();
+	void parse() {		
+		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
  		typeDeclaration.accept(methodVisitor);
- 		computeMetrics(methodVisitor);
- 
- 		FieldVisitor fieldVisitor = new FieldVisitor();
- 		typeDeclaration.accept(fieldVisitor);
- 		computeMetrics(fieldVisitor);
+ 		List<SM_Method> mList = methodVisitor.getMethods();
+ 		if (mList.size()>0)
+			methodList.addAll(mList);
+ 		parseMethods();
  		
- 		//printMetrics();
+ 		//computeMetrics(methodVisitor);
+ 
+ 		FieldVisitor fieldVisitor = new FieldVisitor(typeDeclaration);
+ 		typeDeclaration.accept(fieldVisitor);
+ 		List<SM_Field> fList = fieldVisitor.getFields();
+ 		if (fList.size()>0)
+ 			fieldList.addAll(fList);
+ 		
+ 		//computeMetrics(fieldVisitor);
+ 		
+	}
+	
+	private void parseMethods() {
+		for(SM_Method method: methodList)
+			method.parse();
 	}
 
 	@Override

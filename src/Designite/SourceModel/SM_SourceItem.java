@@ -5,4 +5,8 @@ public abstract class SM_SourceItem {
 	
 	//This method prints the whole source code model
 	public abstract void print();
+	
+	public String getName() {
+		return name;
+	}
 }
