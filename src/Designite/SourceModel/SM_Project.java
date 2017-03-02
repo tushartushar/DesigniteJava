@@ -27,6 +27,10 @@ public class SM_Project extends SM_SourceItem{
 		packageList = new ArrayList<SM_Package>();
 	}
 
+	public int getPackageCounter() {
+		return packageList.size();
+	}
+	
 	public void parse() {
 		createCompilationUnits();
 		createPackageObjects();
@@ -78,6 +82,7 @@ public class SM_Project extends SM_SourceItem{
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  		return cu;
  	}
+	
 	private void getFileList(String path) {
 		File root = new File(path);
         File[] list = root.listFiles();
@@ -106,8 +111,10 @@ public class SM_Project extends SM_SourceItem{
 	@Override
 	public void print() {
 		System.out.println("Project: " + name);
-		for(SM_Package pkg:packageList)
+		System.out.println("------------------");
+		for(SM_Package pkg:packageList) {
 			pkg.print();
+		}
 	}
 
 }

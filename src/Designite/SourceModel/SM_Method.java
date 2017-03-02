@@ -4,13 +4,18 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+
 public class SM_Method extends SM_SourceItem {
-	private boolean publicMethod;
-	private boolean abstractMethod;
+	//private boolean publicMethod = false;
+	private boolean abstractMethod = false;
+	private boolean finalMethod = false;
+	private boolean staticMethod = false;
+	private boolean isConstructor = false;
 	private TypeDeclaration typeDeclaration;
 	private MethodDeclaration methodDeclaration;
 	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
@@ -20,28 +25,34 @@ public class SM_Method extends SM_SourceItem {
 		name = methodDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration; 
 		this.methodDeclaration = methodDeclaration;
-		setPublicMethod(methodDeclaration );
-		setAbstractMethod(methodDeclaration );
+		setMethodInfo(methodDeclaration );
+		setAccessModifier(methodDeclaration.getModifiers());
 	}
 	
-	public void setPublicMethod(MethodDeclaration method){
+	public Block methodBody() {
+		return methodDeclaration.getBody();
+	}
+	
+/*	public void setPublicMethod(MethodDeclaration method){
 		int modifiers = method.getModifiers();
-		if (Modifier.isPublic(modifiers)) {
+		if (Modifier.isPublic(modifiers)) 
 			publicMethod = true;
-		} else 
-			publicMethod = false;
 	}
 	
 	public boolean isPublic() {
 		return this.publicMethod;
-	}
+	}*/
 	
-	public void setAbstractMethod(MethodDeclaration method){
+	public void setMethodInfo(MethodDeclaration method){
 		int modifiers = method.getModifiers();
-		if (Modifier.isAbstract(modifiers)) {
+		if (Modifier.isAbstract(modifiers)) 
 			abstractMethod =  true;
-		} else 
-			abstractMethod =  false;
+		if (Modifier.isFinal(modifiers)) 
+			finalMethod =  true;
+		if (Modifier.isStatic(modifiers)) 
+			staticMethod =  true;
+		if (method.isConstructor()) 
+			isConstructor =  true;
 	}
 	
 	public boolean isAbstract() {
@@ -68,6 +79,13 @@ public class SM_Method extends SM_SourceItem {
 	@Override
 	public void print() {
 		System.out.println("Method: " + name);
+		System.out.println("	Constructor: " + isConstructor);
+		System.out.println("	Returns: " +  methodDeclaration.getReturnType2());
+		System.out.println("	Access: " + accessModifier);
+		System.out.println("	Abstract: " + abstractMethod);
+		System.out.println("	Final: " + finalMethod);
+		System.out.println("	Static: " + staticMethod);
+	
 		for(SM_Parameter param:parameterList)
 			param.print();
 		for(SM_LocalVar var:localVarList)

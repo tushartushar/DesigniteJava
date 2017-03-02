@@ -5,16 +5,17 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class SM_Type extends SM_SourceItem{
+public class SM_Type extends SM_SourceItem {
 
-	private int countMethods = 0;
 	private int publicMethods = 0;
-	private int countFields = 0;
 	private int publicFields = 0;
+	private boolean isAbstract = false;
+	private boolean isInterface = false;
 	private TypeDeclaration typeDeclaration;
+	private Type superclass;
 	private CompilationUnit compilationUnit;
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
@@ -23,18 +24,34 @@ public class SM_Type extends SM_SourceItem{
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
+		setType();
+		setAccessModifier(typeDeclaration.getModifiers());
+		setSuperClass();
 	}
 
-	public int getNoMethods() {
-		return countMethods;
+	void setType() {
+		int modifier = typeDeclaration.getModifiers();
+		if (Modifier.isAbstract(modifier))
+			isAbstract = true;
+		if (typeDeclaration.isInterface())
+			isInterface = true;
+	}
+	
+	//not yet implemented
+	void setSuperClass() {
+		superclass = typeDeclaration.getSuperclassType();
+	}
+
+	public int countMethods() {
+		return methodList.size();
+	}
+
+	public int countFields() {
+		return fieldList.size();
 	}
 
 	public int getPublicMethods() {
 		return publicMethods;
-	}
-
-	public int getNoFields() {
-		return countFields;
 	}
 
 	public int getPublicFields() {
@@ -42,54 +59,60 @@ public class SM_Type extends SM_SourceItem{
 	}
 
 	void computeMetrics(MethodVisitor visitor) {
-		countMethods = visitor.countMethods();
-		for (int i = 0; i < countMethods; i++) {
-			if (visitor.methods.get(i).isPublic())
+		// countMethods = visitor.countMethods();
+		for (int i = 0; i < countMethods(); i++) {
+			//if (visitor.methods.get(i).isPublic())
+			if (accessModifier.equals("PUBLIC"))
 				publicMethods++;
 		}
 	}
 
-/*	void computeMetrics(FieldVisitor visitor) {
-		countFields = visitor.countFields();
-		for (int i = 0; i < countFields; i++) {
-			int fieldModifier = visitor.fields.get(i).getModifiers();
-			if (Modifier.isPublic(fieldModifier))
+	void computeMetrics(FieldVisitor visitor) {
+		// countFields = visitor.countFields();
+		for (int i = 0; i < countFields(); i++) {
+			//if (visitor.fields.get(i).isPublic())
+			if (accessModifier.equals("PUBLIC"))
 				publicFields++;
 		}
-	}*/
-
-	//This has to be changed.
-	void parse() {		
-		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
- 		typeDeclaration.accept(methodVisitor);
- 		List<SM_Method> mList = methodVisitor.getMethods();
- 		if (mList.size()>0)
-			methodList.addAll(mList);
- 		parseMethods();
- 		
- 		//computeMetrics(methodVisitor);
- 
- 		FieldVisitor fieldVisitor = new FieldVisitor(typeDeclaration);
- 		typeDeclaration.accept(fieldVisitor);
- 		List<SM_Field> fList = fieldVisitor.getFields();
- 		if (fList.size()>0)
- 			fieldList.addAll(fList);
- 		
- 		//computeMetrics(fieldVisitor);
- 		
 	}
-	
+
+	// This has to be changed.
+	void parse() {
+		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
+		typeDeclaration.accept(methodVisitor);
+		List<SM_Method> mList = methodVisitor.getMethods();
+		if (mList.size() > 0)
+			methodList.addAll(mList);
+		parseMethods();
+
+		// computeMetrics(methodVisitor);
+
+		FieldVisitor fieldVisitor = new FieldVisitor(typeDeclaration);
+		typeDeclaration.accept(fieldVisitor);
+		List<SM_Field> fList = fieldVisitor.getFields();
+		if (fList.size() > 0)
+			fieldList.addAll(fList);
+
+		// computeMetrics(fieldVisitor);
+
+	}
+
 	private void parseMethods() {
-		for(SM_Method method: methodList)
+		for (SM_Method method : methodList)
 			method.parse();
 	}
 
 	@Override
 	public void print() {
+		System.out.println();
 		System.out.println("Type: " + name);
-		for(SM_Method method:methodList)
+		System.out.println("	Access: " + accessModifier);
+		System.out.println("	Interface: " + isInterface);
+		System.out.println("	Abstract: " + isAbstract);
+		System.out.println("	Superclass: " + superclass);
+		for (SM_Method method : methodList)
 			method.print();
-		for(SM_Field field:fieldList)
+		for (SM_Field field : fieldList)
 			field.print();
 	}
 

@@ -14,6 +14,10 @@ public class SM_Package extends SM_SourceItem{
 		compilationUnitList = new ArrayList<CompilationUnit>();
 	}
 
+	public int countTypes() {
+		return typeList.size();
+	}
+	
 	void addCompilationUnit(CompilationUnit unit) {
 		compilationUnitList.add(unit);
 	}

@@ -1,7 +1,5 @@
 package Designite.SourceModel;
 
-import java.util.List;
-
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
