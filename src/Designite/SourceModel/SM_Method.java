@@ -59,6 +59,18 @@ public class SM_Method extends SM_SourceItem {
 		return this.abstractMethod;
 	}
 	
+	public boolean isStatic() {
+		return this.staticMethod;
+	}
+	
+	public boolean isFinal() {
+		return this.finalMethod;
+	}
+	
+	public boolean isConstructor() {
+		return this.isConstructor;
+	}
+	
 	void parse() {
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for(SingleVariableDeclaration var: variableList) {
