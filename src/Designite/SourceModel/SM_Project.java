@@ -26,7 +26,19 @@ public class SM_Project extends SM_SourceItem{
 		compilationUnitList = new ArrayList<CompilationUnit>();
 		packageList = new ArrayList<SM_Package>();
 	}
-
+	
+	public List<String> getSourceFileList() {
+		return sourceFileList;
+	}
+	
+	public List<CompilationUnit> getCompilationUnitList() {
+		return compilationUnitList;
+	}
+	
+	public List<SM_Package> getPackageList() {
+		return packageList;
+	}
+	
 	public int getPackageCounter() {
 		return packageList.size();
 	}
@@ -45,7 +57,12 @@ public class SM_Project extends SM_SourceItem{
 
 	private void createPackageObjects() {
 		for(CompilationUnit unit:compilationUnitList){
-			String packageName = unit.getPackage().getName().toString();
+			String packageName;
+			if (unit.getPackage() != null) {
+				packageName = unit.getPackage().getName().toString();
+			} else {
+				packageName = "(default package)";
+			}
 			SM_Package pkgObj = searchPackage(packageName);
 			//If pkgObj is null, package has not yet created
 			if(pkgObj == null){
