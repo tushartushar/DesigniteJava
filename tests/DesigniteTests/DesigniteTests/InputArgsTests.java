@@ -18,6 +18,10 @@ public class InputArgsTests {
 		new InputArgs(TESTS_PATH+"\\invalidFile.txt");
 	}
 	@Test(expected = IllegalArgumentException.class)
+	public void testInputArgs_negative_notFolderPath() {
+		new InputArgs(TESTS_PATH+"\\TestFiles\\singleJavaFile.txt");
+	}
+	@Test(expected = IllegalArgumentException.class)
 	public void testInputArgs_negative_invalidContents() {
 		new InputArgs(TESTS_PATH+"\\TestFiles\\invalidBatchFile.txt");
 	}
