@@ -1,0 +1,2 @@
+[Source-folder]
+C:\Users\Alex\workspace\DesigniteJava\tests\TestFiles\test_package\TestClass.java
