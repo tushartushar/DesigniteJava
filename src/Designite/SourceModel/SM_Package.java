@@ -13,7 +13,15 @@ public class SM_Package extends SM_SourceItem{
 		name = packageName;
 		compilationUnitList = new ArrayList<CompilationUnit>();
 	}
-
+	
+	public List<CompilationUnit> getCompilationUnitList() {
+		return compilationUnitList;
+	}
+	
+	public List<SM_Type> getTypeList() {
+		return typeList;
+	}
+	
 	public int countTypes() {
 		return typeList.size();
 	}
@@ -27,7 +35,7 @@ public class SM_Package extends SM_SourceItem{
 			TypeVisitor visitor = new TypeVisitor(unit);
 			unit.accept(visitor);
 			List<SM_Type> list = visitor.getTypeList();
-			if (list.size()>0)
+			if (list.size() > 0)
 				typeList.addAll(list);
 		}
 		parseTypes();
