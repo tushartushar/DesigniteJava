@@ -23,7 +23,7 @@ public class TypeVisitor extends ASTVisitor{
 		return super.visit(typeDeclaration);
 	}
 	
-	List<SM_Type> getTypeList() {
+	public List<SM_Type> getTypeList() {
 		return types;
 	}
 }
