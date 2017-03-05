@@ -27,8 +27,16 @@ public class SM_Project extends SM_SourceItem{
 		packageList = new ArrayList<SM_Package>();
 	}
 	
+	public void setSourceFileList(List<String> list) {
+		sourceFileList = list;
+	}
+	
 	public List<String> getSourceFileList() {
 		return sourceFileList;
+	}
+	
+	public void setCompilationUnitList(List<CompilationUnit> list) {
+		compilationUnitList = list;
 	}
 	
 	public List<CompilationUnit> getCompilationUnitList() {
@@ -48,16 +56,23 @@ public class SM_Project extends SM_SourceItem{
 		createPackageObjects();
 		parseAllPackages();
 	}
+	
+	//method used in tests
+	public CompilationUnit createCU(String filePath) {
+		String fileToString = readFileToString(filePath);
+		return createAST(fileToString);
+	}
 
 	private void parseAllPackages() {
 		for(SM_Package pkg:packageList){
 			pkg.parse();
 		}
 	}
-
+	
 	private void createPackageObjects() {
+		checkNotNull(compilationUnitList);
+		String packageName;
 		for(CompilationUnit unit:compilationUnitList){
-			String packageName;
 			if (unit.getPackage() != null) {
 				packageName = unit.getPackage().getName().toString();
 			} else {
@@ -72,6 +87,17 @@ public class SM_Project extends SM_SourceItem{
 			pkgObj.addCompilationUnit(unit);
 		}
 	}
+	
+	private void checkNotNull(List<CompilationUnit> list) {
+		if (list == null) 
+			throw new NullPointerException();
+		
+		for(CompilationUnit unit:list) {
+			if (unit == null){
+				list.remove(unit);
+			}
+		}
+	}
 
 	private SM_Package searchPackage(String packageName) {
 		for(SM_Package pkg:packageList){
@@ -82,11 +108,16 @@ public class SM_Project extends SM_SourceItem{
 	}
 
 	private void createCompilationUnits() {
-		getFileList(inputArgs.getSourceFolder());
-		for(String file: sourceFileList) {
-			String fileToString = readFileToString(file);
-			CompilationUnit unit = createAST(fileToString);
-			compilationUnitList.add(unit);
+		try {
+			getFileList(inputArgs.getSourceFolder());
+		
+			for(String file: sourceFileList) {
+				String fileToString = readFileToString(file);
+				CompilationUnit unit = createAST(fileToString);
+					compilationUnitList.add(unit);
+			} 
+		}catch(NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -128,7 +159,7 @@ public class SM_Project extends SM_SourceItem{
 	@Override
 	public void print() {
 		System.out.println("Project: " + name);
-		System.out.println("------------------");
+		System.out.println("-------------------");
 		for(SM_Package pkg:packageList) {
 			pkg.print();
 		}
