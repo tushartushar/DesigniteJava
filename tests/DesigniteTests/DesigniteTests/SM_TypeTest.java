@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class SM_TypeTest {
 		packageList = project.getPackageList();
 	}
 	
-	@Test
+/*	@Test
 	public void SM_Type_positive_case() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 
@@ -34,9 +35,11 @@ public class SM_TypeTest {
 		TypeVisitor visitor = new TypeVisitor(unit);
 		unit.accept(visitor);
 		List<SM_Type> list = visitor.getTypeList();
-		System.out.println(list);
+		for (SM_Type type:list) {
+			assertEquals(type.getName(), "TestClass");
+		}
 		
-	}
+	}*/
 	
 	@Test
 	public void SM_Type_sizeOfTypeList() {
