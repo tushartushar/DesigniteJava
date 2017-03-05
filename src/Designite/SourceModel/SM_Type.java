@@ -41,6 +41,10 @@ public class SM_Type extends SM_SourceItem {
 	void setSuperClass() {
 		superclass = typeDeclaration.getSuperclassType();
 	}
+	
+	public List<SM_Method> getMethodList() {
+		return methodList;
+	}
 
 	public int countMethods() {
 		return methodList.size();
