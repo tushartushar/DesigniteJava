@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+//TODO check EnumDeclaration and AnnotationTypeDeclaration
 public class SM_Type extends SM_SourceItem {
 
 	private int publicMethods = 0;
