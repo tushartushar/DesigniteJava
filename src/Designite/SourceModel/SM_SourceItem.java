@@ -13,6 +13,10 @@ public abstract class SM_SourceItem {
 		return name;
 	}
 	
+	public AccessStates getAccessModifier() {
+		return accessModifier;
+	}
+	
 	public enum AccessStates {
 		PUBLIC,
 		PROTECTED,
