@@ -21,7 +21,7 @@ public class SM_Type extends SM_SourceItem {
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
-	SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
+	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
