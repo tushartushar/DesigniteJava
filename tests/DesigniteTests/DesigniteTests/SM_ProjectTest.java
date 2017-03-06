@@ -18,7 +18,7 @@ public class SM_ProjectTest {
 		assertEquals(project.getPackageCounter(), 2);
 	}
 	
-	@Test
+/*	@Test
 	public void testSM_Project_input_nullObj() {
 		SM_Project project = new SM_Project(null);
 		project.parse();
@@ -29,7 +29,7 @@ public class SM_ProjectTest {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 		project.setSourceFileList(null);
 		project.parse();
-	}
+	}*/
 	
 	@Test(expected = NullPointerException.class)
 	public void testSM_Project_nullCU() {
