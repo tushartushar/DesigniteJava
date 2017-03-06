@@ -33,6 +33,18 @@ public class SM_TypeTest {
 		}		
 	}
 	
+	//TODO check nested classes
+	@Test
+	public void SM_Type_nestedClass() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\NestedClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+		
+		if(listOfTypes.size() == 1) {
+			type = new SM_Type(listOfTypes.get(0), unit);
+			assertEquals(type.getName(), "NestedClass");
+		}		
+	}
+
 	@Test
 	public void SM_Type_checkDefaultAccess() {
 		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
@@ -44,15 +56,20 @@ public class SM_TypeTest {
 		}		
 	}
 	
-	@Test
-	public void SM_Type_nullTypeList() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
+	@Test(expected = NullPointerException.class)
+	public void SM_Type_nullTypeDeclaration() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
+		type = new SM_Type(null, unit);	
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void SM_Type_nullCompilationUnit() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
 		if(listOfTypes.size() == 1) {
-			type = new SM_Type(null, unit);
-			//assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);
-		}		
+			type = new SM_Type(listOfTypes.get(0), null);
+		}	
 	}
 	
 	@Test
@@ -65,7 +82,7 @@ public class SM_TypeTest {
 			if (pkg.getName().equals("(default package)"))
 				assertEquals(pkg.getTypeList().size(), 1);
 			if (pkg.getName().equals("test_package"))
-				assertEquals(pkg.getTypeList().size(), 2);
+				assertEquals(pkg.getTypeList().size(), 4);
 		}
 	}
 }
