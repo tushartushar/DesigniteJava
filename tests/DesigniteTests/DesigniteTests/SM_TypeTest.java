@@ -12,42 +12,60 @@ import org.junit.Test;
 import Designite.InputArgs;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_SourceItem.AccessStates;
 import Designite.SourceModel.SM_Type;
-import Designite.SourceModel.TypeVisitor;
 
 public class SM_TypeTest {
 	//Set this path before executing tests
 	private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
+	SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 	private List<SM_Package> packageList;
+	private SM_Type type;
 	
-	@Before
-	public void setUp() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
-		project.parse();
-		packageList = project.getPackageList();
+	@Test
+	public void SM_Type_getName() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+		
+		if(listOfTypes.size() == 1) {
+			type = new SM_Type(listOfTypes.get(0), unit);
+			assertEquals(type.getName(), "TestClass");
+		}		
 	}
 	
-/*	@Test
-	public void SM_Type_positive_case() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
-
-		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
-		TypeVisitor visitor = new TypeVisitor(unit);
-		unit.accept(visitor);
-		List<SM_Type> list = visitor.getTypeList();
-		for (SM_Type type:list) {
-			assertEquals(type.getName(), "TestClass");
-		}
+	@Test
+	public void SM_Type_checkDefaultAccess() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
 		
-	}*/
+		if(listOfTypes.size() == 1) {
+			type = new SM_Type(listOfTypes.get(0), unit);
+			assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);
+		}		
+	}
+	
+	@Test
+	public void SM_Type_nullTypeList() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+		
+		if(listOfTypes.size() == 1) {
+			type = new SM_Type(null, unit);
+			//assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);
+		}		
+	}
 	
 	@Test
 	public void SM_Type_sizeOfTypeList() {
+		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
+		project.parse();
+		packageList = project.getPackageList();
+		
 		for (SM_Package pkg: packageList) {
 			if (pkg.getName().equals("(default package)"))
 				assertEquals(pkg.getTypeList().size(), 1);
 			if (pkg.getName().equals("test_package"))
-				assertEquals(pkg.getTypeList().size(), 1);
+				assertEquals(pkg.getTypeList().size(), 2);
 		}
 	}
 }
