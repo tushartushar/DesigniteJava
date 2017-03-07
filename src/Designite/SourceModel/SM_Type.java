@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-//TODO check EnumDeclaration and AnnotationTypeDeclaration
+//TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
 public class SM_Type extends SM_SourceItem {
 
 	private int publicMethods = 0;
@@ -16,18 +16,30 @@ public class SM_Type extends SM_SourceItem {
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
 	private TypeDeclaration typeDeclaration;
+	private TypeDeclaration referredClass;
+	private boolean nestedClass;
 	private Type superclass;
 	private CompilationUnit compilationUnit;
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit) {
+		//It has been checked earlier too
+		if (typeDeclaration == null || compilationUnit == null) 
+			throw new NullPointerException();
+		
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
 		setType();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
+	}
+
+	public void setNestedClass(TypeDeclaration referredClass) {
+		nestedClass = true;
+		this.referredClass = referredClass;
+		
 	}
 
 	void setType() {
@@ -38,7 +50,19 @@ public class SM_Type extends SM_SourceItem {
 			isInterface = true;
 	}
 	
-	//not yet implemented
+	public TypeDeclaration getTypeDeclaration() {
+		return typeDeclaration;
+	}
+	
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+	
+	public boolean isInterface() {
+		return isInterface;
+	}
+	
+	//not implemented yet
 	void setSuperClass() {
 		superclass = typeDeclaration.getSuperclassType();
 	}
@@ -82,7 +106,7 @@ public class SM_Type extends SM_SourceItem {
 	}
 
 	// This has to be changed.
-	void parse() {
+	void parse() {		
 		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
 		typeDeclaration.accept(methodVisitor);
 		List<SM_Method> mList = methodVisitor.getMethods();
@@ -115,6 +139,9 @@ public class SM_Type extends SM_SourceItem {
 		System.out.println("	Interface: " + isInterface);
 		System.out.println("	Abstract: " + isAbstract);
 		System.out.println("	Superclass: " + superclass);
+		System.out.println("	Nested class: " + nestedClass);
+		if (nestedClass) 
+			System.out.println("	Referred class: " + referredClass.getName());
 		for (SM_Method method : methodList)
 			method.print();
 		for (SM_Field field : fieldList)
