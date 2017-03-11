@@ -31,27 +31,21 @@ public class SM_Type extends SM_SourceItem {
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
-		setType();
+		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
 	}
-
-	public void setNestedClass(TypeDeclaration referredClass) {
-		nestedClass = true;
-		this.referredClass = referredClass;
-		
+	
+	public TypeDeclaration getTypeDeclaration() {
+		return typeDeclaration;
 	}
-
-	void setType() {
+	
+	void setTypeInfo() {
 		int modifier = typeDeclaration.getModifiers();
 		if (Modifier.isAbstract(modifier))
 			isAbstract = true;
 		if (typeDeclaration.isInterface())
 			isInterface = true;
-	}
-	
-	public TypeDeclaration getTypeDeclaration() {
-		return typeDeclaration;
 	}
 	
 	public boolean isAbstract() {
@@ -60,6 +54,15 @@ public class SM_Type extends SM_SourceItem {
 	
 	public boolean isInterface() {
 		return isInterface;
+	}
+	
+	public void setNestedClass(TypeDeclaration referredClass) {
+		nestedClass = true;
+		this.referredClass = referredClass;	
+	}
+	
+	public boolean isNestedClass() {
+		return nestedClass;
 	}
 	
 	//not implemented yet
@@ -88,18 +91,14 @@ public class SM_Type extends SM_SourceItem {
 	}
 
 	void computeMetrics(MethodVisitor visitor) {
-		// countMethods = visitor.countMethods();
 		for (int i = 0; i < countMethods(); i++) {
-			//if (visitor.methods.get(i).isPublic())
 			if (accessModifier.equals("PUBLIC"))
 				publicMethods++;
 		}
 	}
 
 	void computeMetrics(FieldVisitor visitor) {
-		// countFields = visitor.countFields();
 		for (int i = 0; i < countFields(); i++) {
-			//if (visitor.fields.get(i).isPublic())
 			if (accessModifier.equals("PUBLIC"))
 				publicFields++;
 		}
@@ -142,10 +141,10 @@ public class SM_Type extends SM_SourceItem {
 		System.out.println("	Nested class: " + nestedClass);
 		if (nestedClass) 
 			System.out.println("	Referred class: " + referredClass.getName());
-		for (SM_Method method : methodList)
-			method.print();
 		for (SM_Field field : fieldList)
 			field.print();
+		for (SM_Method method : methodList)
+			method.print();
 	}
 
 }

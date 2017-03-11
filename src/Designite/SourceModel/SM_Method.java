@@ -21,7 +21,7 @@ public class SM_Method extends SM_SourceItem {
 	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
 	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	
-	SM_Method(MethodDeclaration methodDeclaration, TypeDeclaration typeDeclaration) {
+	public SM_Method(MethodDeclaration methodDeclaration, TypeDeclaration typeDeclaration) {
 		name = methodDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration; 
 		this.methodDeclaration = methodDeclaration;
@@ -33,15 +33,9 @@ public class SM_Method extends SM_SourceItem {
 		return methodDeclaration.getBody();
 	}
 	
-/*	public void setPublicMethod(MethodDeclaration method){
-		int modifiers = method.getModifiers();
-		if (Modifier.isPublic(modifiers)) 
-			publicMethod = true;
+	public void testMethod() {
+		System.out.println(methodDeclaration.resolveBinding());
 	}
-	
-	public boolean isPublic() {
-		return this.publicMethod;
-	}*/
 	
 	public void setMethodInfo(MethodDeclaration method){
 		int modifiers = method.getModifiers();
@@ -77,7 +71,7 @@ public class SM_Method extends SM_SourceItem {
 			VariableVisitor parameterVisitor = new VariableVisitor(methodDeclaration, typeDeclaration);
 			methodDeclaration.accept(parameterVisitor);
 			List<SM_Parameter> pList = parameterVisitor.getParameters();
-			if (pList.size()>0)
+			if (pList.size() > 0)
 				parameterList.addAll(pList);
 	 		//parseParameters();
 		}

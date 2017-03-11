@@ -39,30 +39,24 @@ public class SM_Package extends SM_SourceItem {
 			if (list.size() > 0) {
 				if (list.size() == 1) {
 					typeList.addAll(list);
-				} else if (list.size() > 1) {
+				} else {
 					typeList.add(list.get(0));
-					for (int i = 1; i < list.size(); i++) {
-						typeList.add(list.get(i));
-						list.get(i).setNestedClass(list.get(0).getTypeDeclaration());
-					}
+					addNestedClass(list);
 				}
 			}
 		}
 
 		parseTypes();
-
 	}
 	
-/*	void parse() {
-		for (CompilationUnit unit:compilationUnitList){
-			TypeVisitor visitor = new TypeVisitor(unit);
-			unit.accept(visitor);
-			List<SM_Type> list = visitor.getTypeList();
-			if (list.size() > 0)
-				typeList.addAll(list);
+	private void addNestedClass(List<SM_Type> list) {
+		if (list.size() > 1) {
+			for (int i = 1; i < list.size(); i++) {
+				typeList.add(list.get(i));
+				list.get(i).setNestedClass(list.get(0).getTypeDeclaration());
+			}
 		}
-		parseTypes();
-	}*/
+	}
 
 	private void parseTypes() {
 		for (SM_Type type : typeList) {

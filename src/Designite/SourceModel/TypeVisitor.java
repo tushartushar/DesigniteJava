@@ -8,6 +8,7 @@ import java.util.List;
 
 public class TypeVisitor extends ASTVisitor{
 	private List<SM_Type> types = new ArrayList<SM_Type>();
+	private List<TypeDeclaration> typeDeclarationList = new ArrayList<TypeDeclaration>();
 	private CompilationUnit compilationUnit;
 	
 	public TypeVisitor(CompilationUnit cu) {
@@ -17,6 +18,7 @@ public class TypeVisitor extends ASTVisitor{
 	
 	@Override
 	public boolean visit(TypeDeclaration typeDeclaration){
+		typeDeclarationList.add(typeDeclaration);
 		SM_Type newType = new SM_Type(typeDeclaration, compilationUnit);
 		types.add(newType);
 		
@@ -25,5 +27,9 @@ public class TypeVisitor extends ASTVisitor{
 	
 	public List<SM_Type> getTypeList() {
 		return types;
+	}
+	
+	public List<TypeDeclaration> getTypeDeclarationList() {
+		return typeDeclarationList;
 	}
 }
