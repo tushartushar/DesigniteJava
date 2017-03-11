@@ -63,7 +63,7 @@ public class SM_PackageTest {
 			}
 			// Empty class is not included while counting types
 			if (pkg.getName().equals("test_package")) {
-				assertEquals(pkg.countTypes(), 1);
+				assertEquals(pkg.countTypes(), 7);
 			}
 		}
 	}

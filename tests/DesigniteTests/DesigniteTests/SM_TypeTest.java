@@ -14,35 +14,26 @@ import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 import Designite.SourceModel.SM_Type;
+import Designite.SourceModel.TypeVisitor;
 
 public class SM_TypeTest {
 	//Set this path before executing tests
 	private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
-	private List<SM_Package> packageList;
+	private SM_Project project;
 	private SM_Type type;
+	
+	@Before
+	public void setUp() {
+		project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
+	}
 	
 	@Test
 	public void SM_Type_getName() {
 		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
-		if(listOfTypes.size() == 1) {
-			type = new SM_Type(listOfTypes.get(0), unit);
-			assertEquals(type.getName(), "TestClass");
-		}		
-	}
-	
-	//TODO check nested classes
-	@Test
-	public void SM_Type_nestedClass() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\NestedClass.java");
-		List<TypeDeclaration> listOfTypes = unit.types();
-		
-		if(listOfTypes.size() == 1) {
-			type = new SM_Type(listOfTypes.get(0), unit);
-			assertEquals(type.getName(), "NestedClass");
-		}		
+		type = new SM_Type(listOfTypes.get(0), unit);
+		assertEquals(type.getName(), "TestClass");		
 	}
 
 	@Test
@@ -50,10 +41,52 @@ public class SM_TypeTest {
 		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
-		if(listOfTypes.size() == 1) {
-			type = new SM_Type(listOfTypes.get(0), unit);
-			assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);
-		}		
+		type = new SM_Type(listOfTypes.get(0), unit);
+		assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);		
+	}
+	
+	@Test
+	public void SM_Type_check_getTypeDeclaration() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\DefaultClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+
+		type = new SM_Type(listOfTypes.get(0), unit);
+		assertEquals(type.getTypeDeclaration(), listOfTypes.get(0));		
+	}
+	
+	@Test
+	public void SM_Type_check_isAbstract() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\AbstractClass.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+
+		type = new SM_Type(listOfTypes.get(0), unit);
+		assertTrue(type.isAbstract());		
+	}
+	
+	@Test
+	public void SM_Type_check_isInterface() {
+		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\Interface.java");
+		List<TypeDeclaration> listOfTypes = unit.types();
+
+		type = new SM_Type(listOfTypes.get(0), unit);
+		assertTrue(type.isInterface());		
+	}
+	
+	@Test //too complicated for the moment 
+	public void SM_Type_check_isNestedClass() {		
+		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
+		project.parse();
+		List<SM_Package> packageList = project.getPackageList();
+		
+		for (SM_Package pkg: packageList) {
+			if (pkg.getName().equals("test_package")) {
+				List<SM_Type> list = pkg.getTypeList();
+				for (SM_Type type:list) {
+					if (type.getName().equals("InnerClass")) 
+						assertTrue(type.isNestedClass());
+				}
+			}
+		}
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -67,22 +100,20 @@ public class SM_TypeTest {
 		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
-		if(listOfTypes.size() == 1) {
-			type = new SM_Type(listOfTypes.get(0), null);
-		}	
+		type = new SM_Type(listOfTypes.get(0), null);	
 	}
 	
 	@Test
 	public void SM_Type_sizeOfTypeList() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 		project.parse();
-		packageList = project.getPackageList();
+		List<SM_Package> packageList = project.getPackageList();
 		
 		for (SM_Package pkg: packageList) {
 			if (pkg.getName().equals("(default package)"))
 				assertEquals(pkg.getTypeList().size(), 1);
 			if (pkg.getName().equals("test_package"))
-				assertEquals(pkg.getTypeList().size(), 4);
+				assertEquals(pkg.getTypeList().size(), 7);
 		}
 	}
 }
