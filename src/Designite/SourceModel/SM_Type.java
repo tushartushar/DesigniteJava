@@ -105,7 +105,7 @@ public class SM_Type extends SM_SourceItem {
 	}
 
 	// This has to be changed.
-	void parse() {		
+	void parse() {	
 		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
 		typeDeclaration.accept(methodVisitor);
 		List<SM_Method> mList = methodVisitor.getMethods();
@@ -126,14 +126,16 @@ public class SM_Type extends SM_SourceItem {
 	}
 
 	private void parseMethods() {
-		for (SM_Method method : methodList)
+		for (SM_Method method : methodList) {
 			method.parse();
+		}
 	}
-
+	
 	@Override
 	public void print() {
 		System.out.println();
 		System.out.println("Type: " + name);
+		//System.out.println("	Parent: " + typeDeclaration.getParent());
 		System.out.println("	Access: " + accessModifier);
 		System.out.println("	Interface: " + isInterface);
 		System.out.println("	Abstract: " + isAbstract);

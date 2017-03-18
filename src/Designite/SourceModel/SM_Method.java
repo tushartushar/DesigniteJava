@@ -9,7 +9,6 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-
 public class SM_Method extends SM_SourceItem {
 	//private boolean publicMethod = false;
 	private boolean abstractMethod = false;
@@ -73,7 +72,7 @@ public class SM_Method extends SM_SourceItem {
 			List<SM_Parameter> pList = parameterVisitor.getParameters();
 			if (pList.size() > 0)
 				parameterList.addAll(pList);
-	 		//parseParameters();
+			//parseParameters();		
 		}
 	}
 
@@ -91,11 +90,10 @@ public class SM_Method extends SM_SourceItem {
 		System.out.println("	Abstract: " + abstractMethod);
 		System.out.println("	Final: " + finalMethod);
 		System.out.println("	Static: " + staticMethod);
-	
+//		System.out.println("	Binding: " + methodDeclaration.resolveBinding());
 		for(SM_Parameter param:parameterList)
 			param.print();
 		for(SM_LocalVar var:localVarList)
 			var.print();
 	}
-
 }

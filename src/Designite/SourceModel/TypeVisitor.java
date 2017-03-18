@@ -10,6 +10,7 @@ public class TypeVisitor extends ASTVisitor{
 	private List<SM_Type> types = new ArrayList<SM_Type>();
 	private List<TypeDeclaration> typeDeclarationList = new ArrayList<TypeDeclaration>();
 	private CompilationUnit compilationUnit;
+	private SM_Type newType;
 	
 	public TypeVisitor(CompilationUnit cu) {
 		super();
@@ -19,10 +20,14 @@ public class TypeVisitor extends ASTVisitor{
 	@Override
 	public boolean visit(TypeDeclaration typeDeclaration){
 		typeDeclarationList.add(typeDeclaration);
-		SM_Type newType = new SM_Type(typeDeclaration, compilationUnit);
+		newType = new SM_Type(typeDeclaration, compilationUnit);
 		types.add(newType);
 		
 		return super.visit(typeDeclaration);
+	}
+	
+	public SM_Type getType() {
+		return newType;
 	}
 	
 	public List<SM_Type> getTypeList() {

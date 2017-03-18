@@ -47,6 +47,7 @@ public class SM_Package extends SM_SourceItem {
 		}
 
 		parseTypes();
+		
 	}
 	
 	private void addNestedClass(List<SM_Type> list) {
@@ -63,7 +64,7 @@ public class SM_Package extends SM_SourceItem {
 			type.parse();
 		}
 	}
-
+	
 	@Override
 	public void print() {
 		System.out.println();

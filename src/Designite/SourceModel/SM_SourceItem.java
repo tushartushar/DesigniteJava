@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 public abstract class SM_SourceItem {
 	protected String name;
 	protected AccessStates accessModifier;
+	//protected SM_SourceItem getParentInfo();
 	
 	//This method prints the whole source code model
 	public abstract void print();
