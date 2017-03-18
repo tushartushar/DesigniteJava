@@ -48,14 +48,14 @@ public class SM_ProjectTest {
 	public void testSM_Project_sourceFilesCounter() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getSourceFileList().size(), 3);
+		assertEquals(project.getSourceFileList().size(), 8);
 	}
 	
 	@Test
 	public void testSM_Project_cuCounter() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getCompilationUnitList().size(), 3);
+		assertEquals(project.getCompilationUnitList().size(), 8);
 	}
 	
 	@Test
