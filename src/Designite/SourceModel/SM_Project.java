@@ -72,7 +72,7 @@ public class SM_Project extends SM_SourceItem{
 		String fileToString = readFileToString(filePath);
 		int startingIndex = filePath.lastIndexOf(File.separatorChar);
 		unitName = filePath.substring(startingIndex + 1);
-		
+
 		return createAST(fileToString, unitName);
 	}
 
@@ -136,36 +136,24 @@ public class SM_Project extends SM_SourceItem{
 		}
 	}
 	
-	//set sources and classpath before execute
 	private CompilationUnit createAST(final String content, String unitName) {
  		Document doc = new Document(content);
  		final ASTParser parser = ASTParser.newParser(AST.JLS8);
- 		parser.setSource(doc.get().toCharArray());
- 		parser.setKind(ASTParser.K_COMPILATION_UNIT); 
- 		
-		//parser.setUnitName(unitName);
- 		
-/*		Map<String, String> options = JavaCore.getOptions();
-		parser.setCompilerOptions(options);*/
-		
-		String[] sources = { "C:\\Users\\Alex\\workspace\\DesisgniteJava" }; 
-		String[] classpath = {"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib"};
-/*		String[] classpath = {"C:\\Program Files\\Java\\jre1.8.0_121\\lib\\rt.jar" };
-		String[] classpath = {"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.core.contenttype_3.5.100.v20160418-1621.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.core.jobs_3.8.0.v20160509-0411.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.core.resources_3.11.1.v20161107-2032.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.core.runtime_3.12.0.v20160606-1342.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.equinox.common_3.8.0.v20160509-1230.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.equinox.preferences_3.6.1.v20160815-1406.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.jdt.core-3.10.0.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.osgi_3.11.2.v20161107-1947.jar",
-				"C:\\Users\\Alex\\workspace\\DesisgniteJava\\lib\\org.eclipse.text_3.5.0.jar"};*/
-
- 		
- 		parser.setEnvironment(classpath, sources, new String[] {"UTF-8"}, true);
  		parser.setResolveBindings(true);
+ 		parser.setKind(ASTParser.K_COMPILATION_UNIT); 
  		parser.setBindingsRecovery(true);
- 	    parser.setStatementsRecovery(true);
+ 		
+		Map<String, String> options = JavaCore.getOptions();
+		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_6);
+		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM,
+				JavaCore.VERSION_1_6);
+		options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_6);
+		parser.setCompilerOptions(options);
+		
+		parser.setUnitName(unitName);
+ 		parser.setEnvironment(null, null, null, true);
+ 		parser.setSource(doc.get().toCharArray());
+ 		
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  		
  		if (cu.getAST().hasBindingsRecovery()) {

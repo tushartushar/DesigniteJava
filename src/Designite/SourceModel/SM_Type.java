@@ -105,7 +105,7 @@ public class SM_Type extends SM_SourceItem {
 	}
 
 	// This has to be changed.
-	void parse() {	
+	void parse() {		
 		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
 		typeDeclaration.accept(methodVisitor);
 		List<SM_Method> mList = methodVisitor.getMethods();
@@ -135,7 +135,7 @@ public class SM_Type extends SM_SourceItem {
 	public void print() {
 		System.out.println();
 		System.out.println("Type: " + name);
-		//System.out.println("	Parent: " + typeDeclaration.getParent());
+//		System.out.println("	Parent: " + typeDeclaration.getParent());
 		System.out.println("	Access: " + accessModifier);
 		System.out.println("	Interface: " + isInterface);
 		System.out.println("	Abstract: " + isAbstract);
@@ -143,6 +143,7 @@ public class SM_Type extends SM_SourceItem {
 		System.out.println("	Nested class: " + nestedClass);
 		if (nestedClass) 
 			System.out.println("	Referred class: " + referredClass.getName());
+//		System.out.println("	Binding: " + typeDeclaration.resolveBinding().getQualifiedName());
 		for (SM_Field field : fieldList)
 			field.print();
 		for (SM_Method method : methodList)
