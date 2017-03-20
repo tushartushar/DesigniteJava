@@ -25,7 +25,7 @@ public class SM_Field extends SM_SourceItem {
 		setFieldInfo(fieldDeclaration);
 	}
 	
-	void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	

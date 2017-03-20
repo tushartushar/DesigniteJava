@@ -88,6 +88,10 @@ public class SM_Type extends SM_SourceItem {
 	public List<SM_Method> getMethodList() {
 		return methodList;
 	}
+	
+	public List<SM_Field> getFieldList() {
+		return fieldList;
+	}
 
 	public int countMethods() {
 		return methodList.size();
@@ -137,7 +141,7 @@ public class SM_Type extends SM_SourceItem {
 		parseMethods(this);
 
 		// computeMetrics(methodVisitor);
-
+		
 		FieldVisitor fieldVisitor = new FieldVisitor(typeDeclaration);
 		typeDeclaration.accept(fieldVisitor);
 		List<SM_Field> fList = fieldVisitor.getFields();
