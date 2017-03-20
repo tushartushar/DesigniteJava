@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.dom.Type;
 public class SM_Parameter extends SM_SourceItem {
 	private SingleVariableDeclaration variable;
 	private MethodDeclaration methodDeclaration;
+	private SM_Method parentMethod;
 	private Type type;
 	
 	public SM_Parameter(SingleVariableDeclaration variable, MethodDeclaration methodDeclaration) {
@@ -24,9 +25,18 @@ public class SM_Parameter extends SM_SourceItem {
 		return type;
 	}
 	
+	void setParent(SM_Method parentMethod) {
+		this.parentMethod = parentMethod;
+	}
+	
+	public SM_Method getParent() {
+		return parentMethod;
+	}
+	
 	@Override
 	public void print() {
 		System.out.println("Parameter: " + name);
+		System.out.println("	Parent: " + this.getParent().getName());
 		System.out.println("	Type: " + type);
 	}
 

@@ -9,12 +9,21 @@ public class SM_Package extends SM_SourceItem {
 	private List<CompilationUnit> compilationUnitList;
 	private List<SM_Type> typeList = new ArrayList<SM_Type>();
 	private List<SM_Type> nestedClassList;
+	private SM_Project parentProject;
 
 	public SM_Package(String packageName) {
 		name = packageName;
 		compilationUnitList = new ArrayList<CompilationUnit>();
 	}
 
+	void setParent(SM_Project parentProject) {
+		this.parentProject = parentProject;
+	}
+	
+	public SM_Project getParent() {
+		return parentProject;
+	}
+	
 	public List<CompilationUnit> getCompilationUnitList() {
 		return compilationUnitList;
 	}
@@ -46,7 +55,7 @@ public class SM_Package extends SM_SourceItem {
 			}
 		}
 
-		parseTypes();
+		parseTypes(this);
 		
 	}
 	
@@ -59,9 +68,10 @@ public class SM_Package extends SM_SourceItem {
 		}
 	}
 
-	private void parseTypes() {
+	private void parseTypes(SM_Package parentPkg) {
 		for (SM_Type type : typeList) {
 			type.parse();
+			type.setParent(parentPkg);
 		}
 	}
 	

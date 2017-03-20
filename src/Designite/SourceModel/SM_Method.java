@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -15,8 +17,13 @@ public class SM_Method extends SM_SourceItem {
 	private boolean finalMethod = false;
 	private boolean staticMethod = false;
 	private boolean isConstructor = false;
+	private SM_Type parentType;
+	private Block methodBody;
+	
 	private TypeDeclaration typeDeclaration;
 	private MethodDeclaration methodDeclaration;
+	private IMethodBinding IMethod;
+	
 	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
 	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	
@@ -24,16 +31,26 @@ public class SM_Method extends SM_SourceItem {
 		name = methodDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration; 
 		this.methodDeclaration = methodDeclaration;
-		setMethodInfo(methodDeclaration );
+		setIMethod(methodDeclaration);
+		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
+		setMethodBody();
 	}
 	
-	public Block methodBody() {
-		return methodDeclaration.getBody();
+	void setMethodBody() {
+		methodBody = methodDeclaration.getBody();
 	}
 	
-	public void testMethod() {
-		System.out.println(methodDeclaration.resolveBinding());
+	public Block getMethodBody() {
+		return methodBody;
+	}
+	
+	void setIMethod(MethodDeclaration methodDeclaration) {
+		this.IMethod = methodDeclaration.resolveBinding();
+	}
+	
+	public IMethodBinding getIMethod() {
+		return IMethod;
 	}
 	
 	public void setMethodInfo(MethodDeclaration method){
@@ -64,6 +81,14 @@ public class SM_Method extends SM_SourceItem {
 		return this.isConstructor;
 	}
 	
+	void setParent(SM_Type parentType) {
+		this.parentType = parentType;
+	}
+	
+	public SM_Type getParent() {
+		return parentType;
+	}
+	
 	void parse() {
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for(SingleVariableDeclaration var: variableList) {
@@ -72,18 +97,21 @@ public class SM_Method extends SM_SourceItem {
 			List<SM_Parameter> pList = parameterVisitor.getParameters();
 			if (pList.size() > 0)
 				parameterList.addAll(pList);
-			//parseParameters();		
+			parseParameters(this);		
 		}
 	}
 
-/*	private void parseParameters() {
-		for(SM_Parameter param: parameterList)
-			param.parse();
-	}*/
+	private void parseParameters(SM_Method parentMethod) {
+		for(SM_Parameter param: parameterList) {
+//			param.parse();
+			param.setParent(parentMethod);
+		}
+	}
 	
 	@Override
 	public void print() {
 		System.out.println("Method: " + name);
+		System.out.println("	Parent: " + this.getParent().getName());
 		System.out.println("	Constructor: " + isConstructor);
 		System.out.println("	Returns: " +  methodDeclaration.getReturnType2());
 		System.out.println("	Access: " + accessModifier);

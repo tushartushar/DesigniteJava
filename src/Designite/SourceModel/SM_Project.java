@@ -36,7 +36,7 @@ public class SM_Project extends SM_SourceItem{
 	public void setName() {
 		
 	}
-	
+
 	public void setSourceFileList(List<String> list) {
 		sourceFileList = list;
 	}

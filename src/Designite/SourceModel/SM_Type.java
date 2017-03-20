@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -15,11 +16,16 @@ public class SM_Type extends SM_SourceItem {
 	private int publicFields = 0;
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
+	private SM_Package parentPkg;
+	
+	private CompilationUnit compilationUnit;
 	private TypeDeclaration typeDeclaration;
+	private ITypeBinding IType;
+
 	private TypeDeclaration referredClass;
 	private boolean nestedClass;
 	private Type superclass;
-	private CompilationUnit compilationUnit;
+	
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
@@ -31,6 +37,7 @@ public class SM_Type extends SM_SourceItem {
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
+		setIType(typeDeclaration);
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
@@ -38,6 +45,14 @@ public class SM_Type extends SM_SourceItem {
 	
 	public TypeDeclaration getTypeDeclaration() {
 		return typeDeclaration;
+	}
+	
+	void setIType(TypeDeclaration typeDeclaration) {
+		this.IType = typeDeclaration.resolveBinding();
+	}
+	
+	public ITypeBinding getIType() {
+		return IType;
 	}
 	
 	void setTypeInfo() {
@@ -104,6 +119,14 @@ public class SM_Type extends SM_SourceItem {
 		}
 	}
 
+	void setParent(SM_Package parentPkg) {
+		this.parentPkg = parentPkg;
+	}
+
+	public SM_Package getParent() {
+		return parentPkg;
+	}
+	
 	// This has to be changed.
 	void parse() {		
 		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
@@ -111,7 +134,7 @@ public class SM_Type extends SM_SourceItem {
 		List<SM_Method> mList = methodVisitor.getMethods();
 		if (mList.size() > 0)
 			methodList.addAll(mList);
-		parseMethods();
+		parseMethods(this);
 
 		// computeMetrics(methodVisitor);
 
@@ -120,14 +143,22 @@ public class SM_Type extends SM_SourceItem {
 		List<SM_Field> fList = fieldVisitor.getFields();
 		if (fList.size() > 0)
 			fieldList.addAll(fList);
+		parseFields(this);
 
 		// computeMetrics(fieldVisitor);
 
 	}
 
-	private void parseMethods() {
+	private void parseMethods(SM_Type parentType) {
 		for (SM_Method method : methodList) {
 			method.parse();
+			method.setParent(parentType);
+		}
+	}
+	
+	private void parseFields(SM_Type parentType) {
+		for (SM_Field field : fieldList) {
+			field.setParent(parentType);
 		}
 	}
 	
@@ -136,6 +167,7 @@ public class SM_Type extends SM_SourceItem {
 		System.out.println();
 		System.out.println("Type: " + name);
 //		System.out.println("	Parent: " + typeDeclaration.getParent());
+		System.out.println("	Parent: " + this.getParent().getName());
 		System.out.println("	Access: " + accessModifier);
 		System.out.println("	Interface: " + isInterface);
 		System.out.println("	Abstract: " + isAbstract);

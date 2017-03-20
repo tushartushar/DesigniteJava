@@ -36,4 +36,7 @@ public abstract class SM_SourceItem {
 		else
 			accessModifier = AccessStates.DEFAULT;
 	}
+	
+//	abstract SM_SourceItem getParent();
+	
 }
