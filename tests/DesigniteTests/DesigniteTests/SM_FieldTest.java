@@ -7,12 +7,15 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
 import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 
 public class SM_FieldTest {
@@ -22,6 +25,7 @@ public class SM_FieldTest {
 	private SM_Field newField;
 	private TypeDeclaration type;
 	private FieldDeclaration[] fields;
+	List<VariableDeclarationFragment> fieldList;
 	
 	@Before
 	public void setUp() {
@@ -35,13 +39,24 @@ public class SM_FieldTest {
 	
 	@Test
 	public void SM_Field_getName() {
-		newField = new SM_Field(fields[0], type);
+		fieldList = fields[0].fragments();
+		if(fieldList.size() == 1) {
+			newField = new SM_Field(fields[0], type);
+			newField.setName(fieldList.get(0).getName().toString());
+		} else
+			fail();
+		
 		assertEquals(newField.getName(), "publicField");	
 	}
 	
 	@Test
 	public void SM_Field_checkAccess() {
-		newField = new SM_Field(fields[0], type);
+		fieldList = fields[0].fragments();
+		if(fieldList.size() == 1) {
+			newField = new SM_Field(fields[0], type);
+			newField.setName(fieldList.get(0).getName().toString());
+		}
+
 		if (newField.getName().equals("publicField"))
 			assertEquals(newField.getAccessModifier(), AccessStates.PUBLIC);
 		else 
@@ -50,7 +65,12 @@ public class SM_FieldTest {
 	
 	@Test
 	public void SM_Field_checkType() {
-		newField = new SM_Field(fields[0], type);
+		fieldList = fields[0].fragments();
+		if(fieldList.size() == 1) {
+			newField = new SM_Field(fields[0], type);
+			newField.setName(fieldList.get(0).getName().toString());
+		}
+		
 		if (newField.getName().equals("publicField"))
 			assertEquals(newField.getType().toString(), "TestClass");
 		else
@@ -59,7 +79,12 @@ public class SM_FieldTest {
 	
 	@Test
 	public void SM_Field_check_StaticField() {
-		newField = new SM_Field(fields[1], type);
+		fieldList = fields[1].fragments();
+		if(fieldList.size() == 1) {
+			newField = new SM_Field(fields[1], type);
+			newField.setName(fieldList.get(0).getName().toString());
+		}
+		
 		if (newField.getName().equals("counter"))
 			assertTrue(newField.isStatic());
 		else
@@ -68,11 +93,32 @@ public class SM_FieldTest {
 	
 	@Test
 	public void SM_Field_check_FinalField() {
-		newField = new SM_Field(fields[3], type);
+		fieldList = fields[3].fragments();
+		if(fieldList.size() == 1) {
+			newField = new SM_Field(fields[3], type);
+			newField.setName(fieldList.get(0).getName().toString());
+		}
 		if (newField.getName().equals("CONSTANT"))
 			assertTrue(newField.isFinal());
 		else
 			fail();
 	}
-
+	
+	@Test
+	public void SM_Method_getParent() {
+		project.parse();
+		
+		for (SM_Package pkg: project.getPackageList()) {
+			if (pkg.getName().equals("test_package")) {
+				for (SM_Type type:pkg.getTypeList()) {
+					if (type.getName().equals("TestMethods")) {
+						for (SM_Field field:type.getFieldList()) {
+							if (field.getName().equals("counter"))
+								assertEquals(field.getParent().getName(), "TestMethods");
+						}
+					}
+				}
+			}
+		}
+	}
 }

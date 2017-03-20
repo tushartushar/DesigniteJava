@@ -104,16 +104,51 @@ public class SM_TypeTest {
 	}
 	
 	@Test
-	public void SM_Type_sizeOfTypeList() {
+	public void SM_Type_countFields() {
+		project.parse();
+		List<SM_Package> packageList = project.getPackageList();
+		
+		for (SM_Package pkg: packageList) {
+			if (pkg.getName().equals("test_package")) {
+				List<SM_Type> list = pkg.getTypeList();
+				for (SM_Type type:list) {
+					if (type.getName().equals("TestMethods")) 
+						assertEquals(type.countFields(), 5);
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void SM_Type_countMethods() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
 		
 		for (SM_Package pkg: packageList) {
-			if (pkg.getName().equals("(default package)"))
-				assertEquals(pkg.getTypeList().size(), 1);
-			if (pkg.getName().equals("test_package"))
-				assertEquals(pkg.getTypeList().size(), 7);
+			if (pkg.getName().equals("test_package")) {
+				List<SM_Type> list = pkg.getTypeList();
+				for (SM_Type type:list) {
+					if (type.getName().equals("TestMethods")) 
+						assertEquals(type.countMethods(), 5);
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void SM_Type_getParent() {
+		project.parse();
+		List<SM_Package> packageList = project.getPackageList();
+		
+		for (SM_Package pkg: packageList) {
+			if (pkg.getName().equals("test_package")) {
+				List<SM_Type> list = pkg.getTypeList();
+				for (SM_Type type:list) {
+					if (type.getName().equals("TestMethods")) 
+						assertEquals(type.getParent().getName(), "test_package");
+				}
+			}
 		}
 	}
 }

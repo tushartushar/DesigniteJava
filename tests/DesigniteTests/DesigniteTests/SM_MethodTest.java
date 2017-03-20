@@ -64,4 +64,22 @@ public class SM_MethodTest{
 		else
 			fail();
 	}
+	
+	@Test
+	public void SM_Method_getParent() {
+		project.parse();
+		
+		for (SM_Package pkg: project.getPackageList()) {
+			if (pkg.getName().equals("test_package")) {
+				for (SM_Type type:pkg.getTypeList()) {
+					if (type.getName().equals("TestMethods")) {
+						for (SM_Method method:type.getMethodList()) {
+							if (method.getName().equals("count"))
+								assertEquals(method.getParent().getName(), "TestMethods");
+						}
+					}
+				}
+			}
+		}
+	}
 }
