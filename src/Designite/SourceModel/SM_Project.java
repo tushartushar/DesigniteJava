@@ -24,17 +24,17 @@ public class SM_Project extends SM_SourceItem{
 	private List<SM_Package> packageList;
 	private String unitName;
 	
+	//TODO set project name
 	public SM_Project(InputArgs argsObj) {
 		this.inputArgs = argsObj;
 		sourceFileList = new ArrayList<String>();
 		compilationUnitList = new ArrayList<CompilationUnit>();
 		packageList = new ArrayList<SM_Package>();
-		//setName();
+		setName("Project");
 	}
 	
-	//TODO 
-	public void setName() {
-		
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setSourceFileList(List<String> list) {
@@ -78,7 +78,7 @@ public class SM_Project extends SM_SourceItem{
 
 	private void parseAllPackages() {
 		for(SM_Package pkg:packageList){
-			pkg.parse();
+			pkg.parse(this);
 		}
 	}
 	
@@ -142,6 +142,7 @@ public class SM_Project extends SM_SourceItem{
  		parser.setResolveBindings(true);
  		parser.setKind(ASTParser.K_COMPILATION_UNIT); 
  		parser.setBindingsRecovery(true);
+ 		parser.setStatementsRecovery(true);
  		
 		Map<String, String> options = JavaCore.getOptions();
 		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_6);
@@ -156,9 +157,9 @@ public class SM_Project extends SM_SourceItem{
  		
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  		
- 		if (cu.getAST().hasBindingsRecovery()) {
+/* 		if (cu.getAST().hasBindingsRecovery()) {
 			System.out.println("Binding activated.");
-		}
+		}*/
  		return cu;
  	}
 	

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 
 public class SM_Package extends SM_SourceItem {
 	private List<CompilationUnit> compilationUnitList;
+//	private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<SM_Type>();
 	private List<SM_Type> nestedClassList;
 	private SM_Project parentProject;
@@ -40,8 +42,14 @@ public class SM_Package extends SM_SourceItem {
 		compilationUnitList.add(unit);
 	}
 
-	void parse() {
+	void parse(SM_Project parentProject) {
 		for (CompilationUnit unit : compilationUnitList) {
+/*			ImportVisitor importVisitor = new ImportVisitor();
+			unit.accept(importVisitor);
+			List<ImportDeclaration> importList = importVisitor.getImports();
+			if (importList.size() > 0)
+				imports.addAll(importList);*/
+			
 			TypeVisitor visitor = new TypeVisitor(unit);
 			unit.accept(visitor);
 			List<SM_Type> list = visitor.getTypeList();
@@ -52,9 +60,10 @@ public class SM_Package extends SM_SourceItem {
 					typeList.add(list.get(0));
 					addNestedClass(list);
 				}
-			}
+			}	
 		}
-
+		
+		setParent(parentProject);
 		parseTypes(this);
 		
 	}
@@ -70,8 +79,7 @@ public class SM_Package extends SM_SourceItem {
 
 	private void parseTypes(SM_Package parentPkg) {
 		for (SM_Type type : typeList) {
-			type.parse();
-			type.setParent(parentPkg);
+			type.parse(this);
 		}
 	}
 	

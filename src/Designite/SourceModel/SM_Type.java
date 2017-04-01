@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -17,6 +19,7 @@ public class SM_Type extends SM_SourceItem {
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
 	private SM_Package parentPkg;
+	private SM_Project parentProject;
 	
 	private CompilationUnit compilationUnit;
 	private TypeDeclaration typeDeclaration;
@@ -26,6 +29,7 @@ public class SM_Type extends SM_SourceItem {
 	private boolean nestedClass;
 	private Type superclass;
 	
+	private List<ImportDeclaration> importList = new ArrayList<>();
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();
 	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
 
@@ -41,6 +45,7 @@ public class SM_Type extends SM_SourceItem {
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
+		setImportList(compilationUnit);
 	}
 	
 	public TypeDeclaration getTypeDeclaration() {
@@ -80,6 +85,18 @@ public class SM_Type extends SM_SourceItem {
 		return nestedClass;
 	}
 	
+	void setImportList(CompilationUnit unit){
+		ImportVisitor importVisitor = new ImportVisitor();
+		unit.accept(importVisitor);
+		List<ImportDeclaration> imports = importVisitor.getImports();
+		if (imports.size() > 0)
+			importList.addAll(imports);
+	}
+	
+	public List<ImportDeclaration> getImportList() {
+		return importList;
+	}
+	
 	//not implemented yet
 	void setSuperClass() {
 		superclass = typeDeclaration.getSuperclassType();
@@ -92,7 +109,7 @@ public class SM_Type extends SM_SourceItem {
 	public List<SM_Field> getFieldList() {
 		return fieldList;
 	}
-
+	
 	public int countMethods() {
 		return methodList.size();
 	}
@@ -125,14 +142,24 @@ public class SM_Type extends SM_SourceItem {
 
 	void setParent(SM_Package parentPkg) {
 		this.parentPkg = parentPkg;
+		this.parentProject = parentPkg.getParent();
 	}
 
-	public SM_Package getParent() {
+	public SM_Package getParentPkg() {
 		return parentPkg;
 	}
 	
+	public SM_Project getParentProject() {
+		return parentProject;
+	}
+	
 	// This has to be changed.
-	void parse() {		
+	void parse(SM_Package parentPkg) {
+		setParent(parentPkg);
+		
+/*		MethodInvVisitor tempVisitor = new MethodInvVisitor();
+		typeDeclaration.accept(tempVisitor);*/
+		
 		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration);
 		typeDeclaration.accept(methodVisitor);
 		List<SM_Method> mList = methodVisitor.getMethods();
@@ -155,8 +182,7 @@ public class SM_Type extends SM_SourceItem {
 
 	private void parseMethods(SM_Type parentType) {
 		for (SM_Method method : methodList) {
-			method.parse();
-			method.setParent(parentType);
+			method.parse(this);
 		}
 	}
 	
@@ -171,7 +197,7 @@ public class SM_Type extends SM_SourceItem {
 		System.out.println();
 		System.out.println("Type: " + name);
 //		System.out.println("	Parent: " + typeDeclaration.getParent());
-		System.out.println("	Parent: " + this.getParent().getName());
+		System.out.println("	Parent: " + this.getParentPkg().getName());
 		System.out.println("	Access: " + accessModifier);
 		System.out.println("	Interface: " + isInterface);
 		System.out.println("	Abstract: " + isAbstract);
@@ -180,6 +206,7 @@ public class SM_Type extends SM_SourceItem {
 		if (nestedClass) 
 			System.out.println("	Referred class: " + referredClass.getName());
 //		System.out.println("	Binding: " + typeDeclaration.resolveBinding().getQualifiedName());
+//		System.out.println("	Imports: " + importList);
 		for (SM_Field field : fieldList)
 			field.print();
 		for (SM_Method method : methodList)

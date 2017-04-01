@@ -1,6 +1,8 @@
 package Designite.SourceModel;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SM_SourceItem {
 	protected String name;
@@ -37,6 +39,27 @@ public abstract class SM_SourceItem {
 			accessModifier = AccessStates.DEFAULT;
 	}
 	
-//	abstract SM_SourceItem getParent();
+	List<SM_Type> getTypesOfProject(SM_Project project) {
+		List<SM_Package> pkgList = new ArrayList<>();
+		List<SM_Type> typeList = new ArrayList<>();
+		
+		pkgList.addAll(project.getPackageList());
+		for (SM_Package pkg: pkgList)
+			typeList.addAll(pkg.getTypeList());
+		
+		return typeList; 
+	}
+	
+	//unchecked
+	List<SM_Method> getMethodsOfProject(SM_Project project) {
+		List<SM_Type> typeList = new ArrayList<>();
+		List<SM_Method> methodList = new ArrayList<>();
+		
+		typeList.addAll(getTypesOfProject(project));
+		for (SM_Type type: typeList)
+			methodList.addAll(type.getMethodList());
+		
+		return methodList; 
+	}
 	
 }

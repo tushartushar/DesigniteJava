@@ -8,11 +8,10 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class SM_Field extends SM_SourceItem {
+public class SM_Field extends SM_Variable {
 	private TypeDeclaration typeDeclaration;
 	private FieldDeclaration fieldDeclaration;
 	private VariableDeclarationFragment fieldVariable;
-	private Type type;
 	private SM_Type parentType;
 	private boolean finalField = false;
 	private boolean staticField = false;
@@ -20,13 +19,9 @@ public class SM_Field extends SM_SourceItem {
 	public SM_Field(FieldDeclaration fieldDeclaration, TypeDeclaration typeDeclaration) {
 		this.typeDeclaration = typeDeclaration;
 		this.fieldDeclaration = fieldDeclaration;
-		type = fieldDeclaration.getType();
+		setType(fieldDeclaration.getType());
 		setAccessModifier(fieldDeclaration.getModifiers());
 		setFieldInfo(fieldDeclaration);
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	void setFieldVar(VariableDeclarationFragment fieldVariable) {
@@ -48,22 +43,30 @@ public class SM_Field extends SM_SourceItem {
 	public TypeDeclaration getTypeDeclaration() {
 		return typeDeclaration;
 	}
-	public Type getType() {
-		return type;
-	}
+	
 	public boolean isFinal() {
 		return finalField;
 	}
+	
 	public boolean isStatic() {
 		return staticField;
 	}
 	
 	void setParent(SM_Type parentType) {
 		this.parentType = parentType;
+		this.parentProject = parentType.getParentProject();
 	}
 	
 	public SM_Type getParent() {
 		return parentType;
+	}
+	
+	public SM_Project getParentProject() {
+		return parentProject;
+	}
+	
+	void parse(SM_Type parentType) {
+		this.setParent(parentType);
 	}
 	
 	@Override
@@ -74,9 +77,8 @@ public class SM_Field extends SM_SourceItem {
 		System.out.println("	Type: " + getType());
 		System.out.println("	Final: " + isFinal());
 		System.out.println("	Static: " + isStatic());
-	}
-	
-	void parse() {
-	
+		findRefObject();
+		if (getRefType() != null)
+			System.out.println("	Refers to: " + getRefType().getName());
 	}
 }
