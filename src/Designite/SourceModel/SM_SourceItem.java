@@ -39,6 +39,13 @@ public abstract class SM_SourceItem {
 			accessModifier = AccessStates.DEFAULT;
 	}
 	
+	List<SM_Package> getPkgOfProject(SM_Project project) {
+		List<SM_Package> pkgList = new ArrayList<>();
+		pkgList.addAll(project.getPackageList());
+		
+		return pkgList; 
+	}
+	
 	List<SM_Type> getTypesOfProject(SM_Project project) {
 		List<SM_Package> pkgList = new ArrayList<>();
 		List<SM_Type> typeList = new ArrayList<>();
@@ -50,12 +57,22 @@ public abstract class SM_SourceItem {
 		return typeList; 
 	}
 	
-	//unchecked
 	List<SM_Method> getMethodsOfProject(SM_Project project) {
 		List<SM_Type> typeList = new ArrayList<>();
 		List<SM_Method> methodList = new ArrayList<>();
 		
 		typeList.addAll(getTypesOfProject(project));
+		for (SM_Type type: typeList)
+			methodList.addAll(type.getMethodList());
+		
+		return methodList; 
+	}
+	
+	List<SM_Method> getMethodsOfPkg(SM_Package pkg) {
+		List<SM_Type> typeList = new ArrayList<>();
+		List<SM_Method> methodList = new ArrayList<>();
+		
+		typeList.addAll(pkg.getTypeList());
 		for (SM_Type type: typeList)
 			methodList.addAll(type.getMethodList());
 		

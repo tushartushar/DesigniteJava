@@ -7,6 +7,7 @@ public class SM_Parameter extends SM_Variable {
 	private SingleVariableDeclaration variable;
 	private MethodDeclaration methodDeclaration;
 	private SM_Method parentMethod;
+	private SM_Type parentType;
 	
 	public SM_Parameter(SingleVariableDeclaration variable, MethodDeclaration methodDeclaration) {
 		name = variable.getName().toString();
@@ -17,6 +18,7 @@ public class SM_Parameter extends SM_Variable {
 	
 	void setParent(SM_Method parentMethod) {
 		this.parentMethod = parentMethod;
+		parentType = parentMethod.getParentType();
 		parentProject = parentMethod.getParentProject();
 	}
 	
@@ -26,6 +28,7 @@ public class SM_Parameter extends SM_Variable {
 	
 	void parse(SM_Method parentMethod) {
 		setParent(parentMethod);
+		parentType.addToVariableList(this);
 	}
 	
 	@Override

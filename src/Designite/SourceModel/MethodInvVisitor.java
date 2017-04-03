@@ -26,7 +26,8 @@ public class MethodInvVisitor extends ASTVisitor {
 	public boolean visit(MethodInvocation method) {
 		calledMethods.add(method);
 		IMethodBinding imethod = method.resolveMethodBinding();
-//		System.out.println(method);
+/*		System.out.println(method);
+		System.out.println(method.getName());*/
 		return super.visit(method);
 	}
 	

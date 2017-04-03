@@ -1,7 +1,6 @@
 package Designite.SourceModel;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Type;
@@ -66,7 +65,8 @@ public class SM_Field extends SM_Variable {
 	}
 	
 	void parse(SM_Type parentType) {
-		this.setParent(parentType);
+		setParent(parentType);
+		parentType.addToVariableList(this);
 	}
 	
 	@Override

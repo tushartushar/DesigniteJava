@@ -9,6 +9,7 @@ public class SM_LocalVar extends SM_Variable {
 	private MethodDeclaration methodDeclaration;
 	private VariableDeclarationFragment localVarFragment;
 	private SM_Method parentMethod;
+	private SM_Type parentType;
 	
 	public SM_LocalVar(VariableDeclarationFragment localVar) {
 		this.localVarFragment = localVar;
@@ -22,6 +23,7 @@ public class SM_LocalVar extends SM_Variable {
 	
 	void setParent(SM_Method parentMethod) {
 		this.parentMethod = parentMethod;
+		this.parentType = parentMethod.getParentType();
 		this.parentProject = parentMethod.getParentProject();
 	}
 	
@@ -29,8 +31,13 @@ public class SM_LocalVar extends SM_Variable {
 		return parentMethod;
 	}
 	
+	public SM_Type getParentType() {
+		return parentType;
+	}
+	
 	void parse(SM_Method parentMethod) {
 		setParent(parentMethod);
+		parentType.addToVariableList(this);
 	}
 	
 	@Override
@@ -41,5 +48,7 @@ public class SM_LocalVar extends SM_Variable {
 		findRefObject();
 		if (getRefType() != null)
 			System.out.println("	Refers to: " + getRefType().getName());
+/*		for (SM_Variable var: parentType.getVariableList()) 
+			System.out.println(var.getName());*/
 	}
 }

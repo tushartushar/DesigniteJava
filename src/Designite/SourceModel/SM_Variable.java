@@ -55,7 +55,7 @@ public abstract class SM_Variable extends SM_SourceItem {
 		} else if (type.isArrayType()) {
 			Type arrayType = ((ArrayType) type).getElementType();
 			setArrayType(arrayType);
-		}
+		} 
 	}
 	
 	void setTypeList(Type newType) {
@@ -110,7 +110,13 @@ public abstract class SM_Variable extends SM_SourceItem {
 				if (type.getName().equals(itype.getName())) 
 					setReferringType(type);
 			}
-		}
+		} else if (isPrimitive) {
+			ITypeBinding itype = getType().resolveBinding();
+			for (SM_Type type: getTypesOfProject(parentProject)) {
+				if (type.getName().equals(itype.getName())) 
+					setReferringType(type);
+			}
+		} 
 	}
 	
 	public SM_Project getParentProject() {
