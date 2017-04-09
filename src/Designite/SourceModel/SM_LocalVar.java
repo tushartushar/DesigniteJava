@@ -37,7 +37,7 @@ public class SM_LocalVar extends SM_Variable {
 	
 	void parse(SM_Method parentMethod) {
 		setParent(parentMethod);
-		parentType.addToVariableList(this);
+		//parentType.addToVariableList(this);
 	}
 	
 	@Override

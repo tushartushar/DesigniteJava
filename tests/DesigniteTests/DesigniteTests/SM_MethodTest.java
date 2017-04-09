@@ -65,7 +65,7 @@ public class SM_MethodTest{
 			fail();
 	}
 	
-	@Test
+	/*@Test
 	public void SM_Method_getParent() {
 		project.parse();
 		
@@ -81,5 +81,5 @@ public class SM_MethodTest{
 				}
 			}
 		}
-	}
+	}*/
 }

@@ -143,16 +143,11 @@ public class SM_Project extends SM_SourceItem{
  		parser.setKind(ASTParser.K_COMPILATION_UNIT); 
  		parser.setBindingsRecovery(true);
  		parser.setStatementsRecovery(true);
- 		
-		Map<String, String> options = JavaCore.getOptions();
-		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_6);
-		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM,
-				JavaCore.VERSION_1_6);
-		options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_6);
-		parser.setCompilerOptions(options);
 		
 		parser.setUnitName(unitName);
- 		parser.setEnvironment(null, null, null, true);
+		//String [] sources = {"/Users/Tushar/Documents/Workspace/DesigniteJava/src/"};
+		String [] sources = {inputArgs.getSourceFolder()};
+ 		parser.setEnvironment(null, sources, null, true);
  		parser.setSource(doc.get().toCharArray());
  		
  		CompilationUnit cu = (CompilationUnit) parser.createAST(null);

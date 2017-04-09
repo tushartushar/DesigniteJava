@@ -25,9 +25,13 @@ public class SM_Type extends SM_SourceItem {
 	private TypeDeclaration typeDeclaration;
 	private ITypeBinding IType;
 
+	//I am not sure about this referredClass. It seems, it is used for nested class. 
+	//But, there could be more than one nested class in a class, so technically it should be a list.
+	//Also, the name of the variable is not good.
 	private TypeDeclaration referredClass;
 	private boolean nestedClass;
 	private Type superclass;
+	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
 	
 	private List<ImportDeclaration> importList = new ArrayList<>();
 	private List<SM_Method> methodList = new ArrayList<SM_Method>();

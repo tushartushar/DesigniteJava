@@ -136,7 +136,7 @@ public class SM_TypeTest {
 		}
 	}
 	
-	@Test
+	/*@Test
 	public void SM_Type_getParent() {
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
@@ -150,5 +150,5 @@ public class SM_TypeTest {
 				}
 			}
 		}
-	}
+	}*/
 }

@@ -2,7 +2,11 @@ package Designite;
 
 import java.io.IOException;
 import Designite.SourceModel.*;
-
+/**
+ * 
+ * @author Tushar
+ * This is the start of the project
+ */
 public class Designite {
 	public static void main(String[] args) throws IOException{
 

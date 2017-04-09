@@ -180,7 +180,7 @@ public class SM_Method extends SM_SourceItem {
 					}
 				}
 			//binding is not resolved
-			} else {	
+			} /*else {	
 				if (method.getExpression() != null) { 
 					String objectName = method.getExpression().toString();
 					for (SM_Variable var: parentType.getVariableList()) {
@@ -206,8 +206,8 @@ public class SM_Method extends SM_SourceItem {
 					}
 				}
 				if(!(tempPkg.contains(parentPkg)))
-					tempPkg.add(parentPkg);*/
-			}
+					tempPkg.add(parentPkg);*
+			}*/
 			
 		}
 	}
@@ -285,12 +285,12 @@ public class SM_Method extends SM_SourceItem {
 	}
 	
 	private Type returnTypeOfVariable(String expression, SM_Type type) {
-		for (SM_Variable variable: type.getVariableList()) {
+		/*for (SM_Variable variable: type.getVariableList()) {
 			if (variable.getName().equals(expression)){ 
 				if (variable.getRefType() != null)
 					return variable.getType();
 			} 
-		}
+		}*/
 		return null;
 	}
 		

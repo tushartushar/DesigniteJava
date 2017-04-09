@@ -66,7 +66,7 @@ public class SM_Field extends SM_Variable {
 	
 	void parse(SM_Type parentType) {
 		setParent(parentType);
-		parentType.addToVariableList(this);
+		//parentType.addToVariableList(this);
 	}
 	
 	@Override
