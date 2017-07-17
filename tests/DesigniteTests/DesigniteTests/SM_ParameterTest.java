@@ -2,6 +2,7 @@ package DesigniteTests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -12,45 +13,55 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
+import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 
 public class SM_ParameterTest {
-	//Set this path before executing tests
-	private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
+	// Set this path before executing tests
+	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
+	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+	
 	private SM_Project project;
 	private SM_Parameter newParameter;
-	private MethodDeclaration[] methods;
-	private List<SingleVariableDeclaration> parameters;
-	
+	private List<SM_Method> methods;
+	private List<SM_Parameter> parameters;
+
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + "\\testBatchFile.txt"));
-		CompilationUnit unit = project.createCU(TESTS_PATH + "\\test_package\\TestMethods.java");
+		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
+		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" + File.separator + "TestMethods.java");
 		List<TypeDeclaration> typeList = unit.types();
-		
-		TypeDeclaration type = typeList.get(0);
-		methods = type.getMethods();
+
+		SM_Type type = null;
+		for (TypeDeclaration typeDecl : typeList){
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type.parse();
+		}
+
+		methods = type.getMethodList();
 	}
-	
+
 	@Test
 	public void SM_Parameter_check_getName() {
-		parameters = methods[0].parameters();	
-		newParameter = new SM_Parameter(parameters.get(0), methods[0]);
+		parameters = methods.get(0).getParameterList();
+		newParameter = parameters.get(0);
 		assertEquals(newParameter.getName(), "name");
 	}
-	
+
 	@Test
 	public void SM_Parameter_getType() {
-		parameters = methods[0].parameters();	
-		newParameter = new SM_Parameter(parameters.get(0), methods[0]);
+		parameters = methods.get(0).getParameterList();
+		newParameter = parameters.get(0);
 		assertEquals(newParameter.getType().toString(), "String");
 	}
-	
-	@Test //is a List considered as SingleVariableDeclaration?
+
+	@Test // is a List considered as SingleVariableDeclaration?
 	public void SM_Parameter_check_listParameter() {
-		parameters = methods[3].parameters();
-		newParameter = new SM_Parameter(parameters.get(0), methods[0]);
+		parameters = methods.get(3).getParameterList();
+		newParameter = parameters.get(0);
 		assertEquals(newParameter.getType().toString(), "List");
 	}
 }

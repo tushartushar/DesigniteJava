@@ -123,6 +123,6 @@ public abstract class SM_Variable extends SM_SourceItem {
 		return parentProject;
 	}
 	
-	public abstract void print();
+	public abstract void printDebugLog();
 	
 }

@@ -1,5 +1,6 @@
 package Designite.SourceModel;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Modifier;
 
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -14,21 +15,15 @@ public class SM_Field extends SM_Variable {
 	private SM_Type parentType;
 	private boolean finalField = false;
 	private boolean staticField = false;
+	private VariableDeclarationFragment variableDeclaration;
 	
-	public SM_Field(FieldDeclaration fieldDeclaration, TypeDeclaration typeDeclaration) {
-		this.typeDeclaration = typeDeclaration;
+	public SM_Field(FieldDeclaration fieldDeclaration, VariableDeclarationFragment varDecl, SM_Type parentType) {
 		this.fieldDeclaration = fieldDeclaration;
-		setType(fieldDeclaration.getType());
+		this.variableDeclaration = varDecl;
+		this.parentType = parentType;
 		setAccessModifier(fieldDeclaration.getModifiers());
 		setFieldInfo(fieldDeclaration);
-	}
-	
-	void setFieldVar(VariableDeclarationFragment fieldVariable) {
-		this.fieldVariable = fieldVariable;
-	}
-	
-	public VariableDeclarationFragment getFieldVar() {
-		return fieldVariable;
+		name = varDecl.getName().toString();
 	}
 	
 	void setFieldInfo(FieldDeclaration field){
@@ -51,34 +46,38 @@ public class SM_Field extends SM_Variable {
 		return staticField;
 	}
 	
-	void setParent(SM_Type parentType) {
-		this.parentType = parentType;
-		this.parentProject = parentType.getParentProject();
-	}
 	
-	public SM_Type getParent() {
+	public SM_Type getParentType() {
 		return parentType;
 	}
 	
-	public SM_Project getParentProject() {
-		return parentProject;
-	}
-	
-	void parse(SM_Type parentType) {
-		setParent(parentType);
-		//parentType.addToVariableList(this);
-	}
 	
 	@Override
-	public void print() {
-		System.out.println("Field: " + getName());
-		System.out.println("	Parent: " + this.getParent().getName());
-		System.out.println("	Access: " + getAccessModifier());
-		System.out.println("	Type: " + getType());
-		System.out.println("	Final: " + isFinal());
-		System.out.println("	Static: " + isStatic());
-		findRefObject();
+	public void printDebugLog(PrintWriter writer) {
+		print(writer, "Field: " + getName());
+		print(writer, "	Parent: " + this.parentType.getName());
+		print(writer, "	Access: " + getAccessModifier());
+		print(writer, "	Type: " + getType());
+		print(writer, "	Final: " + isFinal());
+		print(writer, "	Static: " + isStatic());
+		/*findRefObject();
 		if (getRefType() != null)
-			System.out.println("	Refers to: " + getRefType().getName());
+			print(writer, "	Refers to: " + getRefType().getName());*/
+	}
+
+	@Override
+	public void printDebugLog() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void parse() {
+	}
+
+	@Override
+	public void resolve() {
+		// TODO Auto-generated method stub
+		
 	}
 }

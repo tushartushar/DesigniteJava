@@ -10,15 +10,17 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 public class MethodVisitor extends ASTVisitor {
 	List<SM_Method> methods = new ArrayList<SM_Method>();
 	private TypeDeclaration typeDeclaration;
+	private SM_Type parentType;
 	
-	public MethodVisitor(TypeDeclaration typeDeclaration) {
+	public MethodVisitor(TypeDeclaration typeDeclaration, SM_Type typeObj) {
 		super();
 		this.typeDeclaration = typeDeclaration;
+		this.parentType = typeObj;
 	}
 	
 	@Override
 	public boolean visit(MethodDeclaration method) {
-		SM_Method newMethod = new SM_Method(method, typeDeclaration);
+		SM_Method newMethod = new SM_Method(method, parentType);
 		methods.add(newMethod);
 		
 		return super.visit(method);

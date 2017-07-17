@@ -11,16 +11,18 @@ public class TypeVisitor extends ASTVisitor{
 	private List<TypeDeclaration> typeDeclarationList = new ArrayList<TypeDeclaration>();
 	private CompilationUnit compilationUnit;
 	private SM_Type newType;
+	private SM_Package pkgObj;
 	
-	public TypeVisitor(CompilationUnit cu) {
+	public TypeVisitor(CompilationUnit cu, SM_Package pkgObj) {
 		super();
 		this.compilationUnit = cu;
+		this.pkgObj = pkgObj;
 	}
 	
 	@Override
 	public boolean visit(TypeDeclaration typeDeclaration){
 		typeDeclarationList.add(typeDeclaration);
-		newType = new SM_Type(typeDeclaration, compilationUnit);
+		newType = new SM_Type(typeDeclaration, compilationUnit, pkgObj);
 		types.add(newType);
 		
 		return super.visit(typeDeclaration);

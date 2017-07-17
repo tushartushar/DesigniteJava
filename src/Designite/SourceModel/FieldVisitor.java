@@ -10,22 +10,19 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class FieldVisitor extends ASTVisitor {
 	List<SM_Field> fields = new ArrayList<SM_Field>();
-	private TypeDeclaration typeDeclaration;
+	private SM_Type parentType;
 
-	public FieldVisitor(TypeDeclaration typeDeclaration) {
+	public FieldVisitor(SM_Type parentType) {
 		super();
-		this.typeDeclaration = typeDeclaration;
+		this.parentType = parentType;
 	}
-	
+
 	@Override
 	public boolean visit(FieldDeclaration fieldDeclaration) {
 		List<VariableDeclarationFragment> fieldList = fieldDeclaration.fragments();
-		for(VariableDeclarationFragment field: fieldList) {
-			SM_Field newField = new SM_Field(fieldDeclaration, typeDeclaration);
+		for (VariableDeclarationFragment field : fieldList) {
+			SM_Field newField = new SM_Field(fieldDeclaration, field, parentType);
 			fields.add(newField);
-			
-			newField.setName(field.getName().toString());
-			newField.setFieldVar(field);
 		}
 
 		return super.visit(fieldDeclaration);
@@ -35,7 +32,7 @@ public class FieldVisitor extends ASTVisitor {
 		return fields;
 	}
 
-	public int countFields() {
-		return fields.size();
-	}
+	/*
+	 * public int countFields() { return fields.size(); }
+	 */
 }

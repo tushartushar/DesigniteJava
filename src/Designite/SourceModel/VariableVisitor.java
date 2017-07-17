@@ -13,28 +13,26 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class VariableVisitor extends ASTVisitor {
 	List<SM_Parameter> parameters = new ArrayList<SM_Parameter>();
-	private MethodDeclaration methodDeclaration;
-	private TypeDeclaration typeDeclaration;
-
-	public VariableVisitor(MethodDeclaration methodDeclaration, TypeDeclaration typeDeclaration) {
+	private SM_Method parentMethod;
+	
+	public VariableVisitor(SM_Method methodObj) {
 		super();
-		this.methodDeclaration = methodDeclaration;
-		this.typeDeclaration = typeDeclaration;
+		this.parentMethod = methodObj;
 	}
 
 	@Override
 	public boolean visit(SingleVariableDeclaration variable) {
-		SM_Parameter newParameter = new SM_Parameter(variable, methodDeclaration);
+		SM_Parameter newParameter = new SM_Parameter(variable, parentMethod);
 		parameters.add(newParameter);
 
 		return super.visit(variable);
 	}
 
-	public List<SM_Parameter> getParameters() {
+	public List<SM_Parameter> getParameterList() {
 		return parameters;
 	}
 
-	public int countParameters() {
+	/*public int countParameters() {
 		return parameters.size();
-	}
+	}*/
 }

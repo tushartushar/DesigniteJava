@@ -24,6 +24,7 @@ public class InputArgs {
 
 	public InputArgs(String batchFilePath) {
 		this.batchFilePath = batchFilePath;
+		outputFolder = "";
 		readInputArgs();
 		checkEssentialInputs();
 	}

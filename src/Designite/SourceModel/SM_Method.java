@@ -1,5 +1,6 @@
 package Designite.SourceModel;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,48 +23,39 @@ public class SM_Method extends SM_SourceItem {
 	private boolean staticMethod = false;
 	private boolean isConstructor = false;
 	private SM_Type parentType;
-	private SM_Package parentPkg;
-	private SM_Project parentProject;
-	private Block methodBody;
 
-	private TypeDeclaration typeDeclaration;
 	private MethodDeclaration methodDeclaration;
-	private IMethodBinding IMethod;
+	private IMethodBinding methodBinding;
 
 	private List<SM_Method> calledMethodsList = new ArrayList<SM_Method>();
 	private List<SM_Parameter> parameterList = new ArrayList<SM_Parameter>();
 	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	private List<MethodInvocation> calledMethods = new ArrayList<MethodInvocation>();
 
-	public SM_Method(MethodDeclaration methodDeclaration, TypeDeclaration typeDeclaration) {
+	public SM_Method(MethodDeclaration methodDeclaration, SM_Type typeObj) {
 		name = methodDeclaration.getName().toString();
-		this.typeDeclaration = typeDeclaration;
+		this.parentType = typeObj;
 		this.methodDeclaration = methodDeclaration;
 		setIMethod(methodDeclaration);
 		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
-		setMethodBody();
 	}
 
-	public SimpleName getSimpleName() {
-		return methodDeclaration.getName();
-	}
+	/*
+	 * public SimpleName getSimpleName() { return methodDeclaration.getName(); }
+	 */
 
-	void setMethodBody() {
-		methodBody = methodDeclaration.getBody();
-	}
-
-	public Block getMethodBody() {
-		return methodBody;
-	}
+	/*
+	 * public Block getMethodBody() { return methodBody; }
+	 */
 
 	void setIMethod(MethodDeclaration methodDeclaration) {
-		this.IMethod = methodDeclaration.resolveBinding();
+		this.methodBinding = methodDeclaration.resolveBinding();
 	}
 
-	public IMethodBinding getIMethod() {
-		return IMethod;
-	}
+	/*
+	 * public IMethodBinding getIMethod() { return IMethod; }
+	 */
 
 	public void setMethodInfo(MethodDeclaration method) {
 		int modifiers = method.getModifiers();
@@ -93,23 +85,15 @@ public class SM_Method extends SM_SourceItem {
 		return this.isConstructor;
 	}
 
-	void setParent(SM_Type parentType) {
-		this.parentType = parentType;
-		this.parentPkg = parentType.getParentPkg();
-		this.parentProject = parentPkg.getParent();
-	}
-
 	public SM_Type getParentType() {
 		return parentType;
 	}
 
-	public SM_Package getParentPkg() {
-		return parentPkg;
-	}
-
-	public SM_Project getParentProject() {
-		return parentProject;
-	}
+	/*
+	 * public SM_Package getParentPkg() { return parentPkg; }
+	 * 
+	 * public SM_Project getParentProject() { return parentProject; }
+	 */
 
 	public List<SM_Parameter> getParameterList() {
 		return parameterList;
@@ -119,58 +103,30 @@ public class SM_Method extends SM_SourceItem {
 		return localVarList;
 	}
 
+	// TODO: should return a list of SM_Method
 	public List<MethodInvocation> getCalledMethods() {
 		return calledMethods;
 	}
 
-	void parse(SM_Type parentType) {
-		setParent(parentType);
-
-		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
-		methodDeclaration.accept(invVisitor);
-		List<MethodInvocation> invList = invVisitor.getCalledMethods();
-		if (invList.size() > 0)
-			calledMethods.addAll(invList);
-
-		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
-		for (SingleVariableDeclaration var : variableList) {
-			VariableVisitor parameterVisitor = new VariableVisitor(methodDeclaration, typeDeclaration);
-			// methodDeclaration.accept(parameterVisitor);
-			var.accept(parameterVisitor);
-			List<SM_Parameter> pList = parameterVisitor.getParameters();
-			if (pList.size() > 0)
-				parameterList.addAll(pList);
-			parseParameters(this);
-		}
-
-		LocalVarVisitor localVarVisitor = new LocalVarVisitor();
-		methodDeclaration.accept(localVarVisitor);
-		List<SM_LocalVar> lList = localVarVisitor.getLocalVar();
-		if (lList.size() > 0)
-			localVarList.addAll(lList);
-		parseLocalVar(this);
-
-	}
-
-	private void parseParameters(SM_Method parentMethod) {
+	private void parseParameters() {
 		for (SM_Parameter param : parameterList) {
-			param.parse(parentMethod);
+			param.parse();
 		}
 	}
 
-	private void parseLocalVar(SM_Method parentMethod) {
+	private void parseLocalVar() {
 		for (SM_LocalVar var : localVarList) {
-			var.parse(parentMethod);
+			var.parse();
 		}
 	}
 
 	public void analyzeCalledMethods() {
-		for (MethodInvocation method: calledMethods) {			
+		for (MethodInvocation method : calledMethods) {
 			IMethodBinding imethod = method.resolveMethodBinding();
-			
-			//binding is resolved without returning null
+
+			// binding is resolved without returning null
 			if (imethod != null) {
-				SM_Package sm_pkg = findPkg(imethod, parentProject);
+				SM_Package sm_pkg = findPkg(imethod, parentType.getParentPkg().getParentProject());
 				if (sm_pkg != null) {
 					SM_Type sm_type = findType(imethod, sm_pkg);
 					if (sm_type != null) {
@@ -179,42 +135,33 @@ public class SM_Method extends SM_SourceItem {
 							calledMethodsList.add(sm_method);
 					}
 				}
-			//binding is not resolved
-			} /*else {	
-				if (method.getExpression() != null) { 
-					String objectName = method.getExpression().toString();
-					for (SM_Variable var: parentType.getVariableList()) {
-						if (var.getName().equals(objectName)){
-							SM_Type typeToCheck = var.getRefType();
-							if (typeToCheck != null) {
-								SM_Method sm_method = findMethod(method, typeToCheck);
-								calledMethodsList.add(sm_method);
-							}
-						}
-					}
-				}
-				
-/*				List<SM_Package> tempPkg = new ArrayList<>();
-				List<ImportDeclaration> importList = parentType.getImportList();
-				for (SM_Package sm_package: getPkgOfProject(parentProject)){
-					for (ImportDeclaration imp: importList) {
-						if (imp.getName().toString().contains(sm_package.getName())) {
-							if (!(tempPkg.contains(sm_package))) {
-								tempPkg.add(sm_package);
-							}
-						}
-					}
-				}
-				if(!(tempPkg.contains(parentPkg)))
-					tempPkg.add(parentPkg);*
-			}*/
-			
+				// binding is not resolved
+			} /*
+				 * else { if (method.getExpression() != null) { String
+				 * objectName = method.getExpression().toString(); for
+				 * (SM_Variable var: parentType.getVariableList()) { if
+				 * (var.getName().equals(objectName)){ SM_Type typeToCheck =
+				 * var.getRefType(); if (typeToCheck != null) { SM_Method
+				 * sm_method = findMethod(method, typeToCheck);
+				 * calledMethodsList.add(sm_method); } } } }
+				 * 
+				 * /* List<SM_Package> tempPkg = new ArrayList<>();
+				 * List<ImportDeclaration> importList =
+				 * parentType.getImportList(); for (SM_Package sm_package:
+				 * getPkgOfProject(parentProject)){ for (ImportDeclaration imp:
+				 * importList) { if
+				 * (imp.getName().toString().contains(sm_package.getName())) {
+				 * if (!(tempPkg.contains(sm_package))) {
+				 * tempPkg.add(sm_package); } } } }
+				 * if(!(tempPkg.contains(parentPkg))) tempPkg.add(parentPkg);* }
+				 */
+
 		}
 	}
 
 	private SM_Package findPkg(IMethodBinding method, SM_Project project) {
 		ITypeBinding type = method.getDeclaringClass();
-		
+
 		if (type != null) {
 			String pkgName = method.getDeclaringClass().getPackage().getName().toString();
 			for (SM_Package sm_pkg : getPkgOfProject(project)) {
@@ -253,9 +200,9 @@ public class SM_Method extends SM_SourceItem {
 							sameParameters = false;
 							break;
 						} else if (i == parameterCount - 1) {
-							if (sameParameters) 
+							if (sameParameters)
 								return sm_method;
-						}	
+						}
 					}
 				}
 			}
@@ -263,55 +210,90 @@ public class SM_Method extends SM_SourceItem {
 
 		return null;
 	}
-	
+
 	private SM_Method findMethod(MethodInvocation method, SM_Type type) {
 		int parameterCount = method.arguments().size();
 
-		for (SM_Method sm_method: type.getMethodList()){
-			if (method.getName().toString().equals(sm_method.getName())){
+		for (SM_Method sm_method : type.getMethodList()) {
+			if (method.getName().toString().equals(sm_method.getName())) {
 				if (sm_method.getParameterList().size() == parameterCount) {
-					if (parameterCount == 0){
+					if (parameterCount == 0) {
 						return sm_method;
 					} else {
 						for (int i = 0; i < parameterCount; i++) {
-//							not implemented yet
+							// not implemented yet
 						}
 					}
 				}
-			}	
+			}
 		}
 
 		return null;
 	}
-	
+
 	private Type returnTypeOfVariable(String expression, SM_Type type) {
-		/*for (SM_Variable variable: type.getVariableList()) {
-			if (variable.getName().equals(expression)){ 
-				if (variable.getRefType() != null)
-					return variable.getType();
-			} 
-		}*/
+		/*
+		 * for (SM_Variable variable: type.getVariableList()) { if
+		 * (variable.getName().equals(expression)){ if (variable.getRefType() !=
+		 * null) return variable.getType(); } }
+		 */
 		return null;
 	}
-		
+
 	@Override
-	public void print() {
-		System.out.println("Method: " + name);
-		System.out.println("	Parent: " + this.getParentPkg().getName());
-		System.out.println("	Constructor: " + isConstructor);
-		System.out.println("	Returns: " + methodDeclaration.getReturnType2());
-		System.out.println("	Access: " + accessModifier);
-		System.out.println("	Abstract: " + abstractMethod);
-		System.out.println("	Final: " + finalMethod);
-		System.out.println("	Static: " + staticMethod);
-		System.out.println("	Called methods: " + getCalledMethods());
-		System.out.println("	Binding: " + getIMethod().getMethodDeclaration());
-		for (SM_Parameter param: parameterList)
-			param.print();
-		for (SM_LocalVar var: localVarList)
-			var.print();
-		analyzeCalledMethods();
-/*		for (SM_Method calledMethod: calledMethodsList)
-			System.out.println("	Called method: " + calledMethod.getName());*/
+	public void printDebugLog(PrintWriter writer) {
+		print(writer, "Method: " + name);
+		print(writer, "	Parent type: " + this.getParentType().getName());
+		print(writer, "	Constructor: " + isConstructor);
+		print(writer, "	Returns: " + methodDeclaration.getReturnType2());
+		print(writer, "	Access: " + accessModifier);
+		print(writer, "	Abstract: " + abstractMethod);
+		print(writer, "	Final: " + finalMethod);
+		print(writer, "	Static: " + staticMethod);
+		print(writer, "	Called methods: " + getCalledMethods());
+		print(writer, "	Binding: " + methodBinding.getMethodDeclaration());
+		for (SM_Parameter param : parameterList)
+			param.printDebugLog(writer);
+		for (SM_LocalVar var : localVarList)
+			var.printDebugLog(writer);
+		//analyzeCalledMethods();
+		/*
+		 * for (SM_Method calledMethod: calledMethodsList)
+		 * System.out.println("	Called method: " + calledMethod.getName());
+		 */
+	}
+
+	@Override
+	public void parse() {
+		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
+		methodDeclaration.accept(invVisitor);
+		List<MethodInvocation> invList = invVisitor.getCalledMethods();
+		if (invList.size() > 0)
+			calledMethods.addAll(invList);
+
+		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
+		for (SingleVariableDeclaration var : variableList) {
+			VariableVisitor parameterVisitor = new VariableVisitor(this);
+			// methodDeclaration.accept(parameterVisitor);
+			var.accept(parameterVisitor);
+			List<SM_Parameter> pList = parameterVisitor.getParameterList();
+			if (pList.size() > 0)
+				parameterList.addAll(pList);
+			parseParameters();
+		}
+
+		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
+		methodDeclaration.accept(localVarVisitor);
+		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
+		if (lList.size() > 0)
+			localVarList.addAll(lList);
+		parseLocalVar();
+
+	}
+
+	@Override
+	public void resolve() {
+		// TODO Auto-generated method stub
+
 	}
 }

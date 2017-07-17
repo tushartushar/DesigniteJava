@@ -1,43 +1,54 @@
 package Designite.SourceModel;
 
+import java.io.PrintWriter;
+
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 public class SM_Parameter extends SM_Variable {
 	private SingleVariableDeclaration variable;
-	private MethodDeclaration methodDeclaration;
 	private SM_Method parentMethod;
-	private SM_Type parentType;
 	
-	public SM_Parameter(SingleVariableDeclaration variable, MethodDeclaration methodDeclaration) {
+	public SM_Parameter(SingleVariableDeclaration variable, SM_Method methodObj) {
 		name = variable.getName().toString();
 		this.variable = variable;
-		this.methodDeclaration = methodDeclaration;
-		setType(variable.getType());
+		this.parentMethod = methodObj;
 	}
 	
 	void setParent(SM_Method parentMethod) {
 		this.parentMethod = parentMethod;
-		parentType = parentMethod.getParentType();
-		parentProject = parentMethod.getParentProject();
 	}
 	
 	public SM_Method getParent() {
 		return parentMethod;
 	}
 	
-	void parse(SM_Method parentMethod) {
-		setParent(parentMethod);
-		//parentType.addToVariableList(this);
-	}
 	
 	@Override
-	public void print() {
-		System.out.println("Parameter: " + name);
-		System.out.println("	Parent: " + getParent().getName());
-		System.out.println("	Type: " + type);
-		findRefObject();
+	public void printDebugLog(PrintWriter writer) {
+		print(writer, "Parameter: " + name);
+		print(writer, "	Parent Method: " + getParent().getName());
+		print(writer, "	Type: " + type);
+		/*findRefObject();
 		if (getRefType() != null)
-			System.out.println("	Refers to: " + getRefType().getName());
+			print(writer, "	Refers to: " + getRefType().getName());*/
+	}
+
+	@Override
+	public void printDebugLog() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void parse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resolve() {
+		// TODO Auto-generated method stub
+		
 	}
 }
