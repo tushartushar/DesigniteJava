@@ -120,7 +120,7 @@ public class SM_Method extends SM_SourceItem {
 		}
 	}
 
-	public void analyzeCalledMethods() {
+	public void inferCalledMethods() {
 		for (MethodInvocation method : calledMethods) {
 			IMethodBinding imethod = method.resolveMethodBinding();
 
@@ -195,7 +195,7 @@ public class SM_Method extends SM_SourceItem {
 				if (sm_method.getParameterList().size() == parameterCount) {
 					for (int i = 0; i < parameterCount; i++) {
 						ITypeBinding parameterType = method.getParameterTypes()[i];
-						Type typeToCheck = sm_method.getParameterList().get(i).getType();
+						Type typeToCheck = sm_method.getParameterList().get(i).getTypeBinding();
 						if (!(parameterType.getName().contentEquals(typeToCheck.toString()))) {
 							sameParameters = false;
 							break;
@@ -231,15 +231,6 @@ public class SM_Method extends SM_SourceItem {
 		return null;
 	}
 
-	private Type returnTypeOfVariable(String expression, SM_Type type) {
-		/*
-		 * for (SM_Variable variable: type.getVariableList()) { if
-		 * (variable.getName().equals(expression)){ if (variable.getRefType() !=
-		 * null) return variable.getType(); } }
-		 */
-		return null;
-	}
-
 	@Override
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "Method: " + name);
@@ -256,11 +247,10 @@ public class SM_Method extends SM_SourceItem {
 			param.printDebugLog(writer);
 		for (SM_LocalVar var : localVarList)
 			var.printDebugLog(writer);
-		//analyzeCalledMethods();
-		/*
-		 * for (SM_Method calledMethod: calledMethodsList)
-		 * System.out.println("	Called method: " + calledMethod.getName());
-		 */
+
+		for (SM_Method calledMethod : calledMethodsList)
+			System.out.println("	Called method: " + calledMethod.getName());
+
 	}
 
 	@Override
@@ -293,7 +283,11 @@ public class SM_Method extends SM_SourceItem {
 
 	@Override
 	public void resolve() {
-		// TODO Auto-generated method stub
-
+		for (SM_Parameter param : parameterList)
+			param.resolve();
+		for (SM_LocalVar localVar : localVarList)
+			localVar.resolve();
+		inferCalledMethods();
+		//setReferencedTypes();
 	}
 }

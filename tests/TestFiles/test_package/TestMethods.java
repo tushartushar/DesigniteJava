@@ -13,15 +13,15 @@ public class TestMethods {
 		counter++;
 	}
 	
-	public int publicMethod() {
+	public int publicMethod(TestMethods t) {
 		return counter;
 	}
 	
-	public static void count() {
+	public static void count(int a) {
 		
 	}
 	
-	public List getList(List list) {
+	public List getList(List<String> list) {
 		return list;
 		
 	}

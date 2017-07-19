@@ -58,6 +58,16 @@ public abstract class SM_SourceItem {
 		return pkgList;
 	}
 
+	protected SM_Type findType(SM_Project parentProject, String typeName, String pkgName) {
+		for (SM_Package pkg:parentProject.getPackageList())
+			if (pkg.getName().equals(pkgName))
+			{
+				for(SM_Type type:pkg.getTypeList())
+					if(type.getName().equals(typeName))
+						return type;
+			}
+		return null;
+	}
 	List<SM_Type> getTypesOfProject(SM_Project project) {
 		List<SM_Package> pkgList = new ArrayList<>();
 		List<SM_Type> typeList = new ArrayList<>();

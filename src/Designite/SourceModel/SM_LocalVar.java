@@ -14,6 +14,7 @@ public class SM_LocalVar extends SM_Variable {
 		this.localVarFragment = localVar;
 		parentMethod = method;
 		setName(localVarFragment.getName().toString());
+
 	}
 
 	/*
@@ -28,31 +29,22 @@ public class SM_LocalVar extends SM_Variable {
 	@Override
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "LocalVar: " + getName());
-		print(writer, "	Parent: " + this.parentMethod.getName());
-		print(writer, "	Type: " + getType());
-		/*findRefObject();
-		if (getRefType() != null)
-			print(writer, "	Refers to: " + getRefType().getName());*/
-		/*
-		 * for (SM_Variable var: parentType.getVariableList()) print(writer,
-		 * var.getName());
-		 */
-	}
+		print(writer, "	Parent method: " + this.parentMethod.getName());
 
-	@Override
-	public void printDebugLog() {
-		// TODO Auto-generated method stub
-
+		if (variableType != null)
+			print(writer, "	Variable type: " + variableType.getName());
+		else
+			if (isPrimitive())
+				print(writer, "Primitive variable type: " + primitiveVariableType);
 	}
 
 	@Override
 	public void parse() {
-
+		//There is nothing to be done further.
 	}
 
 	@Override
 	public void resolve() {
-		// TODO Auto-generated method stub
-
+		resolveVariableType(parentMethod.getParentType().getParentPkg().getParentProject());
 	}
 }

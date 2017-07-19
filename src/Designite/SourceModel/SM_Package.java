@@ -62,8 +62,8 @@ public class SM_Package extends SM_SourceItem {
 
 	@Override
 	public void resolve() {
-		// TODO Auto-generated method stub
-
+		for (SM_Type type : typeList) 
+			type.resolve();
 	}
 
 	@Override

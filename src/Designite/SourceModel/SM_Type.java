@@ -187,8 +187,11 @@ public class SM_Type extends SM_SourceItem {
 
 	@Override
 	public void resolve() {
-		// TODO Auto-generated method stub
-
+		for (SM_Method method : methodList) 
+			method.resolve();
+		for (SM_Field field : fieldList)
+			field.resolve();
+		//TODO - collate referrenced classes from methods and fileds
 	}
 
 }

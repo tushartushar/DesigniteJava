@@ -11,7 +11,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 public class SM_Field extends SM_Variable {
 	private TypeDeclaration typeDeclaration;
 	private FieldDeclaration fieldDeclaration;
-	private VariableDeclarationFragment fieldVariable;
 	private SM_Type parentType;
 	private boolean finalField = false;
 	private boolean staticField = false;
@@ -24,6 +23,7 @@ public class SM_Field extends SM_Variable {
 		setAccessModifier(fieldDeclaration.getModifiers());
 		setFieldInfo(fieldDeclaration);
 		name = varDecl.getName().toString();
+		setType(fieldDeclaration.getType());
 	}
 	
 	void setFieldInfo(FieldDeclaration field){
@@ -54,22 +54,18 @@ public class SM_Field extends SM_Variable {
 	
 	@Override
 	public void printDebugLog(PrintWriter writer) {
-		print(writer, "Field: " + getName());
-		print(writer, "	Parent: " + this.parentType.getName());
+		print(writer, "Field name: " + getName());
+		print(writer, "	Parent class: " + this.parentType.getName());
 		print(writer, "	Access: " + getAccessModifier());
-		print(writer, "	Type: " + getType());
 		print(writer, "	Final: " + isFinal());
 		print(writer, "	Static: " + isStatic());
-		/*findRefObject();
-		if (getRefType() != null)
-			print(writer, "	Refers to: " + getRefType().getName());*/
+		if (variableType != null)
+			print(writer, "	Variable type: " + variableType.getName());
+		else
+			if (isPrimitive())
+				print(writer, "Primitive variable type: " + primitiveVariableType);
 	}
 
-	@Override
-	public void printDebugLog() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void parse() {
@@ -77,7 +73,6 @@ public class SM_Field extends SM_Variable {
 
 	@Override
 	public void resolve() {
-		// TODO Auto-generated method stub
-		
+		resolveVariableType(parentType.getParentPkg().getParentProject());
 	}
 }
