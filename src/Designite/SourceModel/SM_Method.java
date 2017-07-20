@@ -103,9 +103,9 @@ public class SM_Method extends SM_SourceItem {
 		return localVarList;
 	}
 
-	// TODO: should return a list of SM_Method
-	public List<MethodInvocation> getCalledMethods() {
-		return calledMethods;
+
+	public List<SM_Method> getCalledMethods() {
+		return calledMethodsList;
 	}
 
 	private void parseParameters() {
