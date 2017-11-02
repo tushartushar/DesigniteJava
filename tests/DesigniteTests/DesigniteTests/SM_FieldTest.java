@@ -16,96 +16,94 @@ import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 
-public class SM_FieldTest {
-	//Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
-	private SM_Project project;
-	private SM_Field newField;
-	private SM_Type type;
-	private List<SM_Field> fields;
-	List<VariableDeclarationFragment> fieldList;
+public class SM_FieldTest implements TestPath {
 	
-	@Before
-	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "parameterTestInput.txt"));
-		project.parse();
-		project.resolve();
-		fields = project.getPackageList().get(0).getTypeList().get(0).getFieldList();
-	}
-	
-	@Test
-	public void SM_Field_getName() {
-		assertEquals(fields.get(4).getName(), "publicField");	
-	}
-	
-	@Test
-	public void SM_Field_checkAccess() {
-		if (fields.get(4).getName().equals("publicField"))
-			assertEquals(fields.get(4).getAccessModifier(), AccessStates.PUBLIC);
-		else 
-			fail();
-	}
-	
-	@Test
-	public void SM_Field_checkParentType() {		
-		if (fields.get(4).getName().equals("publicField"))
-			assertEquals(fields.get(4).getParentType().getName(), "TestMethods");
-		else
-			fail();
-	}
-	
-	@Test
-	public void SM_Field_check_StaticField() {
-		if (fields.get(0).getName().equals("counter"))
-			assertTrue(fields.get(0).isStatic());
-		else
-			fail();
-	}
-	
-	@Test
-	public void SM_Field_check_FinalField() {
-		if (fields.get(3).getName().equals("CONSTANT"))
-			assertTrue(fields.get(3).isFinal());
-		else
-			fail();
-	}
-	
-	@Test
-	public void SM_Method_getParent() {
-		project.parse();
-		
-		for (SM_Package pkg: project.getPackageList()) {
-			if (pkg.getName().equals("test_package")) {
-				for (SM_Type type:pkg.getTypeList()) {
-					if (type.getName().equals("TestMethods")) {
-						for (SM_Field field:type.getFieldList()) {
-							if (field.getName().equals("counter"))
-								assertEquals(field.getParentType().getParentPkg().getParentProject().getName(), "Project");
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Test
-	public void SM_Method_getType() {
-		newField = fields.get(0);
-		assertEquals(newField.isPrimitive(), true);
-		assertEquals(newField.getVarPrimitiveType(), "int");
-	}
-
-	@Test
-	public void SM_Method_getType_from_source() {
-		newField = fields.get(4);
-		assertEquals(newField.isPrimitive(), false);
-		assertEquals(newField.getVariableType().getName(), "TestMethods");
-	}
-	@Test // is a List considered as SingleVariableDeclaration?
-	public void SM_Method_check_listParameter() {
-		newField = fields.get(1);
-		assertEquals(newField.isParameterized(), true);
-		assertEquals(newField.getVarPrimitiveType(), "String");
-	}
+//	private SM_Project project;
+//	private SM_Field newField;
+//	private SM_Type type;
+//	private List<SM_Field> fields;
+//	List<VariableDeclarationFragment> fieldList;
+//	
+//	@Before
+//	public void setUp() {
+//		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "parameterTestInput.txt"));
+//		project.parse();
+//		project.resolve();
+//		fields = project.getPackageList().get(0).getTypeList().get(0).getFieldList();
+//	}
+//	
+//	@Test
+//	public void SM_Field_getName() {
+//		assertEquals(fields.get(4).getName(), "publicField");	
+//	}
+//	
+//	@Test
+//	public void SM_Field_checkAccess() {
+//		if (fields.get(4).getName().equals("publicField"))
+//			assertEquals(fields.get(4).getAccessModifier(), AccessStates.PUBLIC);
+//		else 
+//			fail();
+//	}
+//	
+//	@Test
+//	public void SM_Field_checkParentType() {		
+//		if (fields.get(4).getName().equals("publicField"))
+//			assertEquals(fields.get(4).getParentType().getName(), "TestMethods");
+//		else
+//			fail();
+//	}
+//	
+//	@Test
+//	public void SM_Field_check_StaticField() {
+//		if (fields.get(0).getName().equals("counter"))
+//			assertTrue(fields.get(0).isStatic());
+//		else
+//			fail();
+//	}
+//	
+//	@Test
+//	public void SM_Field_check_FinalField() {
+//		if (fields.get(3).getName().equals("CONSTANT"))
+//			assertTrue(fields.get(3).isFinal());
+//		else
+//			fail();
+//	}
+//	
+//	@Test
+//	public void SM_Method_getParent() {
+//		project.parse();
+//		
+//		for (SM_Package pkg: project.getPackageList()) {
+//			if (pkg.getName().equals("test_package")) {
+//				for (SM_Type type:pkg.getTypeList()) {
+//					if (type.getName().equals("TestMethods")) {
+//						for (SM_Field field:type.getFieldList()) {
+//							if (field.getName().equals("counter"))
+//								assertEquals(field.getParentType().getParentPkg().getParentProject().getName(), "Project");
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	@Test
+//	public void SM_Method_getType() {
+//		newField = fields.get(0);
+//		assertEquals(newField.isPrimitive(), true);
+//		assertEquals(newField.getVarPrimitiveType(), "int");
+//	}
+//
+//	@Test
+//	public void SM_Method_getType_from_source() {
+//		newField = fields.get(4);
+//		assertEquals(newField.isPrimitive(), false);
+//		assertEquals(newField.getVariableType().getName(), "TestMethods");
+//	}
+//	@Test // is a List considered as SingleVariableDeclaration?
+//	public void SM_Method_check_listParameter() {
+//		newField = fields.get(1);
+//		assertEquals(newField.isParameterized(), true);
+//		assertEquals(newField.getVarPrimitiveType(), "String");
+//	}
 }

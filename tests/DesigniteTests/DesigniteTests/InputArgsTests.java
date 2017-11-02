@@ -7,10 +7,7 @@ import java.io.File;
 import org.junit.Test;
 import Designite.InputArgs;
 
-public class InputArgsTests {
-	// Set this path before executing tests
-	// private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests";
+public class InputArgsTests implements TestPath {
 
 	// Negative case- folder path specified rather than input batch file
 	@Test(expected = IllegalArgumentException.class)
