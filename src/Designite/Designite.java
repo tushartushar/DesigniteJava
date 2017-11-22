@@ -6,12 +6,8 @@ import Designite.SourceModel.*;
 import Util.Logger;
 
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import com.sun.jmx.snmp.Timestamp;
 
 /**
  * 

@@ -6,20 +6,23 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 
-public class SM_PackageTest {
-	// Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+public class SM_PackageTest extends DesigniteTests {
+	
+	@Before
+	public void setup() {
+		
+	}
 
 	@Test
 	public void SM_Package_positive_case() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "inBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(IN_BATCH_FILE_PATH));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 
@@ -34,7 +37,7 @@ public class SM_PackageTest {
 	@Test
 	// assert that every CU in pkgCUList is included in projectCUList
 	public void SM_Package_cuList() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
 		project.parse();
 
 		List<CompilationUnit> projectCUList = project.getCompilationUnitList();
@@ -55,7 +58,7 @@ public class SM_PackageTest {
 
 	@Test
 	public void SM_Package_countTypes() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 
@@ -65,14 +68,14 @@ public class SM_PackageTest {
 			}
 			// Empty class is not included while counting types
 			if (pkg.getName().equals("test_package")) {
-				assertEquals(pkg.getTypeList().size(), 7);
+				assertEquals(6, pkg.getTypeList().size());
 			}
 		}
 	}
 
 	@Test
 	public void SM_Package_getParent() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 

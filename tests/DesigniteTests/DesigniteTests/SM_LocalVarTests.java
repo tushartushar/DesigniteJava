@@ -16,12 +16,8 @@ import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 
-public class SM_LocalVarTests {
+public class SM_LocalVarTests extends DesigniteTests {
 
-	// Set this path before executing tests
-	// private static String TESTS_PATH =
-	// "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
 	private SM_Project project;
 	private SM_LocalVar newLocalVar;
 	private SM_Type type;
@@ -30,7 +26,8 @@ public class SM_LocalVarTests {
 
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "parameterTestInput.txt"));
+		createFileForArguments(PARAMETER_TEST_INPUT_FILE_PATH, PARAMETER_TEST_INPUT_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(PARAMETER_TEST_INPUT_FILE_PATH));
 		project.parse();
 		project.resolve();
 		methods = project.getPackageList().get(0).getTypeList().get(0).getMethodList();

@@ -14,17 +14,15 @@ import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 import Designite.SourceModel.SM_Type;
 
-public class SM_Method_CalledMethodsTests {
+public class SM_Method_CalledMethodsTests extends DesigniteTests {
 
-	//Set this path before executing tests
-		//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-		private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
-		private SM_Project project;
+	private SM_Project project;
 
 		
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "calledMethodTestInput.txt"));
+		createFileForArguments(CALLED_METHOD_TEST_INPUT_FILE_PATH, CALLED_METHOD_TEST_INPUT_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(CALLED_METHOD_TEST_INPUT_FILE_PATH));
 		project.parse();
 		project.resolve();
 	}

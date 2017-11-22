@@ -19,10 +19,7 @@ import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 
-public class SM_ParameterTest {
-	// Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+public class SM_ParameterTest extends DesigniteTests {
 	
 	private SM_Project project;
 	private SM_Parameter newParameter;
@@ -31,7 +28,7 @@ public class SM_ParameterTest {
 
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "parameterTestInput.txt"));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "parameterTestInput.txt"));
 		//CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" + File.separator + "TestMethods.java");
 		project.parse();
 		project.resolve();

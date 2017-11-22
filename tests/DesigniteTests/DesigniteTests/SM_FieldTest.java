@@ -3,6 +3,8 @@ package DesigniteTests;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -16,10 +18,8 @@ import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 
-public class SM_FieldTest {
-	//Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+public class SM_FieldTest extends DesigniteTests {
+	
 	private SM_Project project;
 	private SM_Field newField;
 	private SM_Type type;
@@ -28,7 +28,8 @@ public class SM_FieldTest {
 	
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "parameterTestInput.txt"));
+		createFileForArguments(PARAMETER_TEST_INPUT_FILE_PATH, PARAMETER_TEST_INPUT_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(PARAMETER_TEST_INPUT_FILE_PATH));
 		project.parse();
 		project.resolve();
 		fields = project.getPackageList().get(0).getTypeList().get(0).getFieldList();

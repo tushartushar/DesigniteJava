@@ -17,22 +17,19 @@ import Designite.SourceModel.SM_SourceItem.AccessStates;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.TypeVisitor;
 
-public class SM_TypeTest {
-	//Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+public class SM_TypeTest extends DesigniteTests {
 	
 	private SM_Project project;
 	private SM_Type type;
 	
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
 	}
 	
 	@Test
 	public void SM_Type_getName() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" +File.separator + "TestClass.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator + "test_package" +File.separator + "TestClass.java");
 		List<TypeDeclaration> typeList = unit.types();
 
 		SM_Type type = null;
@@ -44,7 +41,7 @@ public class SM_TypeTest {
 
 	@Test
 	public void SM_Type_checkDefaultAccess() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" +File.separator + "DefaultClass.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator + "test_package" +File.separator + "DefaultClass.java");
 		List<TypeDeclaration> typeList = unit.types();
 
 		SM_Type type = null;
@@ -55,7 +52,7 @@ public class SM_TypeTest {
 	
 	@Test
 	public void SM_Type_check_isAbstract() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator +"test_package" + File.separator + "AbstractClass.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package" + File.separator + "AbstractClass.java");
 		List<TypeDeclaration> typeList = unit.types();
 
 		SM_Type type = null;
@@ -66,7 +63,7 @@ public class SM_TypeTest {
 	
 	@Test
 	public void SM_Type_check_isInterface() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator +"test_package"+File.separator +"Interface.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package"+File.separator +"Interface.java");
 		List<TypeDeclaration> typeList = unit.types();
 
 		SM_Type type = null;
@@ -77,7 +74,7 @@ public class SM_TypeTest {
 	
 	@Test //too complicated for the moment 
 	public void SM_Type_check_isNestedClass() {		
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator +"testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"testBatchFile.txt"));
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
 		
@@ -94,13 +91,13 @@ public class SM_TypeTest {
 	
 	@Test(expected = NullPointerException.class)
 	public void SM_Type_nullTypeDeclaration() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator +"test_package"+File.separator +"TestClass.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package"+File.separator +"TestClass.java");
 		type = new SM_Type(null, unit, null);	
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void SM_Type_nullCompilationUnit() {
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator +"test_package"+File.separator +"TestClass.java");
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package"+File.separator +"TestClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
 		type = new SM_Type(listOfTypes.get(0), null, null);	
@@ -124,7 +121,7 @@ public class SM_TypeTest {
 	
 	@Test
 	public void SM_Type_countMethods() {
-		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator +"testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"testBatchFile.txt"));
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
 		

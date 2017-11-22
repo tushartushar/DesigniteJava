@@ -21,10 +21,8 @@ import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 
-public class SM_MethodTest{
-	//Set this path before executing tests
-	//private static String TESTS_PATH = "C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\TestFiles";
-	private static String TESTS_PATH = "/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles";
+public class SM_MethodTest extends DesigniteTests {
+
 	private SM_Project project;
 	private SM_Method newMethod;
 	private SM_Type type;
@@ -32,8 +30,9 @@ public class SM_MethodTest{
 	
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
-		CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" + File.separator + "TestMethods.java");
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
+		CompilationUnit unit = project.createCU(getTestingPath() + File.separator + "test_package" + File.separator + "TestMethods.java");
 		List<TypeDeclaration> typeList = unit.types();
 		
 		for(TypeDeclaration typeDecl: typeList){
