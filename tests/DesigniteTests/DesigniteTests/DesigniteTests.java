@@ -21,7 +21,7 @@ public abstract class DesigniteTests {
 	protected static final String IN_BATCH_FILE_CONTENT = "[Source folder]\n"
 			+ System.getProperty("user.dir") + "\n\n"
 			+ "[Output folder]\n"
-			+ System.getProperty("user.dir") + "/../temp/";
+			+ System.getProperty("user.dir") + File.separator + "temp";
 	
 	protected static String getTestingPath() {
 		return System.getProperty("user.dir") + 

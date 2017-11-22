@@ -41,6 +41,6 @@ public class InputArgsTests extends DesigniteTests {
 	public void testInputArgs_outputFolder() {
 		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT);
 		InputArgs args = new InputArgs(IN_BATCH_FILE_PATH);
-		assertEquals("/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/../temp/", args.getOutputFolder());
+		assertEquals(System.getProperty("user.dir") + File.separator + "temp", args.getOutputFolder());
 	}
 }
