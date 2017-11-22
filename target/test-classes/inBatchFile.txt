@@ -1,5 +1,62 @@
 [Source folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/
+NotACorrectPath/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/
 
 [Output folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/temp/
+NotACorrectPath/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/temp/
+[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/../temp/[Source folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+
+[Output folder]
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/../temp/

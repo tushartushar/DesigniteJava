@@ -13,7 +13,8 @@ public class SM_ProjectTest extends DesigniteTests {
 	
 	@Test
 	public void testSM_Project_positive_case() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "inBatchFile.txt"));
+		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT);
+		SM_Project project = new SM_Project(new InputArgs(IN_BATCH_FILE_PATH));
 		project.parse();
 
 		assertEquals(9, project.getPackageCounter());
@@ -35,7 +36,8 @@ public class SM_ProjectTest extends DesigniteTests {
 	
 	@Test(expected = NullPointerException.class)
 	public void testSM_Project_nullCU() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		SM_Project project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
 		project.setCompilationUnitList(null);
 		project.parse();
 	}
@@ -48,21 +50,24 @@ public class SM_ProjectTest extends DesigniteTests {
 	
 	@Test
 	public void testSM_Project_sourceFilesCounter() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		SM_Project project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
 		project.parse();
 		assertEquals(7, project.getSourceFileList().size());
 	}
 	
 	@Test
 	public void testSM_Project_cuCounter() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		SM_Project project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
 		project.parse();
 		assertEquals(7, project.getCompilationUnitList().size());
 	}
 	
 	@Test
 	public void testSM_Project_packageCounter() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		SM_Project project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
 		project.parse();
 		assertEquals(2, project.getPackageCounter());
 	}

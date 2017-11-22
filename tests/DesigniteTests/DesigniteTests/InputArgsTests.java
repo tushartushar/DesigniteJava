@@ -32,16 +32,15 @@ public class InputArgsTests extends DesigniteTests {
 
 	@Test
 	public void testInputArgs_sourceFolder() {
-		InputArgs args = new InputArgs(getTestingPath() + File.separator + "inBatchFile.txt");
-		//assertEquals("C:\\Users\\Alex\\workspace\\DesigniteJava\\src", args.getSourceFolder());
-//		assertEquals("/Users/Tushar/Documents/Workspace/DesigniteJava/", args.getSourceFolder());
-		assertEquals("/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/", args.getSourceFolder());
+		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT);
+		InputArgs args = new InputArgs(IN_BATCH_FILE_PATH);
+		assertEquals(System.getProperty("user.dir"), args.getSourceFolder());
 	}
 
 	@Test
 	public void testInputArgs_outputFolder() {
-		InputArgs args = new InputArgs(getTestingPath() + File.separator + "inBatchFile.txt");
-		//assertEquals("C:\\Users\\Alex\\workspace\\DesigniteJava\\tests\\temp", args.getOutputFolder());
-		assertEquals("/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/temp/", args.getOutputFolder());
+		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT);
+		InputArgs args = new InputArgs(IN_BATCH_FILE_PATH);
+		assertEquals("/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/../temp/", args.getOutputFolder());
 	}
 }

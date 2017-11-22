@@ -24,7 +24,8 @@ public class SM_TypeTest extends DesigniteTests {
 	
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
 	}
 	
 	@Test

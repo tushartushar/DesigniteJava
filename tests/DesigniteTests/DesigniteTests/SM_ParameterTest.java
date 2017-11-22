@@ -28,7 +28,8 @@ public class SM_ParameterTest extends DesigniteTests {
 
 	@Before
 	public void setUp() {
-		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "parameterTestInput.txt"));
+		createFileForArguments(PARAMETER_TEST_INPUT_FILE_PATH, PARAMETER_TEST_INPUT_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(PARAMETER_TEST_INPUT_FILE_PATH));
 		//CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" + File.separator + "TestMethods.java");
 		project.parse();
 		project.resolve();
