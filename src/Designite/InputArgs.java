@@ -14,6 +14,13 @@ public class InputArgs {
 	private String sourceFolder;
 	private String outputFolder;
 	
+	public InputArgs(String batchFilePath) {
+		this.batchFilePath = batchFilePath;
+		outputFolder = "";
+		readInputArgs();
+		checkEssentialInputs();
+	}
+	
 	public String getSourceFolder() {
 		return sourceFolder;
 	}
@@ -22,13 +29,6 @@ public class InputArgs {
 		return outputFolder;
 	}
 
-	public InputArgs(String batchFilePath) {
-		this.batchFilePath = batchFilePath;
-		outputFolder = "";
-		readInputArgs();
-		checkEssentialInputs();
-	}
-	
 	//At least, the source folder must be specified
 	private void checkEssentialInputs() {
 		if (sourceFolder==null)
@@ -36,7 +36,7 @@ public class InputArgs {
 			System.out.println("Input source folder is not specified.");
 			throw new IllegalArgumentException();
 		}
-		File file = new File (sourceFolder);
+		File file = new File(sourceFolder);
 		if (!(file.exists() && file.isDirectory()))
 		{
 			System.out.println("Input source folder path is not valid.");

@@ -1,5 +1,5 @@
 [Source folder]
-/Users/Tushar/Documents/Workspace/DesigniteJava/
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/
 
 [Output folder]
-/Users/Tushar/Documents/Workspace/temp/
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/temp/
