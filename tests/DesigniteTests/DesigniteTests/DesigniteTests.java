@@ -35,7 +35,7 @@ public abstract class DesigniteTests {
 			if (!file.exists()) {
 	            file.createNewFile(); 
 	        }
-			FileWriter fileWriter = new FileWriter(path, true);
+			FileWriter fileWriter = new FileWriter(path, false);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.write(content);
 			bufferedWriter.close();
