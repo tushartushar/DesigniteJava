@@ -8,13 +8,14 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class SM_Field extends SM_Variable {
+public class SM_Field extends SM_SourceItem {
 	private TypeDeclaration typeDeclaration;
 	private FieldDeclaration fieldDeclaration;
 	private SM_Type parentType;
 	private boolean finalField = false;
 	private boolean staticField = false;
 	private VariableDeclarationFragment variableDeclaration;
+	private TypeInfo typeinfo;
 	
 	public SM_Field(FieldDeclaration fieldDeclaration, VariableDeclarationFragment varDecl, SM_Type parentType) {
 		this.fieldDeclaration = fieldDeclaration;
@@ -23,7 +24,6 @@ public class SM_Field extends SM_Variable {
 		setAccessModifier(fieldDeclaration.getModifiers());
 		setFieldInfo(fieldDeclaration);
 		name = varDecl.getName().toString();
-		setType(fieldDeclaration.getType());
 	}
 	
 	void setFieldInfo(FieldDeclaration field){
@@ -54,16 +54,17 @@ public class SM_Field extends SM_Variable {
 	
 	@Override
 	public void printDebugLog(PrintWriter writer) {
-		print(writer, "Field name: " + getName());
-		print(writer, "	Parent class: " + this.parentType.getName());
-		print(writer, "	Access: " + getAccessModifier());
-		print(writer, "	Final: " + isFinal());
-		print(writer, "	Static: " + isStatic());
-		if (variableType != null)
-			print(writer, "	Variable type: " + variableType.getName());
+		print(writer, "\t\tField name: " + getName());
+		print(writer, "\t\tParent class: " + this.parentType.getName());
+		print(writer, "\t\tAccess: " + getAccessModifier());
+		print(writer, "\t\tFinal: " + isFinal());
+		print(writer, "\t\tStatic: " + isStatic());
+		if (typeinfo.IsPrimitiveType == false && typeinfo.TypeObj != null)
+			print(writer, "\t\tField type: " + typeinfo.TypeObj.getName());
 		else
-			if (isPrimitive())
-				print(writer, "Primitive variable type: " + primitiveVariableType);
+			if (typeinfo.IsPrimitiveType)
+				print(writer, "\t\tPrimitive field type: " + typeinfo.PrimitiveType);
+		print(writer, "\t\t----");
 	}
 
 
@@ -73,6 +74,19 @@ public class SM_Field extends SM_Variable {
 
 	@Override
 	public void resolve() {
-		resolveVariableType(parentType.getParentPkg().getParentProject());
+		Resolver resolver = new Resolver();
+		typeinfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
+	}
+	
+	public boolean isPrimitive() {
+		return typeinfo.IsPrimitiveType;
+	}
+
+	public SM_Type getType() {
+		return typeinfo.TypeObj;
+	}
+	
+	public String getPrimitiveType(){
+		return typeinfo.PrimitiveType;
 	}
 }

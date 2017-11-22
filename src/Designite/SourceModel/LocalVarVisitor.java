@@ -23,8 +23,8 @@ public class LocalVarVisitor extends ASTVisitor {
 			VariableDeclarationFragment fragment = (VariableDeclarationFragment) iter.next();
 //			IVariableBinding binding = fragment.resolveBinding();
 			
-			SM_LocalVar newLocalVar = new SM_LocalVar(fragment, parentMethod);
-			newLocalVar.setType(variable.getType());
+			SM_LocalVar newLocalVar = new SM_LocalVar(variable, fragment, parentMethod);
+			//newLocalVar.setType(variable.getType());
 			localVariables.add(newLocalVar);
 		}
 		return super.visit(variable);
@@ -33,4 +33,5 @@ public class LocalVarVisitor extends ASTVisitor {
 	public List<SM_LocalVar> getLocalVarList() {
 		return localVariables;
 	}
+	
 }

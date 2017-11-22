@@ -54,10 +54,11 @@ public class SM_Package extends SM_SourceItem {
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
-		print(writer, "\nPackage: " + name);
+		print(writer, "Package: " + name);
 		for (SM_Type type : typeList) {
 			type.printDebugLog(writer);
 		}
+		print(writer, "----");
 	}
 
 	@Override
@@ -93,5 +94,6 @@ public class SM_Package extends SM_SourceItem {
 		}
 		parseTypes(this);
 	}
+
 
 }

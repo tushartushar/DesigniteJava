@@ -6,21 +6,18 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
-public class SM_LocalVar extends SM_Variable {
+public class SM_LocalVar extends SM_SourceItem {
 	private VariableDeclarationFragment localVarFragment;
 	private SM_Method parentMethod;
+	private VariableDeclarationStatement localVarDecl;
+	TypeInfo typeinfo;
 
-	public SM_LocalVar(VariableDeclarationFragment localVar, SM_Method method) {
+	public SM_LocalVar(VariableDeclarationStatement varDecl, VariableDeclarationFragment localVar, SM_Method method) {
 		this.localVarFragment = localVar;
 		parentMethod = method;
-		setName(localVarFragment.getName().toString());
-
+		name = localVarFragment.getName().toString();
+		localVarDecl = varDecl;
 	}
-
-	/*
-	 * public MethodDeclaration getMethodDeclaration() { return
-	 * methodDeclaration; }
-	 */
 
 	public SM_Method getParentMethod() {
 		return parentMethod;
@@ -28,14 +25,15 @@ public class SM_LocalVar extends SM_Variable {
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
-		print(writer, "LocalVar: " + getName());
-		print(writer, "	Parent method: " + this.parentMethod.getName());
+		print(writer, "\t\t\tLocalVar: " + getName());
+		print(writer, "\t\t\tParent method: " + this.parentMethod.getName());
 
-		if (variableType != null)
-			print(writer, "	Variable type: " + variableType.getName());
+		if (typeinfo.IsPrimitiveType == false && typeinfo.TypeObj != null)
+			print(writer, "\t\t\tVariable type: " + typeinfo.TypeObj.getName());
 		else
-			if (isPrimitive())
-				print(writer, "Primitive variable type: " + primitiveVariableType);
+			if (typeinfo.IsPrimitiveType)
+				print(writer, "\t\t\tPrimitive variable type: " + typeinfo.PrimitiveType);
+		print(writer, "\t\t\t----");
 	}
 
 	@Override
@@ -45,6 +43,17 @@ public class SM_LocalVar extends SM_Variable {
 
 	@Override
 	public void resolve() {
-		resolveVariableType(parentMethod.getParentType().getParentPkg().getParentProject());
+		Resolver resolver = new Resolver();
+		typeinfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
+	}
+	public boolean isPrimitive() {
+		return typeinfo.IsPrimitiveType;
+	}
+
+	public SM_Type getType() {
+		return typeinfo.TypeObj;
+	}
+	public String getPrimitiveType(){
+		return typeinfo.PrimitiveType;
 	}
 }

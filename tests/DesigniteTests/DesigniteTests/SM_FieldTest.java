@@ -93,19 +93,18 @@ public class SM_FieldTest {
 	public void SM_Method_getType() {
 		newField = fields.get(0);
 		assertEquals(newField.isPrimitive(), true);
-		assertEquals(newField.getVarPrimitiveType(), "int");
+		assertEquals(newField.getPrimitiveType(), "int");
 	}
 
 	@Test
 	public void SM_Method_getType_from_source() {
 		newField = fields.get(4);
 		assertEquals(newField.isPrimitive(), false);
-		assertEquals(newField.getVariableType().getName(), "TestMethods");
+		assertEquals(newField.getType().getName(), "TestMethods");
 	}
 	@Test // is a List considered as SingleVariableDeclaration?
 	public void SM_Method_check_listParameter() {
 		newField = fields.get(1);
-		assertEquals(newField.isParameterized(), true);
-		assertEquals(newField.getVarPrimitiveType(), "String");
+		assertEquals(newField.getPrimitiveType(), "List<String>");
 	}
 }

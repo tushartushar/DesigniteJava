@@ -51,13 +51,6 @@ public abstract class SM_SourceItem {
 			accessModifier = AccessStates.DEFAULT;
 	}
 
-	List<SM_Package> getPkgOfProject(SM_Project project) {
-		List<SM_Package> pkgList = new ArrayList<>();
-		pkgList.addAll(project.getPackageList());
-
-		return pkgList;
-	}
-
 	protected SM_Type findType(SM_Project parentProject, String typeName, String pkgName) {
 		for (SM_Package pkg:parentProject.getPackageList())
 			if (pkg.getName().equals(pkgName))
@@ -103,8 +96,21 @@ public abstract class SM_SourceItem {
 
 	void print(PrintWriter writer, String str) {
 		if (writer != null)
+		{
 			writer.println(str);
+			writer.flush();
+		}
 		else
 			System.out.println(str);
+	}
+	
+	protected String convertListToString(List<SM_Type> typeList) {
+		String result = "";
+		for (SM_Type type : typeList)
+			if(result.equals(""))
+				result = type.getName();
+			else
+				result += ", " + type.getName();
+		return null;
 	}
 }

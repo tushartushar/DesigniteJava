@@ -23,7 +23,7 @@ public class SM_Type extends SM_SourceItem {
 
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
-	private Type superclass;
+	private List<SM_Type> supertypes = new ArrayList<SM_Type>();
 	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
 
 	private List<ImportDeclaration> importList = new ArrayList<>();
@@ -39,7 +39,6 @@ public class SM_Type extends SM_SourceItem {
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
 		this.compilationUnit = compilationUnit;
-		setIType(typeDeclaration);
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
@@ -49,14 +48,6 @@ public class SM_Type extends SM_SourceItem {
 	public TypeDeclaration getTypeDeclaration() {
 		return typeDeclaration;
 	}
-
-	void setIType(TypeDeclaration typeDeclaration) {
-		this.IType = typeDeclaration.resolveBinding();
-	}
-
-	/*
-	 * public ITypeBinding getIType() { return IType; }
-	 */
 
 	void setTypeInfo() {
 		int modifier = typeDeclaration.getModifiers();
@@ -95,9 +86,15 @@ public class SM_Type extends SM_SourceItem {
 		return importList;
 	}
 
-	// not implemented yet
 	void setSuperClass() {
-		superclass = typeDeclaration.getSuperclassType();
+		Type superclass = typeDeclaration.getSuperclassType();
+		if (superclass != null)
+		{
+			SM_Type inferredType = (new Resolver()).resolveType(superclass, parentPkg.getParentProject());
+			if(inferredType != null)
+				supertypes.add(inferredType);
+		}
+			
 	}
 
 	public List<SM_Method> getMethodList() {
@@ -108,35 +105,9 @@ public class SM_Type extends SM_SourceItem {
 		return fieldList;
 	}
 
-	/*
-	 * public int countMethods() { return methodList.size(); }
-	 */
-
-	/*
-	 * public int countFields() { return fieldList.size(); }
-	 */
-
-	/*
-	 * public int getPublicMethods() { return publicMethods; }
-	 * 
-	 * public int getPublicFields() { return publicFields; }
-	 * 
-	 * void computeMetrics(MethodVisitor visitor) { for (int i = 0; i <
-	 * countMethods(); i++) { if (accessModifier.equals("PUBLIC"))
-	 * publicMethods++; } }
-	 * 
-	 * void computeMetrics(FieldVisitor visitor) { for (int i = 0; i <
-	 * countFields(); i++) { if (accessModifier.equals("PUBLIC"))
-	 * publicFields++; } }
-	 */
-
 	public SM_Package getParentPkg() {
 		return parentPkg;
 	}
-
-	/*
-	 * public SM_Project getParentProject() { return parentProject; }
-	 */
 
 	private void parseMethods() {
 		for (SM_Method method : methodList) {
@@ -152,20 +123,25 @@ public class SM_Type extends SM_SourceItem {
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
-		print(writer, "\nType: " + name);
-		print(writer, "	Parent: " + this.getParentPkg().getName());
-		print(writer, "	Access: " + accessModifier);
-		print(writer, "	Interface: " + isInterface);
-		print(writer, "	Abstract: " + isAbstract);
-		print(writer, "	Superclass: " + superclass);
-		print(writer, "	Nested class: " + nestedClass);
+		print(writer, "\tType: " + name);
+		print(writer, "\tPackage: " + this.getParentPkg().getName());
+		print(writer, "\tAccess: " + accessModifier);
+		print(writer, "\tInterface: " + isInterface);
+		print(writer, "\tAbstract: " + isAbstract);
+		print(writer, "\tSupertypes: " + convertListToString(supertypes));
+		print(writer, "\tNested class: " + nestedClass);
 		if (nestedClass)
-			print(writer, "	Referred class: " + containerClass.getName());
+			print(writer, "\tContainer class: " + containerClass.getName());
+		print(writer, "\tReferenced types: ");
+		for (SM_Type type:referencedTypeList)
+			print(writer, "\t\t" + type.getName());
 		for (SM_Field field : fieldList)
 			field.printDebugLog(writer);
 		for (SM_Method method : methodList)
 			method.printDebugLog(writer);
+		print(writer, "\t----");
 	}
+
 
 	@Override
 	public void parse() {
@@ -191,7 +167,23 @@ public class SM_Type extends SM_SourceItem {
 			method.resolve();
 		for (SM_Field field : fieldList)
 			field.resolve();
-		//TODO - collate referrenced classes from methods and fileds
+		setReferencedTypes();
+	}
+
+	private void setReferencedTypes() {
+		for (SM_Field field:fieldList)
+			if(!field.isPrimitive())
+				addUnique(field.getType());
+		for (SM_Method method:methodList)
+			for (SM_Type refType:method.getReferencedTypeList())
+				addUnique(refType);
+	}
+
+	private void addUnique(SM_Type refType) {
+		if(refType == null)
+			return;
+		if(!referencedTypeList.contains(refType))
+			referencedTypeList.add(refType);
 	}
 
 }

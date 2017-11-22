@@ -18,7 +18,7 @@ public class SM_ProjectTest {
 	public void testSM_Project_positive_case() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "inBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getPackageCounter(), 6);
+		assertEquals(project.getPackageCounter(), 8);
 	}
 	
 /*	@Test
@@ -51,20 +51,20 @@ public class SM_ProjectTest {
 	public void testSM_Project_sourceFilesCounter() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getSourceFileList().size(), 8);
+		assertEquals(project.getSourceFileList().size(), 11);
 	}
 	
 	@Test
 	public void testSM_Project_cuCounter() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getCompilationUnitList().size(), 8);
+		assertEquals(project.getCompilationUnitList().size(), 11);
 	}
 	
 	@Test
 	public void testSM_Project_packageCounter() {
 		SM_Project project = new SM_Project(new InputArgs(TESTS_PATH + File.separator + "testBatchFile.txt"));
 		project.parse();
-		assertEquals(project.getPackageCounter(), 2);
+		assertEquals(project.getPackageCounter(), 4);
 	}
 }

@@ -50,7 +50,7 @@ public class SM_ParameterTest {
 		parameters = methods.get(0).getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.isPrimitive(), true);
-		assertEquals(newParameter.getVarPrimitiveType(), "String");
+		assertEquals(newParameter.getPrimitiveType(), "String");
 	}
 
 	@Test
@@ -58,13 +58,12 @@ public class SM_ParameterTest {
 		parameters = methods.get(1).getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.isPrimitive(), false);
-		assertEquals(newParameter.getVariableType().getName(), "TestMethods");
+		assertEquals(newParameter.getType().getName(), "TestMethods");
 	}
 	@Test // is a List considered as SingleVariableDeclaration?
 	public void SM_Parameter_check_listParameter() {
 		parameters = methods.get(3).getParameterList();
 		newParameter = parameters.get(0);
-		assertEquals(newParameter.isParameterized(), true);
-		assertEquals(newParameter.getVarPrimitiveType(), "String");
+		assertEquals(newParameter.getPrimitiveType(), "List<String>");
 	}
 }

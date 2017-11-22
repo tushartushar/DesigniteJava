@@ -7,7 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.eclipse.jface.text.Document;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -140,16 +143,18 @@ public class SM_Project extends SM_SourceItem {
 		parser.setUnitName(unitName);
 		// String [] sources =
 		// {"/Users/Tushar/Documents/Workspace/DesigniteJava/src/"};
+		Map<?, ?> options = JavaCore.getOptions();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
+		parser.setCompilerOptions(options);
 		String[] sources = { inputArgs.getSourceFolder() };
 		parser.setEnvironment(null, sources, null, true);
 		parser.setSource(doc.get().toCharArray());
 
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-		/*
-		 * if (cu.getAST().hasBindingsRecovery()) {
-		 * System.out.println("Binding activated."); }
-		 */
+		 if (!cu.getAST().hasBindingsRecovery()) {
+		 System.out.println("Binding not activated."); }
+		 
 		return cu;
 	}
 

@@ -21,7 +21,7 @@ public class TestMethods {
 	}
 	
 	public static void count(int a) {
-		
+		Logger.log("nothing");
 	}
 	
 	public List getList(List<String> list) {
@@ -35,4 +35,13 @@ public class TestMethods {
 		System.out.println("Name: " + name);
 		System.out.println("Id: " + id);
 	}
+}
+
+class Logger{
+	
+	public static void log(String msg)
+	{
+		
+	}
+	
 }

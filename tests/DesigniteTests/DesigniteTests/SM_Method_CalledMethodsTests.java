@@ -61,6 +61,22 @@ public class SM_Method_CalledMethodsTests {
 		}
 	}
 
+	@Test
+	public void SM_Method_CalledMethods_staticMethod() {
+		SM_Type type = getDesiredType();
+		if (type==null)
+			fail();
+		SM_Method method = getDesiredMethod(type, "count");
+		if (method == null)
+			fail();
+		if (method.getCalledMethods().size()==1)
+		{
+			SM_Method calledMethod = method.getCalledMethods().get(0);
+			assertEquals("Logger", calledMethod.getParentType().getName());
+			assertEquals("log", calledMethod.getName());
+		}
+	}
+	
 	private SM_Method getDesiredMethod(SM_Type type, String name) {
 		for(SM_Method method:type.getMethodList())
 			if(method.getName().equals(name))

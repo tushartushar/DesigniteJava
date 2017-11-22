@@ -40,13 +40,13 @@ public class SM_LocalVarTests {
 	public void SM_LocalVar_getType() {
 		newLocalVar = methods.get(0).getLocalVarList().get(0);
 		assertEquals(newLocalVar.isPrimitive(), true);
-		assertEquals(newLocalVar.getVarPrimitiveType(), "int");
+		assertEquals(newLocalVar.getPrimitiveType(), "int");
 	}
 
 	@Test
 	public void SM_LocalVar_getType_from_source() {
 		newLocalVar = methods.get(1).getLocalVarList().get(0);
 		assertEquals(newLocalVar.isPrimitive(), false);
-		assertEquals(newLocalVar.getVariableType().getName(), "TestMethods");
+		assertEquals(newLocalVar.getType().getName(), "TestMethods");
 	}
 }

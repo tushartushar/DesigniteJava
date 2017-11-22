@@ -27,7 +27,7 @@ public class SM_PackageTest {
 			if (pkg.getName().equals("Designite"))
 				assertEquals(pkg.getTypeList().size(), 2);
 			if (pkg.getName().equals("Designite.SourceModel"))
-				assertEquals(pkg.getTypeList().size(), 16);
+				assertEquals(pkg.getTypeList().size(), 17);
 		}
 	}
 
