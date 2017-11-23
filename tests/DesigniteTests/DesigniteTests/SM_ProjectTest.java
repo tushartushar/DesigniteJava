@@ -2,8 +2,6 @@ package DesigniteTests;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-
 import org.junit.Test;
 
 import Designite.InputArgs;

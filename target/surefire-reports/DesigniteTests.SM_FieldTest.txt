@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: DesigniteTests.SM_FieldTest
 -------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.034 sec
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.016 sec

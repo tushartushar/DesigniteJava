@@ -2,22 +2,15 @@ package DesigniteTests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
 import Designite.SourceModel.SM_Method;
-import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Project;
-import Designite.SourceModel.SM_Type;
 
 public class SM_ParameterTest extends DesigniteTests {
 	

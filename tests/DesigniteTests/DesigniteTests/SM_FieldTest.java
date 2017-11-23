@@ -2,9 +2,6 @@ package DesigniteTests;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -22,7 +19,6 @@ public class SM_FieldTest extends DesigniteTests {
 	
 	private SM_Project project;
 	private SM_Field newField;
-	private SM_Type type;
 	private List<SM_Field> fields;
 	List<VariableDeclarationFragment> fieldList;
 	

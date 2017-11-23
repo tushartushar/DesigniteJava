@@ -2,7 +2,6 @@ package DesigniteTests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -10,17 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
-import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Project;
-import Designite.SourceModel.SM_Type;
 
 public class SM_LocalVarTests extends DesigniteTests {
 
 	private SM_Project project;
 	private SM_LocalVar newLocalVar;
-	private SM_Type type;
 	private List<SM_Method> methods;
 	List<VariableDeclarationFragment> fieldList;
 

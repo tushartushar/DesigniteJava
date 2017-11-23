@@ -143,7 +143,7 @@ public class SM_Project extends SM_SourceItem {
 		parser.setUnitName(unitName);
 		// String [] sources =
 		// {"/Users/Tushar/Documents/Workspace/DesigniteJava/src/"};
-		Map<?, ?> options = JavaCore.getOptions();
+		Map<String, String> options = JavaCore.getOptions();
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parser.setCompilerOptions(options);
 		String[] sources = { inputArgs.getSourceFolder() };

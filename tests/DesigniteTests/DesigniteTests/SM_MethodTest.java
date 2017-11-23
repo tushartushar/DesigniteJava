@@ -3,18 +3,14 @@ package DesigniteTests;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
-import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
@@ -24,10 +20,10 @@ import Designite.SourceModel.SM_SourceItem.AccessStates;
 public class SM_MethodTest extends DesigniteTests {
 
 	private SM_Project project;
-	private SM_Method newMethod;
 	private SM_Type type;
 	private List<SM_Method> methods;
 	
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() {
 		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);

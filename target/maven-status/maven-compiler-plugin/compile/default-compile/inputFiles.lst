@@ -5,10 +5,11 @@
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_SourceItem.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/TypeVisitor.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/MethodInvVisitor.java
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/Resolver.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/InputArgs.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/MethodVisitor.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/FieldVisitor.java
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Variable.java
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/TypeInfo.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Project.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Type.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Field.java

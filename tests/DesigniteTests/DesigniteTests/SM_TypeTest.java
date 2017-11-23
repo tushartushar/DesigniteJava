@@ -15,7 +15,6 @@ import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_SourceItem.AccessStates;
 import Designite.SourceModel.SM_Type;
-import Designite.SourceModel.TypeVisitor;
 
 public class SM_TypeTest extends DesigniteTests {
 	
