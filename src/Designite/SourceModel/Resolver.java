@@ -114,7 +114,7 @@ class Resolver {
 
 	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeinfo, Type typeOfVar) {
 		ITypeBinding itype = typeOfVar.resolveBinding();
-String qualified = typeOfVar.resolveBinding().getQualifiedName();
+		String qualified = typeOfVar.resolveBinding().getQualifiedName();
 		if (itype.isFromSource()) {
 			SM_Type inferredType = findType(itype.getName(), itype.getPackage().getName(), parentProject);
 			if(inferredType!=null)
