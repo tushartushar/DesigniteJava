@@ -31,11 +31,11 @@ public class SM_Parameter extends SM_SourceItem {
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "\t\t\tParameter: " + name);
 		print(writer, "\t\t\tParent Method: " + getParent().getName());
-		if (typeinfo.IsPrimitiveType == false && typeinfo.TypeObj != null)
-			print(writer, "\t\t\tParameter type: " + typeinfo.TypeObj.getName());
+		if (!isPrimitiveType() && getType() != null)
+			print(writer, "\t\t\tParameter type: " + getType().getName());
 		else
-			if (typeinfo.IsPrimitiveType == true)
-				print(writer, "\t\t\tPrimitive parameter type: " + typeinfo.PrimitiveType);
+			if (isPrimitiveType())
+				print(writer, "\t\t\tPrimitive parameter type: " + getPrimitiveType());
 		print(writer, "\t\t\t----");
 	}
 
@@ -51,19 +51,20 @@ public class SM_Parameter extends SM_SourceItem {
 		typeinfo = resolver.resolveVariableType(variableDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
 	}
 
-	public boolean isPrimitive() {
-		return typeinfo.IsPrimitiveType;
-	}
-
-	public SM_Type getType() {
-		return typeinfo.TypeObj;
-	}
-
 	public Type getTypeBinding() {
 		return variableDecl.getType();
 	}
-
-	public String getPrimitiveType(){
-		return typeinfo.PrimitiveType;
+	
+	public boolean isPrimitiveType() {
+		return typeinfo.isPrimitiveType();
 	}
+
+	public SM_Type getType() {
+		return typeinfo.getTypeObj();
+	}
+	
+	public String getPrimitiveType() {
+		return typeinfo.getPrimitiveObj();
+	}
+	
 }

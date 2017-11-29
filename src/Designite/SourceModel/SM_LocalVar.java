@@ -28,11 +28,11 @@ public class SM_LocalVar extends SM_SourceItem {
 		print(writer, "\t\t\tLocalVar: " + getName());
 		print(writer, "\t\t\tParent method: " + this.parentMethod.getName());
 
-		if (typeinfo.IsPrimitiveType == false && typeinfo.TypeObj != null)
-			print(writer, "\t\t\tVariable type: " + typeinfo.TypeObj.getName());
+		if (!isPrimitiveType() && getType() != null)
+			print(writer, "\t\t\tVariable type: " + getType().getName());
 		else
-			if (typeinfo.IsPrimitiveType)
-				print(writer, "\t\t\tPrimitive variable type: " + typeinfo.PrimitiveType);
+			if (isPrimitiveType())
+				print(writer, "\t\t\tPrimitive variable type: " + getPrimitiveType());
 		print(writer, "\t\t\t----");
 	}
 
@@ -46,14 +46,16 @@ public class SM_LocalVar extends SM_SourceItem {
 		Resolver resolver = new Resolver();
 		typeinfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
 	}
-	public boolean isPrimitive() {
-		return typeinfo.IsPrimitiveType;
+	
+	public boolean isPrimitiveType() {
+		return typeinfo.isPrimitiveType();
 	}
 
 	public SM_Type getType() {
-		return typeinfo.TypeObj;
+		return typeinfo.getTypeObj();
 	}
-	public String getPrimitiveType(){
-		return typeinfo.PrimitiveType;
+	
+	public String getPrimitiveType() {
+		return typeinfo.getPrimitiveObj();
 	}
 }

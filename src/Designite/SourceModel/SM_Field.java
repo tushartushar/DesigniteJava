@@ -59,11 +59,11 @@ public class SM_Field extends SM_SourceItem {
 		print(writer, "\t\tAccess: " + getAccessModifier());
 		print(writer, "\t\tFinal: " + isFinal());
 		print(writer, "\t\tStatic: " + isStatic());
-		if (typeinfo.IsPrimitiveType == false && typeinfo.TypeObj != null)
-			print(writer, "\t\tField type: " + typeinfo.TypeObj.getName());
+		if (!isPrimitiveType() && getType() != null)
+			print(writer, "\t\tField type: " + getType().getName());
 		else
-			if (typeinfo.IsPrimitiveType)
-				print(writer, "\t\tPrimitive field type: " + typeinfo.PrimitiveType);
+			if (isPrimitiveType())
+				print(writer, "\t\tPrimitive field type: " + getPrimitiveType());
 		print(writer, "\t\t----");
 	}
 
@@ -78,15 +78,15 @@ public class SM_Field extends SM_SourceItem {
 		typeinfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
 	}
 	
-	public boolean isPrimitive() {
-		return typeinfo.IsPrimitiveType;
+	public boolean isPrimitiveType() {
+		return typeinfo.isPrimitiveType();
 	}
 
 	public SM_Type getType() {
-		return typeinfo.TypeObj;
+		return typeinfo.getTypeObj();
 	}
 	
-	public String getPrimitiveType(){
-		return typeinfo.PrimitiveType;
+	public String getPrimitiveType() {
+		return typeinfo.getPrimitiveObj();
 	}
 }

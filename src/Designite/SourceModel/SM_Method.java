@@ -149,10 +149,10 @@ public class SM_Method extends SM_SourceItem {
 
 	private void setReferencedTypes() {
 		for (SM_Parameter param : parameterList)
-			if (!param.isPrimitive())
+			if (!param.isPrimitiveType())
 				addunique(param.getType());
 		for (SM_LocalVar localVar : localVarList)
-			if (!localVar.isPrimitive())
+			if (!localVar.isPrimitiveType())
 				addunique(localVar.getType());
 	}
 

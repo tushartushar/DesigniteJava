@@ -119,17 +119,17 @@ class Resolver {
 			SM_Type inferredType = findType(itype.getName(), itype.getPackage().getName(), parentProject);
 			if(inferredType!=null)
 			{
-				typeinfo.TypeObj = inferredType;
-				typeinfo.IsPrimitiveType = false;
+				typeinfo.setTypeObj(inferredType); 
+				typeinfo.setPrimitiveType(false);
 			}
 			else
 			{
-				typeinfo.PrimitiveType = itype.getName();
-				typeinfo.IsPrimitiveType = true;
+				typeinfo.setPrimitiveObj(itype.getName());
+				typeinfo.setPrimitiveType(true);
 			}
 		} else {
-			typeinfo.PrimitiveType = itype.getName();
-			typeinfo.IsPrimitiveType = true;
+			typeinfo.setPrimitiveObj(itype.getName());
+			typeinfo.setPrimitiveType(true);
 		}
 	}
 	

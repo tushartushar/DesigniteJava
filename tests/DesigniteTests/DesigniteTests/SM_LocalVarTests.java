@@ -32,14 +32,14 @@ public class SM_LocalVarTests extends DesigniteTests {
 	@Test
 	public void SM_LocalVar_getType() {
 		newLocalVar = methods.get(0).getLocalVarList().get(0);
-		assertEquals(newLocalVar.isPrimitive(), true);
+		assertEquals(newLocalVar.isPrimitiveType(), true);
 		assertEquals(newLocalVar.getPrimitiveType(), "int");
 	}
 
 	@Test
 	public void SM_LocalVar_getType_from_source() {
 		newLocalVar = methods.get(1).getLocalVarList().get(0);
-		assertEquals(newLocalVar.isPrimitive(), false);
+		assertEquals(newLocalVar.isPrimitiveType(), false);
 		assertEquals(newLocalVar.getType().getName(), "TestMethods");
 	}
 }

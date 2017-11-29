@@ -172,7 +172,7 @@ public class SM_Type extends SM_SourceItem {
 
 	private void setReferencedTypes() {
 		for (SM_Field field:fieldList)
-			if(!field.isPrimitive())
+			if(!field.isPrimitiveType())
 				addUnique(field.getType());
 		for (SM_Method method:methodList)
 			for (SM_Type refType:method.getReferencedTypeList())

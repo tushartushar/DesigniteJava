@@ -40,7 +40,7 @@ public class SM_ParameterTest extends DesigniteTests {
 	public void SM_Parameter_getType() {
 		parameters = methods.get(0).getParameterList();
 		newParameter = parameters.get(0);
-		assertEquals(newParameter.isPrimitive(), true);
+		assertEquals(newParameter.isPrimitiveType(), true);
 		assertEquals(newParameter.getPrimitiveType(), "String");
 	}
 
@@ -48,7 +48,7 @@ public class SM_ParameterTest extends DesigniteTests {
 	public void SM_Parameter_getType_from_source() {
 		parameters = methods.get(1).getParameterList();
 		newParameter = parameters.get(0);
-		assertEquals(newParameter.isPrimitive(), false);
+		assertEquals(newParameter.isPrimitiveType(), false);
 		assertEquals(newParameter.getType().getName(), "TestMethods");
 	}
 	@Test // is a List considered as SingleVariableDeclaration?
