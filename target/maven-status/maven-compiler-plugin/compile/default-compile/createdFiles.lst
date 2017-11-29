@@ -11,6 +11,7 @@ Designite/SourceModel/SM_Method.class
 Designite/SourceModel/SM_Field.class
 Designite/SourceModel/FieldVisitor.class
 Designite/SourceModel/TypeInfo.class
+Designite/SourceModel/SM_EntitiesWithType.class
 Designite/SourceModel/SM_Project.class
 Designite/SourceModel/MethodVisitor.class
 Designite/SourceModel/SM_SourceItem$AccessStates.class

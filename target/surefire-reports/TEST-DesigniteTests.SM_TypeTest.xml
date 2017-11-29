@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DesigniteTests.SM_TypeTest" time="0.344" tests="9" errors="0" skipped="0" failures="0">
+<testsuite name="DesigniteTests.SM_TypeTest" time="0.396" tests="9" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
@@ -59,13 +59,13 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="SM_Type_nullTypeDeclaration" classname="DesigniteTests.SM_TypeTest" time="0"/>
-  <testcase name="SM_Type_check_isAbstract" classname="DesigniteTests.SM_TypeTest" time="0.014"/>
-  <testcase name="SM_Type_check_isNestedClass" classname="DesigniteTests.SM_TypeTest" time="0.107"/>
-  <testcase name="SM_Type_checkDefaultAccess" classname="DesigniteTests.SM_TypeTest" time="0.011"/>
-  <testcase name="SM_Type_check_isInterface" classname="DesigniteTests.SM_TypeTest" time="0.012"/>
-  <testcase name="SM_Type_nullCompilationUnit" classname="DesigniteTests.SM_TypeTest" time="0.012"/>
+  <testcase name="SM_Type_nullTypeDeclaration" classname="DesigniteTests.SM_TypeTest" time="0.015"/>
+  <testcase name="SM_Type_check_isAbstract" classname="DesigniteTests.SM_TypeTest" time="0.017"/>
+  <testcase name="SM_Type_check_isNestedClass" classname="DesigniteTests.SM_TypeTest" time="0.131"/>
+  <testcase name="SM_Type_checkDefaultAccess" classname="DesigniteTests.SM_TypeTest" time="0.017"/>
+  <testcase name="SM_Type_check_isInterface" classname="DesigniteTests.SM_TypeTest" time="0.016"/>
+  <testcase name="SM_Type_nullCompilationUnit" classname="DesigniteTests.SM_TypeTest" time="0.013"/>
   <testcase name="SM_Type_countFields" classname="DesigniteTests.SM_TypeTest" time="0.091"/>
-  <testcase name="SM_Type_getName" classname="DesigniteTests.SM_TypeTest" time="0.012"/>
+  <testcase name="SM_Type_getName" classname="DesigniteTests.SM_TypeTest" time="0.011"/>
   <testcase name="SM_Type_countMethods" classname="DesigniteTests.SM_TypeTest" time="0.085"/>
 </testsuite>

@@ -6,11 +6,10 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
-public class SM_LocalVar extends SM_SourceItem {
+public class SM_LocalVar extends SM_EntitiesWithType {
 	private VariableDeclarationFragment localVarFragment;
 	private SM_Method parentMethod;
 	private VariableDeclarationStatement localVarDecl;
-	TypeInfo typeinfo;
 
 	public SM_LocalVar(VariableDeclarationStatement varDecl, VariableDeclarationFragment localVar, SM_Method method) {
 		this.localVarFragment = localVar;
@@ -37,25 +36,9 @@ public class SM_LocalVar extends SM_SourceItem {
 	}
 
 	@Override
-	public void parse() {
-		//There is nothing to be done further.
-	}
-
-	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
 		typeinfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
 	}
 	
-	public boolean isPrimitiveType() {
-		return typeinfo.isPrimitiveType();
-	}
-
-	public SM_Type getType() {
-		return typeinfo.getTypeObj();
-	}
-	
-	public String getPrimitiveType() {
-		return typeinfo.getPrimitiveObj();
-	}
 }

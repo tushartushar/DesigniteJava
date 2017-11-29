@@ -8,14 +8,13 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class SM_Field extends SM_SourceItem {
+public class SM_Field extends SM_EntitiesWithType {
 	private TypeDeclaration typeDeclaration;
 	private FieldDeclaration fieldDeclaration;
 	private SM_Type parentType;
 	private boolean finalField = false;
 	private boolean staticField = false;
 	private VariableDeclarationFragment variableDeclaration;
-	private TypeInfo typeinfo;
 	
 	public SM_Field(FieldDeclaration fieldDeclaration, VariableDeclarationFragment varDecl, SM_Type parentType) {
 		this.fieldDeclaration = fieldDeclaration;
@@ -67,26 +66,10 @@ public class SM_Field extends SM_SourceItem {
 		print(writer, "\t\t----");
 	}
 
-
-	@Override
-	public void parse() {
-	}
-
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
 		typeinfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
 	}
 	
-	public boolean isPrimitiveType() {
-		return typeinfo.isPrimitiveType();
-	}
-
-	public SM_Type getType() {
-		return typeinfo.getTypeObj();
-	}
-	
-	public String getPrimitiveType() {
-		return typeinfo.getPrimitiveObj();
-	}
 }

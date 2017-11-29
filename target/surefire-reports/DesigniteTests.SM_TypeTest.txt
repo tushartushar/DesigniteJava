@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: DesigniteTests.SM_TypeTest
 -------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.346 sec - in DesigniteTests.SM_TypeTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.4 sec - in DesigniteTests.SM_TypeTest

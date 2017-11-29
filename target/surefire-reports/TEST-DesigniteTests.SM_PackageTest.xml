@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DesigniteTests.SM_PackageTest" time="0.934" tests="5" errors="0" skipped="0" failures="0">
+<testsuite name="DesigniteTests.SM_PackageTest" time="1.171" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
@@ -59,9 +59,9 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="SM_Package_positive_case" classname="DesigniteTests.SM_PackageTest" time="0.673"/>
-  <testcase name="SM_Package_getParent" classname="DesigniteTests.SM_PackageTest" time="0.083"/>
+  <testcase name="SM_Package_positive_case" classname="DesigniteTests.SM_PackageTest" time="0.831"/>
+  <testcase name="SM_Package_getParent" classname="DesigniteTests.SM_PackageTest" time="0.111"/>
   <testcase name="SM_Package_nullInput" classname="DesigniteTests.SM_PackageTest" time="0"/>
-  <testcase name="SM_Package_cuList" classname="DesigniteTests.SM_PackageTest" time="0.084"/>
-  <testcase name="SM_Package_countTypes" classname="DesigniteTests.SM_PackageTest" time="0.094"/>
+  <testcase name="SM_Package_cuList" classname="DesigniteTests.SM_PackageTest" time="0.113"/>
+  <testcase name="SM_Package_countTypes" classname="DesigniteTests.SM_PackageTest" time="0.116"/>
 </testsuite>
