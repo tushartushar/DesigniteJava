@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Built-By: thodoras
+Class-Path: lib/org.eclipse.jdt.core-3.10.0.jar lib/org.eclipse.core.r
+ esources-3.7.100.jar lib/org.eclipse.core.expressions-3.4.300.jar lib
+ /org.eclipse.core.runtime-3.7.0.jar lib/org.eclipse.osgi-3.7.1.jar li
+ b/org.eclipse.core.jobs-3.5.100.jar lib/org.eclipse.equinox.registry-
+ 3.5.101.jar lib/org.eclipse.equinox.preferences-3.4.1.jar lib/org.ecl
+ ipse.core.contenttype-3.4.100.jar lib/org.eclipse.equinox.app-1.3.100
+ .jar lib/org.eclipse.core.filesystem-1.3.100.jar lib/org.eclipse.text
+ -3.5.101.jar lib/org.eclipse.core.commands-3.6.0.jar lib/org.eclipse.
+ equinox.common-3.6.0.jar
+Build-Jdk: 1.8.0_151
+Created-By: Maven Integration for Eclipse
+Main-Class: Designite.Designite
+

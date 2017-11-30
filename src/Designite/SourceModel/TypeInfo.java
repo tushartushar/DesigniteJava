@@ -5,6 +5,7 @@ public class TypeInfo {
 	private SM_Type typeObj;
 	private boolean primitiveType;
 	private String primitiveObj;
+	private boolean parametrizedType;
 	
 	public SM_Type getTypeObj() {
 		return typeObj;
@@ -28,6 +29,14 @@ public class TypeInfo {
 	
 	public void setPrimitiveObj(String primitiveObj) {
 		this.primitiveObj = primitiveObj;
+	}
+
+	public boolean isParametrizedType() {
+		return parametrizedType;
+	}
+
+	public void setParametrizedType(boolean parametrizedType) {
+		this.parametrizedType = parametrizedType;
 	}
 
 }
