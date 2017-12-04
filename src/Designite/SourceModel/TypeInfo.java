@@ -9,7 +9,7 @@ public class TypeInfo {
 	private boolean primitiveType;
 	private String objType;
 	private boolean parametrizedType;
-	private List<String> nonPrimitiveTypeParameters = new ArrayList<>();
+	private List<SM_Type> nonPrimitiveTypeParameters = new ArrayList<>();
 	
 	public SM_Type getTypeObj() {
 		return typeObj;
@@ -43,11 +43,11 @@ public class TypeInfo {
 		this.parametrizedType = parametrizedType;
 	}
 	
-	public List<String> getNonPrimitiveTypeParameters() {
+	public List<SM_Type> getNonPrimitiveTypeParameters() {
 		return nonPrimitiveTypeParameters;
 	}
 	
-	public void addNonPrimitiveTypeParameter(String element) {
+	public void addNonPrimitiveTypeParameter(SM_Type element) {
 		nonPrimitiveTypeParameters.add(element);
 	}
 
