@@ -4,7 +4,7 @@ public class TypeInfo {
 
 	private SM_Type typeObj;
 	private boolean primitiveType;
-	private String primitiveObj;
+	private String objType;
 	private boolean parametrizedType;
 	
 	public SM_Type getTypeObj() {
@@ -22,13 +22,13 @@ public class TypeInfo {
 	public void setPrimitiveType(boolean primitiveType) {
 		this.primitiveType = primitiveType;
 	}
-	
-	public String getPrimitiveObj() {
-		return primitiveObj;
+
+	public String getObjType() {
+		return objType;
 	}
-	
-	public void setPrimitiveObj(String primitiveObj) {
-		this.primitiveObj = primitiveObj;
+
+	public void setObjType(String objType) {
+		this.objType = objType;
 	}
 
 	public boolean isParametrizedType() {
@@ -37,6 +37,12 @@ public class TypeInfo {
 
 	public void setParametrizedType(boolean parametrizedType) {
 		this.parametrizedType = parametrizedType;
+	}
+
+	@Override
+	public String toString() {
+		return "TypeInfo [typeObj=" + typeObj + ", primitiveType=" + primitiveType + ", primitiveObj=" + objType
+				+ ", parametrizedType=" + parametrizedType + "]";
 	}
 
 }

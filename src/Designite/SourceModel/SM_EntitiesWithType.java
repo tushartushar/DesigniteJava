@@ -13,7 +13,7 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 	}
 	
 	public String getPrimitiveType() {
-		return typeinfo.getPrimitiveObj();
+		return typeinfo.getObjType();
 	}
 	
 	@Override

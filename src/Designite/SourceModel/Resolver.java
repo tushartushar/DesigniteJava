@@ -84,7 +84,7 @@ class Resolver {
 		return null;
 	}
 
-	SM_Type resolveType(Type type, SM_Project project) {
+	public SM_Type resolveType(Type type, SM_Project project) {
 		ITypeBinding binding = type.resolveBinding();
 		if (binding == null)
 			return null;
@@ -97,26 +97,34 @@ class Resolver {
 	}
 	
 	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject) {
-		TypeInfo typeinfo = new TypeInfo();
+		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
 
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
-				inferTypeInfo(parentProject, typeinfo, typeOfVar);
+				inferTypeInfo(parentProject, typeInfo, typeOfVar);
 			}
 		} else if (isArray) {
-			inferTypeInfo(parentProject, typeinfo, getArrayType());
+			inferTypeInfo(parentProject, typeInfo, getArrayType());
 		} else {
-			inferTypeInfo(parentProject, typeinfo, typeNode);
+			inferTypeInfo(parentProject, typeInfo, typeNode);
 		}
-		return typeinfo;
+		System.out.println(typeInfo.toString());
+		return typeInfo;
 	}
 
 	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeinfo, Type typeOfVar) {
-		ITypeBinding itype = typeOfVar.resolveBinding();
-		String qualified = typeOfVar.resolveBinding().getQualifiedName();
-		if (itype.isFromSource()) {
-			SM_Type inferredType = findType(itype.getName(), itype.getPackage().getName(), parentProject);
+//		System.out.println(iType);
+//		System.out.println(iType.isParameterizedType());
+//		for (ITypeBinding foo : iType.getTypeArguments()) {System.out.println(foo.isFromSource());}
+//		String qualified = typeOfVar.resolveBinding().getQualifiedName();
+		inferPrimitiveType(parentProject, typeinfo, typeOfVar);
+	}
+	
+	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeinfo, Type typeOfVar) {
+		ITypeBinding iType = typeOfVar.resolveBinding();
+		if (iType.isFromSource()) {
+			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null)
 			{
 				typeinfo.setTypeObj(inferredType); 
@@ -124,11 +132,11 @@ class Resolver {
 			}
 			else
 			{
-				typeinfo.setPrimitiveObj(itype.getName());
+				typeinfo.setObjType(iType.getName());
 				typeinfo.setPrimitiveType(true);
 			}
 		} else {
-			typeinfo.setPrimitiveObj(itype.getName());
+			typeinfo.setObjType(iType.getName());
 			typeinfo.setPrimitiveType(true);
 		}
 	}
@@ -142,7 +150,7 @@ class Resolver {
 		return null;
 	}
 
-	void specifyTypes(Type type) {
+	private void specifyTypes(Type type) {
 		if (type.isParameterizedType()) {
 			ParameterizedType parameterizedType = (ParameterizedType) type;
 			List<Type> typeArgs = parameterizedType.typeArguments();
@@ -156,20 +164,23 @@ class Resolver {
 		}
 	}
 	
-	void setTypeList(Type newType) {
+	private void setTypeList(Type newType) {
 		if (newType.isAnnotatable())
 			typeList.add(newType);
 		else {
 			specifyTypes(newType);
 		}
 	}
-	List<Type> getTypeList() {
+	
+	private List<Type> getTypeList() {
 		return typeList;
 	}
-	Type getArrayType() {
+	
+	private Type getArrayType() {
 		return arrayType;
 	}
-	void setArrayType(Type type) {
+	
+	private void setArrayType(Type type) {
 		arrayType = type;
 	}
 }
