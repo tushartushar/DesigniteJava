@@ -113,31 +113,38 @@ class Resolver {
 		return typeInfo;
 	}
 
-	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeinfo, Type typeOfVar) {
+	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
+		ITypeBinding iType = typeOfVar.resolveBinding();
 //		System.out.println(iType);
 //		System.out.println(iType.isParameterizedType());
 //		for (ITypeBinding foo : iType.getTypeArguments()) {System.out.println(foo.isFromSource());}
 //		String qualified = typeOfVar.resolveBinding().getQualifiedName();
-		inferPrimitiveType(parentProject, typeinfo, typeOfVar);
+		inferPrimitiveType(parentProject, typeInfo, iType);
+		infereParametrized(typeInfo, iType);
 	}
 	
-	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeinfo, Type typeOfVar) {
-		ITypeBinding iType = typeOfVar.resolveBinding();
+	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType.isFromSource()) {
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null)
 			{
-				typeinfo.setTypeObj(inferredType); 
-				typeinfo.setPrimitiveType(false);
+				typeInfo.setTypeObj(inferredType); 
+				typeInfo.setPrimitiveType(false);
 			}
 			else
 			{
-				typeinfo.setObjType(iType.getName());
-				typeinfo.setPrimitiveType(true);
+				typeInfo.setObjType(iType.getName());
+				typeInfo.setPrimitiveType(true);
 			}
 		} else {
-			typeinfo.setObjType(iType.getName());
-			typeinfo.setPrimitiveType(true);
+			typeInfo.setObjType(iType.getName());
+			typeInfo.setPrimitiveType(true);
+		}
+	}
+	
+	private void infereParametrized(TypeInfo typeInfo, ITypeBinding iType) {
+		if (iType.isParameterizedType()) {
+			typeInfo.setParametrizedType(true);
 		}
 	}
 	
