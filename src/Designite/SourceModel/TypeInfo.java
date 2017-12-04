@@ -47,6 +47,18 @@ public class TypeInfo {
 		return nonPrimitiveTypeParameters;
 	}
 	
+	public String getStringOfNonPrimitiveParameters() {
+		String output = "[";
+		for (SM_Type type : nonPrimitiveTypeParameters) {
+			output += type.getName() + ", "; 
+		}
+		return output + "]";
+	}
+	
+	public int getNumOfNonPrimitiveParameters() {
+		return getNonPrimitiveTypeParameters().size();
+	}
+	
 	public void addNonPrimitiveTypeParameter(SM_Type element) {
 		nonPrimitiveTypeParameters.add(element);
 	}
@@ -55,7 +67,9 @@ public class TypeInfo {
 	public String toString() {
 		return "TypeInfo [typeObj=" + typeObj + ", primitiveType=" + primitiveType + ", objType=" + objType
 				+ ", parametrizedType=" + parametrizedType + ", nonPrimitiveTypeParameters="
-				+ nonPrimitiveTypeParameters + "]";
+				+ getStringOfNonPrimitiveParameters() + "]";
 	}
+
+	
 
 }

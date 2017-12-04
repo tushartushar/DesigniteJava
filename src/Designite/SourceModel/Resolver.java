@@ -120,19 +120,16 @@ class Resolver {
 //		for (ITypeBinding foo : iType.getTypeArguments()) {System.out.println(foo.isFromSource());}
 //		String qualified = typeOfVar.resolveBinding().getQualifiedName();
 		inferPrimitiveType(parentProject, typeInfo, iType);
-		infereParametrized(typeInfo, iType);
+		infereParametrized(parentProject, typeInfo, iType);
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType.isFromSource()) {
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
-			if(inferredType!=null)
-			{
+			if(inferredType!=null) {
 				typeInfo.setTypeObj(inferredType); 
 				typeInfo.setPrimitiveType(false);
-			}
-			else
-			{
+			} else {
 				typeInfo.setObjType(iType.getName());
 				typeInfo.setPrimitiveType(true);
 			}
@@ -142,9 +139,30 @@ class Resolver {
 		}
 	}
 	
-	private void infereParametrized(TypeInfo typeInfo, ITypeBinding iType) {
+	private void infereParametrized(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType.isParameterizedType()) {
 			typeInfo.setParametrizedType(true);
+			addNonPrimitiveParameters(parentProject, typeInfo, iType);
+			if (typeInfo.getNumOfNonPrimitiveParameters() > 0) {
+				typeInfo.setPrimitiveType(false);
+			} else {
+				typeInfo.setParametrizedType(false);
+			}
+		}
+	}
+	
+	private void addNonPrimitiveParameters(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
+		for (ITypeBinding typeParameter : iType.getTypeArguments()) {
+			if (typeParameter.isParameterizedType()) {
+				addNonPrimitiveParameters(parentProject, typeInfo, typeParameter);
+			} else {
+				if (typeParameter.isFromSource()) {
+					SM_Type inferredType = findType(typeParameter.getName(), typeParameter.getPackage().getName(), parentProject);
+					if(inferredType!=null) { 
+						typeInfo.addNonPrimitiveTypeParameter(inferredType);
+					}
+				}
+			}
 		}
 	}
 	
