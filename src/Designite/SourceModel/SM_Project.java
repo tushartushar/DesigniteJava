@@ -195,19 +195,19 @@ public class SM_Project extends SM_SourceItem {
 		}
 	}
 
-	public void resolve() {
-		Logger.log("Resolving symbols...");
-		for (SM_Package pkg : packageList) {
-			pkg.resolve();
-		}
-	}
-
 	@Override
 	public void parse() {
 		Logger.log("Parsing the source code ...");
 		createCompilationUnits();
 		createPackageObjects();
 		parseAllPackages();
+	}
+
+	public void resolve() {
+		Logger.log("Resolving symbols...");
+		for (SM_Package pkg : packageList) {
+			pkg.resolve();
+		}
 	}
 
 }
