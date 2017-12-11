@@ -121,11 +121,11 @@ class Resolver {
 				typeInfo.setTypeObj(inferredType); 
 				typeInfo.setPrimitiveType(false);
 			} else {
-				typeInfo.setObjType(iType.getName());
+				typeInfo.setObjPrimitiveType(iType.getName());
 				typeInfo.setPrimitiveType(true);
 			}
 		} else {
-			typeInfo.setObjType(iType.getName());
+			typeInfo.setObjPrimitiveType(iType.getName());
 			typeInfo.setPrimitiveType(true);
 		}
 	}
@@ -134,10 +134,17 @@ class Resolver {
 		if (iType.isParameterizedType()) {
 			typeInfo.setParametrizedType(true);
 			addNonPrimitiveParameters(parentProject, typeInfo, iType);
+			if (hasNonPrimitivePArameters(typeInfo)) {
+				typeInfo.setPrimitiveType(false);
+			}
 		}
 	}
 	
 	private void addNonPrimitiveParameters(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
+		if (iType.isFromSource()) {
+			SM_Type inferredBasicType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
+			addParameterIfNotAlreadyExists(typeInfo, inferredBasicType);
+		}
 		for (ITypeBinding typeParameter : iType.getTypeArguments()) {
 			if (typeParameter.isParameterizedType()) {
 				addNonPrimitiveParameters(parentProject, typeInfo, typeParameter);
@@ -145,10 +152,16 @@ class Resolver {
 				if (typeParameter.isFromSource()) {
 					SM_Type inferredType = findType(typeParameter.getName(), typeParameter.getPackage().getName(), parentProject);
 					if(inferredType!=null) { 
-						typeInfo.addNonPrimitiveTypeParameter(inferredType);
+						addParameterIfNotAlreadyExists(typeInfo, inferredType);
 					}
 				}
 			}
+		}
+	}
+	
+	private void addParameterIfNotAlreadyExists(TypeInfo typeInfo, SM_Type inferredType) {
+		if (!typeInfo.getNonPrimitiveTypeParameters().contains(inferredType)) {
+			typeInfo.addNonPrimitiveTypeParameter(inferredType);
 		}
 	}
 	
@@ -178,7 +191,7 @@ class Resolver {
 	private String trimParametersIfExist(String objName) {
 		int index = objName.indexOf('<');
 		if (index >= 0) {
-			return objName.substring(0, index);
+			return objName.substring(0, index);                                                                                                                   
 		}
 		return objName;
 	}

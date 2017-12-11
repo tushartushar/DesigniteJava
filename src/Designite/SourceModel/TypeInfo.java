@@ -7,7 +7,7 @@ public class TypeInfo {
 
 	private SM_Type typeObj;
 	private boolean primitiveType;
-	private String objType;
+	private String objPrimitiveType;
 	private boolean parametrizedType;
 	private List<SM_Type> nonPrimitiveTypeParameters = new ArrayList<>();
 	
@@ -27,12 +27,12 @@ public class TypeInfo {
 		this.primitiveType = primitiveType;
 	}
 
-	public String getObjType() {
-		return objType;
+	public String getObjPrimitiveType() {
+		return objPrimitiveType;
 	}
 
-	public void setObjType(String objType) {
-		this.objType = objType;
+	public void setObjPrimitiveType(String objType) {
+		this.objPrimitiveType = objType;
 	}
 
 	public boolean isParametrizedType() {
@@ -69,7 +69,7 @@ public class TypeInfo {
 
 	@Override
 	public String toString() {
-		return "TypeInfo [typeObj=" + typeObj + ", primitiveType=" + primitiveType + ", objType=" + objType
+		return "TypeInfo [typeObj=" + typeObj + ", primitiveType=" + primitiveType + ", objPrimitiveType=" + objPrimitiveType
 				+ ", parametrizedType=" + parametrizedType + ", nonPrimitiveTypeParameters="
 				+ getStringOfNonPrimitiveParameters() + "]";
 	}

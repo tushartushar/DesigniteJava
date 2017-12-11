@@ -15,7 +15,7 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 	}	
 	
 	public String getPrimitiveType() {
-		return typeInfo.getObjType();
+		return typeInfo.getObjPrimitiveType();
 	}
 	
 	public boolean isParametrizedType() {

@@ -58,13 +58,18 @@ public class SM_Field extends SM_EntitiesWithType {
 		print(writer, "\t\tAccess: " + getAccessModifier());
 		print(writer, "\t\tFinal: " + isFinal());
 		print(writer, "\t\tStatic: " + isStatic());
-		if (!isPrimitiveType() && getType() != null)
-			print(writer, "\t\tField type: " + getType().getName());
+		if (!isPrimitiveType()) {
+			if (getType() != null) {
+				print(writer, "\t\tField type: " + getType().getName());
+			} else {
+				print(writer, "\t\tField type: " + typeInfo.getObjPrimitiveType());
+			}
+		}
 		else
 			if (isPrimitiveType())
 				print(writer, "\t\tPrimitive field type: " + getPrimitiveType());
 		if (isParametrizedType()) {
-			print(writer, "\t\tList of parameters: " + getNonPrimitiveTypeParameters());
+			print(writer, "\t\tList of parameters: " + typeInfo.getStringOfNonPrimitiveParameters());
 		}
 		print(writer, "\t\t----");
 	}
