@@ -52,9 +52,13 @@ public class TypeInfo {
 		for (SM_Type type : nonPrimitiveTypeParameters) {
 			output += type.getName() + ", "; 
 		}
-		return output + "]";
+		return removeLastComma(output) + "]";
 	}
 	
+	private String removeLastComma(String str) {
+		return (str.length() > 2) ? str.substring(0, str.length() - 2) : str;
+	}
+	 
 	public int getNumOfNonPrimitiveParameters() {
 		return getNonPrimitiveTypeParameters().size();
 	}

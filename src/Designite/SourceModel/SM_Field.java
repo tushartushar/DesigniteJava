@@ -63,13 +63,16 @@ public class SM_Field extends SM_EntitiesWithType {
 		else
 			if (isPrimitiveType())
 				print(writer, "\t\tPrimitive field type: " + getPrimitiveType());
+		if (isParametrizedType()) {
+			print(writer, "\t\tList of parameters: " + getNonPrimitiveTypeParameters());
+		}
 		print(writer, "\t\t----");
 	}
 
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeinfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
 	}
 	
 }

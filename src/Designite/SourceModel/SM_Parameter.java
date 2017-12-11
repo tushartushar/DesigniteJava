@@ -41,7 +41,7 @@ public class SM_Parameter extends SM_EntitiesWithType {
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeinfo = resolver.resolveVariableType(variableDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(variableDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
 	}
 
 	public Type getTypeBinding() {

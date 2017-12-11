@@ -27,18 +27,22 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 		print(writer, "\t\t\tLocalVar: " + getName());
 		print(writer, "\t\t\tParent method: " + this.parentMethod.getName());
 
-		if (!isPrimitiveType() && getType() != null)
-			print(writer, "\t\t\tVariable type: " + getType().getName());
+		if (!isPrimitiveType()) {
+			if (typeInfo.isParametrizedType()) {
+				print(writer, "\t\t\tParameter types: " + typeInfo.getStringOfNonPrimitiveParameters());
+			} else {
+				print(writer, "\t\t\tVariable type: " + getType().getName());
+			}
+		}
 		else
-			if (isPrimitiveType())
-				print(writer, "\t\t\tPrimitive variable type: " + getPrimitiveType());
+			print(writer, "\t\t\tPrimitive variable type: " + getPrimitiveType());
 		print(writer, "\t\t\t----");
 	}
 
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeinfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
 	}
 	
 }

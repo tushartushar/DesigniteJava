@@ -48,16 +48,6 @@ class Resolver {
 		return null;
 	}
 
-	private SM_Type findType(String className, SM_Package pkg) {
-		for (SM_Type sm_type : pkg.getTypeList()) {
-			if (sm_type.getName().equals(className)) {
-				return sm_type;
-			}
-		}
-
-		return null;
-	}
-
 	private SM_Method findMethod(IMethodBinding method, SM_Type type) {
 		String methodName = method.getName().toString();
 		int parameterCount = method.getParameterTypes().length;
@@ -125,6 +115,7 @@ class Resolver {
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType.isFromSource()) {
+			System.out.println(iType.getQualifiedName());
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null) {
 				typeInfo.setTypeObj(inferredType); 
@@ -143,11 +134,6 @@ class Resolver {
 		if (iType.isParameterizedType()) {
 			typeInfo.setParametrizedType(true);
 			addNonPrimitiveParameters(parentProject, typeInfo, iType);
-			if (typeInfo.getNumOfNonPrimitiveParameters() > 0) {
-				typeInfo.setPrimitiveType(false);
-			} else {
-				typeInfo.setParametrizedType(false);
-			}
 		}
 	}
 	
@@ -166,13 +152,35 @@ class Resolver {
 		}
 	}
 	
+	private boolean hasNonPrimitivePArameters(TypeInfo typeInfo) {
+		return typeInfo.getNumOfNonPrimitiveParameters() > 0;
+	}
+	
 	private SM_Type findType(String typeName, String packageName, SM_Project project) {
 		SM_Package pkg = findPackage(packageName, project);
 		if (pkg !=null)
 		{
-			return findType (typeName, pkg);
+			return findType(typeName, pkg);
 		}
 		return null;
+	}
+	
+	private SM_Type findType(String className, SM_Package pkg) {
+		for (SM_Type sm_type : pkg.getTypeList()) {
+			if (sm_type.getName().equals(trimParametersIfExist(className))) {
+				return sm_type;
+			}
+		}
+
+		return null;
+	}
+	
+	private String trimParametersIfExist(String objName) {
+		int index = objName.indexOf('<');
+		if (index >= 0) {
+			return objName.substring(0, index);
+		}
+		return objName;
 	}
 
 	private void specifyTypes(Type type) {

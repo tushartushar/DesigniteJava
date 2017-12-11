@@ -1,19 +1,29 @@
 package Designite.SourceModel;
 
+import java.util.List;
+
 public abstract class SM_EntitiesWithType extends SM_SourceItem {
 	
-	protected TypeInfo typeinfo;
+	protected TypeInfo typeInfo;
 
 	public boolean isPrimitiveType() {
-		return typeinfo.isPrimitiveType();
+		return typeInfo.isPrimitiveType();
 	}
 
 	public SM_Type getType() {
-		return typeinfo.getTypeObj();
-	}
+		return typeInfo.getTypeObj();
+	}	
 	
 	public String getPrimitiveType() {
-		return typeinfo.getObjType();
+		return typeInfo.getObjType();
+	}
+	
+	public boolean isParametrizedType() {
+		return typeInfo.isParametrizedType();
+	}
+	
+	public List<SM_Type> getNonPrimitiveTypeParameters() {
+		return typeInfo.getNonPrimitiveTypeParameters();
 	}
 	
 	@Override
