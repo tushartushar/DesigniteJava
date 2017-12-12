@@ -11,11 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
+import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
-import Designite.SourceModel.SM_SourceItem.AccessStates;
 
 public class SM_MethodTest extends DesigniteTests {
 

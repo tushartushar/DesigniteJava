@@ -35,10 +35,6 @@ public abstract class SM_SourceItem {
 		return accessModifier;
 	}
 
-	public enum AccessStates {
-		PUBLIC, PROTECTED, DEFAULT, PRIVATE
-	}
-
 	// TODO check default case
 	void setAccessModifier(int modifier) {
 		if (Modifier.isPublic(modifier))

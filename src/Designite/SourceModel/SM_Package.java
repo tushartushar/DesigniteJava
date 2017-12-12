@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
-public class SM_Package extends SM_SourceItem {
+public class SM_Package extends SM_SourceItem implements MetricsExtractor {
 	private List<CompilationUnit> compilationUnitList;
 	// private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<SM_Type>();
@@ -60,13 +60,7 @@ public class SM_Package extends SM_SourceItem {
 		}
 		print(writer, "----");
 	}
-
-	@Override
-	public void resolve() {
-		for (SM_Type type : typeList) 
-			type.resolve();
-	}
-
+	
 	@Override
 	public void parse() {
 
@@ -93,6 +87,20 @@ public class SM_Package extends SM_SourceItem {
 			}
 		}
 		parseTypes(this);
+	}
+
+	@Override
+	public void resolve() {
+		for (SM_Type type : typeList) { 
+			type.resolve();
+		}
+	}
+
+	@Override
+	public void extractMetrics() {
+		for (SM_Type type : typeList) { 
+			type.extractMetrics();
+		}
 	}
 
 

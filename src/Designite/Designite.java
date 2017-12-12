@@ -26,6 +26,7 @@ public class Designite {
 		Logger.logFile = getlogFileName(argsObj);
 		project.parse();
 		project.resolve();
+		project.extractMetrics();
 		PrintWriter writer = getDebugLogStream(argsObj);
 		project.printDebugLog(writer);
 		if (writer != null)

@@ -11,6 +11,7 @@ public abstract class DesigniteTests {
 	protected static final String CALLED_METHOD_TEST_INPUT_FILE_PATH = getTestingPath() + File.separator + "calledMethodTestInput.txt";
 	protected static final String TEST_BATCH_FILE_PATH = getTestingPath() + File.separator + "testBatchFile.txt";
 	protected static final String IN_BATCH_FILE_PATH = getTestingPath() + File.separator + "inBatchFile.txt";
+	protected static final String METRICS_FILE_PATH = getTestingPath() + File.separator + "metricsFile.txt";
 	
 	protected static final String PARAMETER_TEST_INPUT_FILE_CONTENT = "[Source folder]\n"
 			+ getTestingPath() + File.separator + "test_inputs";
@@ -22,6 +23,8 @@ public abstract class DesigniteTests {
 			+ System.getProperty("user.dir") + "\n\n"
 			+ "[Output folder]\n"
 			+ System.getProperty("user.dir") + File.separator + "temp";
+	protected static final String METRICS_FILE_CONTENT = "[Source folder]\n"
+			+ getTestingPath() + File.separator + "metrics";
 	
 	protected static String getTestingPath() {
 		return System.getProperty("user.dir") + 

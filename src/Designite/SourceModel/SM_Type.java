@@ -11,8 +11,10 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import Designite.metrics.TypeMetrics;
+
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem {
+public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
 	private SM_Package parentPkg;
@@ -23,6 +25,7 @@ public class SM_Type extends SM_SourceItem {
 
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
+	private TypeMetrics typeMetrics;
 	private List<SM_Type> supertypes = new ArrayList<SM_Type>();
 	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
 
@@ -43,6 +46,11 @@ public class SM_Type extends SM_SourceItem {
 		setAccessModifier(typeDeclaration.getModifiers());
 		setSuperClass();
 		setImportList(compilationUnit);
+		typeMetrics = new TypeMetrics(fieldList);
+	}
+	
+	public TypeMetrics getTypeMetrics() {
+		return typeMetrics;
 	}
 
 	public TypeDeclaration getTypeDeclaration() {
@@ -184,6 +192,11 @@ public class SM_Type extends SM_SourceItem {
 			return;
 		if(!referencedTypeList.contains(refType))
 			referencedTypeList.add(refType);
+	}
+
+	@Override
+	public void extractMetrics() {
+		typeMetrics.extractMetrics();
 	}
 
 }

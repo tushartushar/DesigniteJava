@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import Designite.InputArgs;
 import Util.Logger;
 
-public class SM_Project extends SM_SourceItem {
+public class SM_Project extends SM_SourceItem implements MetricsExtractor {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;
@@ -207,6 +207,14 @@ public class SM_Project extends SM_SourceItem {
 		Logger.log("Resolving symbols...");
 		for (SM_Package pkg : packageList) {
 			pkg.resolve();
+		}
+	}
+	
+	@Override
+	public void extractMetrics() {
+		Logger.log("Extracting metrics...");
+		for (SM_Package pkg : packageList) {
+			pkg.extractMetrics();
 		}
 	}
 
