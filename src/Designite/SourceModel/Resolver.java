@@ -78,10 +78,9 @@ class Resolver {
 		ITypeBinding binding = type.resolveBinding();
 		if (binding == null)
 			return null;
-		SM_Package pkg = findPackage(binding.getPackage().getName(),project);
-		if (pkg !=null)
-		{
-			return findType (binding.getName(), pkg);
+		SM_Package pkg = findPackage(binding.getPackage().getName(), project);
+		if (pkg !=null) {
+			return findType(binding.getName(), pkg);
 		}
 		return null;
 	}

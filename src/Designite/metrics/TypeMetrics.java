@@ -4,32 +4,56 @@ import java.util.List;
 
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Type;
 
 public class TypeMetrics {
 	
 	private int numOfFields;
 	private int numOfPublicFields;
+	private int numOfMethods;
+	private int numOfPublicMethods;
+	private int depthOfInheritance;
 	
-	private List<SM_Field> fields;
+	private SM_Type type;
 	
-	public TypeMetrics(List<SM_Field> fields) {
-		this.fields = fields;
-		
-		numOfFields = 0;
-		numOfPublicFields = 0;
+	public TypeMetrics(SM_Type type) {
+		this.type = type;
 	}
 	
 	public void extractMetrics() {
-		extractFieldMetrics();
+		extractNumOfFieldMetrics();
+		extractNumOfMethodsMetrics();
+		extractDepthOfInheritance();
 	}
 	
-	private void extractFieldMetrics() {
-		for (SM_Field field : fields) {
+	private void extractNumOfFieldMetrics() {
+		for (SM_Field field : type.getFieldList()) {
 			numOfFields++;
 			if (field.getAccessModifier() == AccessStates.PUBLIC) {
 				numOfPublicFields++;
 			}	
 		}
+	}
+	
+	private void extractNumOfMethodsMetrics() {
+		for (SM_Method method : type.getMethodList()) {
+			numOfMethods++;
+			if (method.getAccessModifier() == AccessStates.PUBLIC) {
+				numOfPublicMethods++;
+			}
+		}
+	}
+	
+	private void extractDepthOfInheritance() {
+		depthOfInheritance += findInheritanceDepth(type);
+	}
+	
+	private int findInheritanceDepth(SM_Type type) {
+		if (type.getSuperTypes().size() == 0) {
+			return 0;
+		}
+		return findInheritanceDepth(type.getSuperTypes().get(0)) + 1;
 	}
 
 	public int getNumOfFields() {
@@ -38,6 +62,18 @@ public class TypeMetrics {
 
 	public int getNumOfPublicFields() {
 		return numOfPublicFields;
+	}
+	
+	public int getNumOfMethods() {
+		return numOfMethods;
+	}
+	
+	public int getNumOfPublicMethods() {
+		return numOfPublicMethods;
+	}
+	
+	public int getInheritanceDepth() {
+		return depthOfInheritance;
 	}
 	
 }

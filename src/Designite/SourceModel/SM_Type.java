@@ -26,7 +26,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
 	private TypeMetrics typeMetrics;
-	private List<SM_Type> supertypes = new ArrayList<SM_Type>();
+	private List<SM_Type> superTypes = new ArrayList<SM_Type>();
 	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
 
 	private List<ImportDeclaration> importList = new ArrayList<>();
@@ -44,9 +44,13 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 		this.compilationUnit = compilationUnit;
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
-		setSuperClass();
+//		setSuperClass();
 		setImportList(compilationUnit);
-		typeMetrics = new TypeMetrics(fieldList);
+		typeMetrics = new TypeMetrics(this);
+	}
+	
+	public List<SM_Type> getSuperTypes() {
+		return superTypes;
 	}
 	
 	public TypeMetrics getTypeMetrics() {
@@ -82,7 +86,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 		return nestedClass;
 	}
 
-	void setImportList(CompilationUnit unit) {
+	private void setImportList(CompilationUnit unit) {
 		ImportVisitor importVisitor = new ImportVisitor();
 		unit.accept(importVisitor);
 		List<ImportDeclaration> imports = importVisitor.getImports();
@@ -93,14 +97,14 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 	public List<ImportDeclaration> getImportList() {
 		return importList;
 	}
-
-	void setSuperClass() {
+	
+	private void setSuperClass() {
 		Type superclass = typeDeclaration.getSuperclassType();
 		if (superclass != null)
 		{
 			SM_Type inferredType = (new Resolver()).resolveType(superclass, parentPkg.getParentProject());
 			if(inferredType != null)
-				supertypes.add(inferredType);
+				superTypes.add(inferredType);
 		}
 			
 	}
@@ -136,7 +140,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 		print(writer, "\tAccess: " + accessModifier);
 		print(writer, "\tInterface: " + isInterface);
 		print(writer, "\tAbstract: " + isAbstract);
-		print(writer, "\tSupertypes: " + convertListToString(supertypes));
+		print(writer, "\tSupertypes: " + ((getSuperTypes().size() != 0) ? getSuperTypes().get(0).getName() : "Object"));
 		print(writer, "\tNested class: " + nestedClass);
 		if (nestedClass)
 			print(writer, "\tContainer class: " + containerClass.getName());
@@ -176,6 +180,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 		for (SM_Field field : fieldList)
 			field.resolve();
 		setReferencedTypes();
+		setSuperClass();
 	}
 
 	private void setReferencedTypes() {

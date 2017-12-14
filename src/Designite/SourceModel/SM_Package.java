@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.ImportDeclaration;
 public class SM_Package extends SM_SourceItem implements MetricsExtractor {
 	private List<CompilationUnit> compilationUnitList;
 	// private List<ImportDeclaration> imports = new ArrayList<>();
-	private List<SM_Type> typeList = new ArrayList<SM_Type>();
+	private List<SM_Type> typeList = new ArrayList<>();
 	// private List<SM_Type> nestedClassList;
 	private SM_Project parentProject;
 
