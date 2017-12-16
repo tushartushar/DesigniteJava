@@ -1,6 +1,6 @@
 package Designite.SourceModel;
 
-public interface MetricsExtractor {
+public interface MetricsExtractable {
 	
 	void extractMetrics();
 }

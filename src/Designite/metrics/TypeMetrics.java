@@ -7,7 +7,7 @@ import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Type;
 
-public class TypeMetrics {
+public class TypeMetrics implements MetricExtractor {
 	
 	private int numOfFields;
 	private int numOfPublicFields;
@@ -21,6 +21,7 @@ public class TypeMetrics {
 		this.type = type;
 	}
 	
+	@Override
 	public void extractMetrics() {
 		extractNumOfFieldMetrics();
 		extractNumOfMethodsMetrics();

@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import Designite.InputArgs;
 import Util.Logger;
 
-public class SM_Project extends SM_SourceItem implements MetricsExtractor {
+public class SM_Project extends SM_SourceItem implements MetricsExtractable {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;

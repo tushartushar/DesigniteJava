@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
-public class SM_Package extends SM_SourceItem implements MetricsExtractor {
+public class SM_Package extends SM_SourceItem implements MetricsExtractable {
 	private List<CompilationUnit> compilationUnitList;
 	// private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<>();

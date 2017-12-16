@@ -9,12 +9,15 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
-public class SM_Method extends SM_SourceItem {
+import Designite.metrics.MethodMetrics;
+
+public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 	private boolean abstractMethod = false;
 	private boolean finalMethod = false;
 	private boolean staticMethod = false;
 	private boolean isConstructor = false;
 	private SM_Type parentType;
+	private MethodMetrics methodMetrics;
 
 	private MethodDeclaration methodDeclaration;
 
@@ -30,6 +33,7 @@ public class SM_Method extends SM_SourceItem {
 		this.methodDeclaration = methodDeclaration;
 		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
+		methodMetrics = new MethodMetrics(parameterList);
 	}
 
 	public void setMethodInfo(MethodDeclaration method) {
@@ -86,6 +90,10 @@ public class SM_Method extends SM_SourceItem {
 		for (SM_LocalVar var : localVarList) {
 			var.parse();
 		}
+	}
+	
+	public MethodMetrics getMethodMetrics() {
+		return methodMetrics;
 	}
 	
 	@Override
@@ -146,6 +154,11 @@ public class SM_Method extends SM_SourceItem {
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
 		setReferencedTypes();
 	}
+	
+	@Override
+	public void extractMetrics() {
+		methodMetrics.extractMetrics();
+	}
 
 	private void setReferencedTypes() {
 		for (SM_Parameter param : parameterList)
@@ -164,4 +177,5 @@ public class SM_Method extends SM_SourceItem {
 	public List<SM_Type> getReferencedTypeList() {
 		return referencedTypeList;
 	}
+
 }

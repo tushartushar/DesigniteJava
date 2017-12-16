@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import Designite.metrics.TypeMetrics;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractor {
+public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
 	private SM_Package parentPkg;
@@ -202,6 +202,9 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractor {
 	@Override
 	public void extractMetrics() {
 		typeMetrics.extractMetrics();
+		for (SM_Method method : methodList) {
+			method.extractMetrics();
+		}
 	}
 
 }
