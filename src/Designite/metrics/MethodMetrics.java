@@ -11,6 +11,7 @@ public class MethodMetrics implements MetricExtractor {
 
 	private int numOfParameters;
 	private int cyclomaticComplexity;
+	private int numOfLines;
 	
 	private MethodDeclaration methodDeclaration;
 	private List<SM_Parameter> parameters;
@@ -24,6 +25,7 @@ public class MethodMetrics implements MetricExtractor {
 	public void extractMetrics() {
 		extractNumOfParametersMetrics();
 		extractCyclomaticComplexity();
+		extractNumberOfLines();
 	}
 	
 	private void extractNumOfParametersMetrics() {
@@ -46,6 +48,11 @@ public class MethodMetrics implements MetricExtractor {
 			 + 1;
 	}
 	
+	private void extractNumberOfLines() {
+		String body = methodDeclaration.getBody().toString();
+		numOfLines = body.length() - body.replace("\n", "").length();
+	}
+	
 	public int getNumOfParameters() {
 		return numOfParameters;
 	}
@@ -53,6 +60,11 @@ public class MethodMetrics implements MetricExtractor {
 	public int getCyclomaticComplexity() {
 		return cyclomaticComplexity;
 	}
+
+	public int getNumOfLines() {
+		return numOfLines;
+	}
+
 	
 	
 }

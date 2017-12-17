@@ -46,7 +46,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		setAccessModifier(typeDeclaration.getModifiers());
 //		setSuperClass();
 		setImportList(compilationUnit);
-		typeMetrics = new TypeMetrics(this);
+		typeMetrics = new TypeMetrics(fieldList, methodList, superTypes, typeDeclaration);
 	}
 	
 	public List<SM_Type> getSuperTypes() {

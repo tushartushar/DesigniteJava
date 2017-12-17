@@ -25,8 +25,9 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable {
 	}
 
 	
-	 public List<CompilationUnit> getCompilationUnitList() { return
-	  compilationUnitList; }
+	 public List<CompilationUnit> getCompilationUnitList() { 
+		 return compilationUnitList; 
+     }
 	 
 
 	public List<SM_Type> getTypeList() {

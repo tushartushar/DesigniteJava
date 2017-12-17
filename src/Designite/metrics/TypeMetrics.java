@@ -2,6 +2,8 @@ package Designite.metrics;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Method;
@@ -14,11 +16,21 @@ public class TypeMetrics implements MetricExtractor {
 	private int numOfMethods;
 	private int numOfPublicMethods;
 	private int depthOfInheritance;
+	private int numOfLines;
 	
-	private SM_Type type;
+	private List<SM_Field> fieldList;
+	private List<SM_Method> methodList;
+	private List<SM_Type> superTypes;
+	private TypeDeclaration typeDeclaration;
 	
-	public TypeMetrics(SM_Type type) {
-		this.type = type;
+	public TypeMetrics(List<SM_Field> fieldList
+			, List<SM_Method> methodList
+			, List<SM_Type> superTypes
+			, TypeDeclaration typeDeclaration) {
+		this.fieldList = fieldList;
+		this.methodList = methodList;
+		this.superTypes = superTypes;
+		this.typeDeclaration = typeDeclaration;
 	}
 	
 	@Override
@@ -26,10 +38,11 @@ public class TypeMetrics implements MetricExtractor {
 		extractNumOfFieldMetrics();
 		extractNumOfMethodsMetrics();
 		extractDepthOfInheritance();
+		extractNumberOfLines();
 	}
 	
 	private void extractNumOfFieldMetrics() {
-		for (SM_Field field : type.getFieldList()) {
+		for (SM_Field field : fieldList) {
 			numOfFields++;
 			if (field.getAccessModifier() == AccessStates.PUBLIC) {
 				numOfPublicFields++;
@@ -38,7 +51,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumOfMethodsMetrics() {
-		for (SM_Method method : type.getMethodList()) {
+		for (SM_Method method : methodList) {
 			numOfMethods++;
 			if (method.getAccessModifier() == AccessStates.PUBLIC) {
 				numOfPublicMethods++;
@@ -47,14 +60,19 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractDepthOfInheritance() {
-		depthOfInheritance += findInheritanceDepth(type);
+		depthOfInheritance += findInheritanceDepth(superTypes);
 	}
 	
-	private int findInheritanceDepth(SM_Type type) {
-		if (type.getSuperTypes().size() == 0) {
+	private void extractNumberOfLines() {
+		String body = typeDeclaration.toString();
+		numOfLines = body.length() - body.replace("\n", "").length();
+	}
+	
+	private int findInheritanceDepth(List<SM_Type> superTypes) {
+		if (superTypes.size() == 0) {
 			return 0;
 		}
-		return findInheritanceDepth(type.getSuperTypes().get(0)) + 1;
+		return findInheritanceDepth(superTypes.get(0).getSuperTypes()) + 1;
 	}
 
 	public int getNumOfFields() {
@@ -75,6 +93,10 @@ public class TypeMetrics implements MetricExtractor {
 	
 	public int getInheritanceDepth() {
 		return depthOfInheritance;
+	}
+
+	public int getNumOfLines() {
+		return numOfLines;
 	}
 	
 }

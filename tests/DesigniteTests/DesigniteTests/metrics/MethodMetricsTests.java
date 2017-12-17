@@ -40,4 +40,12 @@ public class MethodMetricsTests extends DesigniteTests {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testNumOfLines() {
+		int expected = 24;
+		int actual = methodMetrics.getNumOfLines();
+		
+		assertEquals(expected, actual);
+	}
 }

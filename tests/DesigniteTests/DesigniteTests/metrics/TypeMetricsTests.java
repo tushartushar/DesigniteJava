@@ -65,4 +65,11 @@ public class TypeMetricsTests extends DesigniteTests {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testNumOfLines() {
+		int expected = 30;
+		int actual = typeMetrics.getNumOfLines();
+		
+		assertEquals(expected, actual);
+	}
 }

@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
 public class MethodControlFlowVisitor extends ASTVisitor {
-	
+
 	private int numOfIfStatements;
 	private int numOfSwitchCaseStatements;
 	private int numOfForStatements;

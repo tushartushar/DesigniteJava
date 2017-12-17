@@ -6,6 +6,8 @@ public class TestMetricsClass extends AnotherClass {
     public String[] bar;
 
     public void publicMethod(String parameter1, int parameter2, YetAnotherClass parameter3) {
+        
+        // To test cyclomatic complexity
         if (true) {
             for (int i = 0; i < 5; i++) {
                 for (String b : bar) {
