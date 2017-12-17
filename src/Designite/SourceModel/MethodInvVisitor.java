@@ -14,7 +14,6 @@ public class MethodInvVisitor extends ASTVisitor {
 	private MethodDeclaration methodDeclaration;
 
 	public MethodInvVisitor(MethodDeclaration methodDeclaration) {
-		super();
 		this.methodDeclaration = methodDeclaration;
 	}
 	

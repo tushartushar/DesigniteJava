@@ -32,4 +32,12 @@ public class MethodMetricsTests extends DesigniteTests {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testCyclomaicComplexity() {
+		int expected = 9;
+		int actual = methodMetrics.getCyclomaticComplexity();
+		
+		assertEquals(expected, actual);
+	}
 }

@@ -33,7 +33,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 		this.methodDeclaration = methodDeclaration;
 		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
-		methodMetrics = new MethodMetrics(parameterList);
+		methodMetrics = new MethodMetrics(parameterList, methodDeclaration);
 	}
 
 	public void setMethodInfo(MethodDeclaration method) {
