@@ -81,4 +81,12 @@ public class TypeMetricsTests extends DesigniteTests {
 		assertEquals(expected, actual);
 
 	}
+	
+	@Test
+	public void testWeightedMethodsPerClass() {
+		int expected = 10;
+		int actual = typeMetrics.getWeightedMethodsPerClass();
+		
+		assertEquals(expected, actual);
+	}
 }

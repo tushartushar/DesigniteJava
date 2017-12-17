@@ -190,6 +190,15 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		setReferencedTypes();
 		setSuperClass();
 	}
+	
+	@Override
+	public void extractMetrics() {
+		for (SM_Method method : methodList) {
+			method.extractMetrics();
+			typeMetrics.addCCToWeightedMethodPerCLass(method.getCyclomaticComplexity());
+		}
+		typeMetrics.extractMetrics();
+	}
 
 	private void setReferencedTypes() {
 		for (SM_Field field:fieldList)
@@ -205,14 +214,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 			return;
 		if(!referencedTypeList.contains(refType))
 			referencedTypeList.add(refType);
-	}
-
-	@Override
-	public void extractMetrics() {
-		typeMetrics.extractMetrics();
-		for (SM_Method method : methodList) {
-			method.extractMetrics();
-		}
 	}
 
 }
