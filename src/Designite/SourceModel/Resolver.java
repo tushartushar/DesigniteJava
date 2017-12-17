@@ -98,16 +98,11 @@ class Resolver {
 		} else {
 			inferTypeInfo(parentProject, typeInfo, typeNode);
 		}
-		System.out.println(typeInfo.toString());
 		return typeInfo;
 	}
 
 	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
 		ITypeBinding iType = typeOfVar.resolveBinding();
-//		System.out.println(iType);
-//		System.out.println(iType.isParameterizedType());
-//		for (ITypeBinding foo : iType.getTypeArguments()) {System.out.println(foo.isFromSource());}
-//		String qualified = typeOfVar.resolveBinding().getQualifiedName();
 		inferPrimitiveType(parentProject, typeInfo, iType);
 		infereParametrized(parentProject, typeInfo, iType);
 	}

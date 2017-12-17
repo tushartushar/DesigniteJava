@@ -22,7 +22,7 @@ public class TypeMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		typeMetrics = project.getPackageList().get(0).getTypeList().get(1).getTypeMetrics();
+		typeMetrics = project.getPackageList().get(0).getTypeList().get(3).getTypeMetrics();
 	}
 	
 	@Test
@@ -71,5 +71,14 @@ public class TypeMetricsTests extends DesigniteTests {
 		int actual = typeMetrics.getNumOfLines();
 		
 		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testNumOfChildren() {
+		int expected = 2;
+		int actual = typeMetrics.getNumOfChildren();
+		
+		assertEquals(expected, actual);
+
 	}
 }

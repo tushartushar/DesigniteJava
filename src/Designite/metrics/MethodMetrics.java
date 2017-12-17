@@ -65,6 +65,4 @@ public class MethodMetrics implements MetricExtractor {
 		return numOfLines;
 	}
 
-	
-	
 }

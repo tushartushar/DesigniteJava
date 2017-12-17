@@ -1,5 +1,6 @@
 package Designite.metrics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -17,20 +18,26 @@ public class TypeMetrics implements MetricExtractor {
 	private int numOfPublicMethods;
 	private int depthOfInheritance;
 	private int numOfLines;
+	private int numOfChildren;
 	
 	private List<SM_Field> fieldList;
 	private List<SM_Method> methodList;
 	private List<SM_Type> superTypes;
+	private List<SM_Type> subTypes;
 	private TypeDeclaration typeDeclaration;
 	
 	public TypeMetrics(List<SM_Field> fieldList
 			, List<SM_Method> methodList
 			, List<SM_Type> superTypes
+			, List<SM_Type> subTypes
 			, TypeDeclaration typeDeclaration) {
 		this.fieldList = fieldList;
 		this.methodList = methodList;
 		this.superTypes = superTypes;
+		this.subTypes = subTypes;
 		this.typeDeclaration = typeDeclaration;
+		
+		subTypes = new ArrayList<>();
 	}
 	
 	@Override
@@ -39,6 +46,7 @@ public class TypeMetrics implements MetricExtractor {
 		extractNumOfMethodsMetrics();
 		extractDepthOfInheritance();
 		extractNumberOfLines();
+		extractNumberOfChildren();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -66,6 +74,10 @@ public class TypeMetrics implements MetricExtractor {
 	private void extractNumberOfLines() {
 		String body = typeDeclaration.toString();
 		numOfLines = body.length() - body.replace("\n", "").length();
+	}
+	
+	private void extractNumberOfChildren() {
+		numOfChildren = subTypes.size();
 	}
 	
 	private int findInheritanceDepth(List<SM_Type> superTypes) {
@@ -97,6 +109,10 @@ public class TypeMetrics implements MetricExtractor {
 
 	public int getNumOfLines() {
 		return numOfLines;
+	}
+
+	public int getNumOfChildren() {
+		return numOfChildren;
 	}
 	
 }

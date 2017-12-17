@@ -26,12 +26,13 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
 	private TypeMetrics typeMetrics;
-	private List<SM_Type> superTypes = new ArrayList<SM_Type>();
-	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
+	private List<SM_Type> superTypes = new ArrayList<>();
+	private List<SM_Type> subTypes = new ArrayList<>();
+	private List<SM_Type> referencedTypeList = new ArrayList<>();
 
 	private List<ImportDeclaration> importList = new ArrayList<>();
-	private List<SM_Method> methodList = new ArrayList<SM_Method>();
-	private List<SM_Field> fieldList = new ArrayList<SM_Field>();
+	private List<SM_Method> methodList = new ArrayList<>();
+	private List<SM_Field> fieldList = new ArrayList<>();
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
 		parentPkg = pkg;
@@ -46,7 +47,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		setAccessModifier(typeDeclaration.getModifiers());
 //		setSuperClass();
 		setImportList(compilationUnit);
-		typeMetrics = new TypeMetrics(fieldList, methodList, superTypes, typeDeclaration);
+		typeMetrics = new TypeMetrics(fieldList, methodList, superTypes, subTypes, typeDeclaration);
 	}
 	
 	public List<SM_Type> getSuperTypes() {
@@ -105,8 +106,15 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 			SM_Type inferredType = (new Resolver()).resolveType(superclass, parentPkg.getParentProject());
 			if(inferredType != null)
 				superTypes.add(inferredType);
+				inferredType.addThisAsChildToSuperType(this);
 		}
 			
+	}
+	
+	private void addThisAsChildToSuperType(SM_Type child) {
+		if (!subTypes.contains(child)) {
+			subTypes.add(child);
+		}
 	}
 
 	public List<SM_Method> getMethodList() {

@@ -22,7 +22,7 @@ public class MethodMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		methodMetrics = project.getPackageList().get(0).getTypeList().get(1).getMethodList().get(0).getMethodMetrics();
+		methodMetrics = project.getPackageList().get(0).getTypeList().get(3).getMethodList().get(0).getMethodMetrics();
 	}
 	
 	@Test
