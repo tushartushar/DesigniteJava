@@ -48,6 +48,7 @@ public class TypeMetrics implements MetricExtractor {
 		extractDepthOfInheritance();
 		extractNumberOfLines();
 		extractNumberOfChildren();
+		extractWeightedMethodsPerClass();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -88,8 +89,10 @@ public class TypeMetrics implements MetricExtractor {
 		return findInheritanceDepth(superTypes.get(0).getSuperTypes()) + 1;
 	}
 	
-	public void addCCToWeightedMethodPerCLass(int cc) {
-		weightedMethodsPerClass += cc;
+	private void extractWeightedMethodsPerClass() {
+		for (SM_Method method : methodList) {
+			weightedMethodsPerClass += method.getMethodMetrics().getCyclomaticComplexity();
+		} 
 	}
 
 	public int getNumOfFields() {

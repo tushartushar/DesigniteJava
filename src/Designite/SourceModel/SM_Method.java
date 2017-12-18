@@ -96,10 +96,6 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 		return methodMetrics;
 	}
 	
-	public int getCyclomaticComplexity() {
-		return methodMetrics.getCyclomaticComplexity();
-	}
-	
 	@Override
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "\t\tMethod: " + name);

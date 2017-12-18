@@ -195,7 +195,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	public void extractMetrics() {
 		for (SM_Method method : methodList) {
 			method.extractMetrics();
-			typeMetrics.addCCToWeightedMethodPerCLass(method.getCyclomaticComplexity());
 		}
 		typeMetrics.extractMetrics();
 	}
