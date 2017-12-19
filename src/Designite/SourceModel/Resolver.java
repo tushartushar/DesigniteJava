@@ -109,7 +109,6 @@ class Resolver {
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType.isFromSource()) {
-			System.out.println(iType.getQualifiedName());
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null) {
 				typeInfo.setTypeObj(inferredType); 

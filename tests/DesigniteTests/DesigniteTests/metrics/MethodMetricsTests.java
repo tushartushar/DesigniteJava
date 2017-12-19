@@ -6,7 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.metrics.MethodMetrics;
 import DesigniteTests.DesigniteTests;
 
@@ -22,7 +24,9 @@ public class MethodMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		methodMetrics = project.getPackageList().get(0).getTypeList().get(3).getMethodList().get(0).getMethodMetrics();
+		SM_Type type = project.getPackageList().get(0).getTypeList().get(5);
+		SM_Method method = type.getMethodList().get(0);
+		methodMetrics = method.getMethodMetrics();
 	}
 	
 	@Test

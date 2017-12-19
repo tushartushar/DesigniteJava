@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import Designite.InputArgs;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.metrics.TypeMetrics;
 import DesigniteTests.DesigniteTests;
 
@@ -22,7 +23,8 @@ public class TypeMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		typeMetrics = project.getPackageList().get(0).getTypeList().get(3).getTypeMetrics();
+		SM_Type type = project.getPackageList().get(0).getTypeList().get(5); 
+		typeMetrics = type.getTypeMetrics();
 	}
 	
 	@Test
@@ -59,7 +61,7 @@ public class TypeMetricsTests extends DesigniteTests {
 	
 	@Test
 	public void testInheritanceDepth() {
-		int expected = 2;
+		int expected = 3;
 		int actual = typeMetrics.getInheritanceDepth();
 		
 		assertEquals(expected, actual);

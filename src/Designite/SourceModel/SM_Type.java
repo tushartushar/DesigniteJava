@@ -99,14 +99,35 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		return importList;
 	}
 	
+	private void setSuperTypes() {
+		setSuperClass();
+		setSuperInterface();
+	}
+	
 	private void setSuperClass() {
 		Type superclass = typeDeclaration.getSuperclassType();
 		if (superclass != null)
 		{
 			SM_Type inferredType = (new Resolver()).resolveType(superclass, parentPkg.getParentProject());
-			if(inferredType != null)
+			if(inferredType != null) {
 				superTypes.add(inferredType);
 				inferredType.addThisAsChildToSuperType(this);
+			}
+		}
+			
+	}
+	
+	private void setSuperInterface() {
+		List<Type> superInterfaces = typeDeclaration.superInterfaceTypes();
+		if (superInterfaces != null)
+		{
+			for (Type superInterface : superInterfaces)  {
+				SM_Type inferredType = (new Resolver()).resolveType(superInterface, parentPkg.getParentProject());
+				if(inferredType != null) {
+					superTypes.add(inferredType);
+					inferredType.addThisAsChildToSuperType(this);
+				}
+			}
 		}
 			
 	}
@@ -188,7 +209,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		for (SM_Field field : fieldList)
 			field.resolve();
 		setReferencedTypes();
-		setSuperClass();
+		setSuperTypes();
 	}
 	
 	@Override

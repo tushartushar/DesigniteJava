@@ -1,6 +1,6 @@
 package metricsPackage;
 
-public class TestMetricsClass extends AnotherClass {
+public class TestMetricsClass extends AnotherClass implements InterfaceGrandChild, InterfaceChild2 {
 	
     private String foo;
     public String[] bar;

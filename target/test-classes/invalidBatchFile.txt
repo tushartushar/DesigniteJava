@@ -1,7 +1,0 @@
-[Source-folder]
-C:\Users\Alex\workspace\DesigniteJava\src
-
-
-
-
-C:\Users\Alex\workspace\DesigniteJava\tests\temp

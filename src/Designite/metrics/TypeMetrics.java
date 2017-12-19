@@ -86,7 +86,11 @@ public class TypeMetrics implements MetricExtractor {
 		if (superTypes.size() == 0) {
 			return 0;
 		}
-		return findInheritanceDepth(superTypes.get(0).getSuperTypes()) + 1;
+		List<SM_Type> deeperSuperTypes = new ArrayList<>();
+		for (SM_Type superType : superTypes) {
+			deeperSuperTypes.addAll(superType.getSuperTypes());
+		}
+		return findInheritanceDepth(deeperSuperTypes) + 1;
 	}
 	
 	private void extractWeightedMethodsPerClass() {

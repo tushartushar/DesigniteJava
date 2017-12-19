@@ -49,8 +49,14 @@ public class MethodMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumberOfLines() {
-		String body = methodDeclaration.getBody().toString();
-		numOfLines = body.length() - body.replace("\n", "").length();
+		if (methodHasBody()) {
+			String body = methodDeclaration.getBody().toString();
+			numOfLines = body.length() - body.replace("\n", "").length();
+		}
+	}
+	
+	private boolean methodHasBody() {
+		return methodDeclaration.getBody() != null;
 	}
 	
 	public int getNumOfParameters() {
