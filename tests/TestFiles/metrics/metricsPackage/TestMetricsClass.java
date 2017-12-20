@@ -4,9 +4,13 @@ public class TestMetricsClass extends AnotherClass implements InterfaceGrandChil
 	
     private String foo;
     public String[] bar;
+    private ForeignClass1 fc1; 
 
-    public void publicMethod(String parameter1, int parameter2, YetAnotherClass parameter3) {
+    public void publicMethod(String parameter1, int parameter2, ForeignClass2 parameter3) {
         
+    	ForeignClass3 fc3 = new ForeignClass3();
+    	ForeignClass4.func();
+    	
         // To test cyclomatic complexity
         if (true) {
             for (int i = 0; i < 5; i++) {

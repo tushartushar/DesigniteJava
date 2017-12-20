@@ -23,13 +23,13 @@ public class TypeMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		SM_Type type = project.getPackageList().get(0).getTypeList().get(5); 
+		SM_Type type = project.getPackageList().get(0).getTypeList().get(7); 
 		typeMetrics = type.getTypeMetrics();
 	}
 	
 	@Test
 	public void testNumOfFieldsProperlyReturned() {
-		int expected = 2;
+		int expected = 3;
 		int actual = typeMetrics.getNumOfFields();
 		
 		assertEquals(expected, actual);
@@ -69,7 +69,7 @@ public class TypeMetricsTests extends DesigniteTests {
 	
 	@Test
 	public void testNumOfLines() {
-		int expected = 30;
+		int expected = 33;
 		int actual = typeMetrics.getNumOfLines();
 		
 		assertEquals(expected, actual);
@@ -88,6 +88,13 @@ public class TypeMetricsTests extends DesigniteTests {
 	public void testWeightedMethodsPerClass() {
 		int expected = 10;
 		int actual = typeMetrics.getWeightedMethodsPerClass();
+		
+		assertEquals(expected, actual);
+	}
+	
+	public void testFanOutTypes() {
+		int expected = 4;
+		int actual = typeMetrics.getFanOutTypes();
 		
 		assertEquals(expected, actual);
 	}

@@ -24,7 +24,7 @@ public class MethodMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		SM_Type type = project.getPackageList().get(0).getTypeList().get(5);
+		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
 		SM_Method method = type.getMethodList().get(0);
 		methodMetrics = method.getMethodMetrics();
 	}
@@ -47,7 +47,7 @@ public class MethodMetricsTests extends DesigniteTests {
 	
 	@Test
 	public void testNumOfLines() {
-		int expected = 24;
+		int expected = 26;
 		int actual = methodMetrics.getNumOfLines();
 		
 		assertEquals(expected, actual);
