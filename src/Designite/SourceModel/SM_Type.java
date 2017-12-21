@@ -5,13 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.QualifiedName;
+import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.TypeMetrics;
+import Designite.visitors.FieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
 public class SM_Type extends SM_SourceItem implements MetricsExtractable {
@@ -29,10 +34,12 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	private List<SM_Type> superTypes = new ArrayList<>();
 	private List<SM_Type> subTypes = new ArrayList<>();
 	private List<SM_Type> referencedTypeList = new ArrayList<>();
-
+	private List<SM_Type> typesThatReferenceThisList = new ArrayList<>();
 	private List<ImportDeclaration> importList = new ArrayList<>();
 	private List<SM_Method> methodList = new ArrayList<>();
 	private List<SM_Field> fieldList = new ArrayList<>();
+	private List<Name> staticFieldAccesses = new ArrayList<>();
+	private List<SM_Type> staticFieldAccessList = new ArrayList<>();
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
 		parentPkg = pkg;
@@ -47,7 +54,13 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		setAccessModifier(typeDeclaration.getModifiers());
 //		setSuperClass();
 		setImportList(compilationUnit);
-		typeMetrics = new TypeMetrics(fieldList, methodList, superTypes, subTypes, referencedTypeList, typeDeclaration);
+		typeMetrics = new TypeMetrics(fieldList
+				, methodList
+				, superTypes
+				, subTypes
+				, referencedTypeList
+				, typesThatReferenceThisList
+				, typeDeclaration);
 	}
 	
 	public List<SM_Type> getSuperTypes() {
@@ -199,7 +212,10 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		if (fList.size() > 0)
 			fieldList.addAll(fList);
 		parseFields();
-
+		
+		FieldAccessVisitor fieldAccessVisitor = new FieldAccessVisitor();
+		typeDeclaration.accept(fieldAccessVisitor);
+		staticFieldAccesses = fieldAccessVisitor.getStaticFieldAccesses();
 	}
 
 	@Override
@@ -208,8 +224,14 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 			method.resolve();
 		for (SM_Field field : fieldList)
 			field.resolve();
+		setStaticAccessList();
 		setReferencedTypes();
+		setTypesThatReferenceThis();
 		setSuperTypes();
+	}
+	
+	private void setStaticAccessList() {
+		staticFieldAccessList = (new Resolver()).inferStaticAccess(staticFieldAccesses, this);
 	}
 	
 	@Override
@@ -222,18 +244,30 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 
 	private void setReferencedTypes() {
 		for (SM_Field field:fieldList)
-			if(!field.isPrimitiveType())
-				addUnique(field.getType());
-		for (SM_Method method:methodList)
-			for (SM_Type refType:method.getReferencedTypeList())
-				addUnique(refType);
+			if(!field.isPrimitiveType()) {
+				addUnique(this, field.getType(), referencedTypeList);
+			}	
+		for (SM_Method method:methodList) {
+			for (SM_Type refType:method.getReferencedTypeList()) {
+				addUnique(this, refType, referencedTypeList);
+			}
+		}
+		for (SM_Type staticAccessType : staticFieldAccessList) {
+			addUnique(this, staticAccessType, referencedTypeList);
+		}
+	}
+	
+	private void setTypesThatReferenceThis() {
+		for (SM_Type refType : referencedTypeList) {
+			addUnique(refType, this, typesThatReferenceThisList);
+		}
 	}
 
-	private void addUnique(SM_Type refType) {
-		if(refType == null)
+	private void addUnique(SM_Type type, SM_Type typeToAdd, List<SM_Type> list) {
+		if(typeToAdd == null)
 			return;
-		if(!referencedTypeList.contains(refType))
-			referencedTypeList.add(refType);
+		if(!type.referencedTypeList.contains(typeToAdd))
+			type.referencedTypeList.add(typeToAdd);
 	}
 
 }

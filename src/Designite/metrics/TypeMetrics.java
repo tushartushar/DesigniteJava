@@ -21,12 +21,14 @@ public class TypeMetrics implements MetricExtractor {
 	private int numOfChildren;
 	private int weightedMethodsPerClass;
 	private int fanOutTypes;
+	private int fanInTypes;
 	
 	private List<SM_Field> fieldList;
 	private List<SM_Method> methodList;
 	private List<SM_Type> superTypes;
 	private List<SM_Type> subTypes;
 	private List<SM_Type> referencedTypeList;
+	private List<SM_Type> typesThatReferenceThisList;
 	private TypeDeclaration typeDeclaration;
 	
 	public TypeMetrics(List<SM_Field> fieldList
@@ -34,6 +36,7 @@ public class TypeMetrics implements MetricExtractor {
 			, List<SM_Type> superTypes
 			, List<SM_Type> subTypes
 			, List<SM_Type> referencedTypeList
+			, List<SM_Type> typesThatReferenceThisList
 			, TypeDeclaration typeDeclaration) {
 		this.fieldList = fieldList;
 		this.methodList = methodList;
@@ -41,6 +44,7 @@ public class TypeMetrics implements MetricExtractor {
 		this.subTypes = subTypes;
 		this.typeDeclaration = typeDeclaration;
 		this.referencedTypeList = referencedTypeList;
+		this.typesThatReferenceThisList = typesThatReferenceThisList;
 		
 		subTypes = new ArrayList<>();
 	}
@@ -54,6 +58,7 @@ public class TypeMetrics implements MetricExtractor {
 		extractNumberOfChildren();
 		extractWeightedMethodsPerClass();
 		extractFanOutTypes();
+		extractFanInTypes();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -107,6 +112,10 @@ public class TypeMetrics implements MetricExtractor {
 	private void extractFanOutTypes() {
 		fanOutTypes += referencedTypeList.size();
 	}
+	
+	private void extractFanInTypes() {
+		fanInTypes += typesThatReferenceThisList.size();
+	}
 
 	public int getNumOfFields() {
 		return numOfFields;
@@ -142,6 +151,10 @@ public class TypeMetrics implements MetricExtractor {
 
 	public int getFanOutTypes() {
 		return fanOutTypes;
+	}
+
+	public int getFanInTypes() {
+		return fanInTypes;
 	}
 	
 }

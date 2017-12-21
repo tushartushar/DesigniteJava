@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.ArrayType;
+import org.eclipse.jdt.core.dom.FieldAccess;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.Type;
 
@@ -16,8 +19,32 @@ class Resolver {
 	private boolean isArray = false;
 	private Type arrayType;
 	
+	public List<SM_Type> inferStaticAccess(List<Name> staticFieldAccesses, SM_Type type) {
+		List<SM_Type> typesOfStaticAccesses = new ArrayList<>();
+		for (Name typeName : staticFieldAccesses) {
+			try {
+				ITypeBinding iType = (ITypeBinding) typeName.resolveBinding();
+				if (iType != null) {
+					SM_Package sm_pkg = findPackage(iType.getPackage().getName().toString(),
+							type.getParentPkg().getParentProject());
+					if (sm_pkg != null) {
+						SM_Type sm_type = findType(iType.getName().toString(), sm_pkg);
+						if (sm_type != null) {
+							if (!typesOfStaticAccesses.contains(sm_type)) {
+								typesOfStaticAccesses.add(sm_type);
+							}
+						}
+					}
+				}
+			} catch (ClassCastException e) {
+				
+			}
+		}
+		return typesOfStaticAccesses;
+	}
+	
 	public List<SM_Method> inferCalledMethods(List<MethodInvocation> calledMethods, SM_Type parentType) {
-		List<SM_Method> calledMethodsList = new ArrayList<SM_Method>();
+		List<SM_Method> calledMethodsList = new ArrayList<>();
 		for (MethodInvocation method : calledMethods) {
 			IMethodBinding imethod = method.resolveMethodBinding();
 
@@ -56,6 +83,9 @@ class Resolver {
 		for (SM_Method sm_method : type.getMethodList()) {
 			if (sm_method.getName().equals(methodName)) {
 				if (sm_method.getParameterList().size() == parameterCount) {
+					if (parameterCount == 0) {
+						return sm_method;
+					}
 					for (int i = 0; i < parameterCount; i++) {
 						ITypeBinding parameterType = method.getParameterTypes()[i];
 						Type typeToCheck = sm_method.getParameterList().get(i).getTypeBinding();

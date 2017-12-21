@@ -122,8 +122,9 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
 		methodDeclaration.accept(invVisitor);
 		List<MethodInvocation> invList = invVisitor.getCalledMethods();
-		if (invList.size() > 0)
+		if (invList.size() > 0) {
 			calledMethods.addAll(invList);
+		}
 
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for (SingleVariableDeclaration var : variableList) {
@@ -147,10 +148,12 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 
 	@Override
 	public void resolve() {
-		for (SM_Parameter param : parameterList)
+		for (SM_Parameter param : parameterList) {
 			param.resolve();
-		for (SM_LocalVar localVar : localVarList)
+		}
+		for (SM_LocalVar localVar : localVarList) {
 			localVar.resolve();
+		}
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
 		setReferencedTypes();
 	}
@@ -167,6 +170,11 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable {
 		for (SM_LocalVar localVar : localVarList)
 			if (!localVar.isPrimitiveType())
 				addunique(localVar.getType());
+		for (SM_Method methodCall : calledMethodsList) {
+			if (methodCall.isStatic()) {
+				addunique(methodCall.getParentType());
+			}
+		}
 	}
 
 	private void addunique(SM_Type variableType) {

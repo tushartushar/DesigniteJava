@@ -23,7 +23,8 @@ public class TypeMetricsTests extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		SM_Type type = project.getPackageList().get(0).getTypeList().get(7); 
+		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
+		System.out.println(type.getName());
 		typeMetrics = type.getTypeMetrics();
 	}
 	
@@ -92,10 +93,19 @@ public class TypeMetricsTests extends DesigniteTests {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testFanOutTypes() {
-		int expected = 4;
+		int expected = 5;
 		int actual = typeMetrics.getFanOutTypes();
 		
 		assertEquals(expected, actual);
 	}
+	
+//	@Test
+//	public void testFanInTypes() {
+//		int expected = 2;
+//		int actual = typeMetrics.getFanInTypes();
+//		
+//		assertEquals(expected, actual);
+//	}
 }

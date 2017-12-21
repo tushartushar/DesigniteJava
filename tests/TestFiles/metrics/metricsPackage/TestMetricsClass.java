@@ -2,14 +2,14 @@ package metricsPackage;
 
 public class TestMetricsClass extends AnotherClass implements InterfaceGrandChild, InterfaceChild2 {
 	
-    private String foo;
+    private String foo = ForeignClass5.ERROR;
     public String[] bar;
     private ForeignClass1 fc1; 
 
     public void publicMethod(String parameter1, int parameter2, ForeignClass2 parameter3) {
         
     	ForeignClass3 fc3 = new ForeignClass3();
-    	ForeignClass4.func();
+    	int num = ForeignClass4.func();
     	
         // To test cyclomatic complexity
         if (true) {
