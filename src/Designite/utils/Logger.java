@@ -1,4 +1,4 @@
-package Util;
+package Designite.utils;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;

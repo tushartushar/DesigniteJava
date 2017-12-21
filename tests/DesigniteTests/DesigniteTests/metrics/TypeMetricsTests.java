@@ -24,7 +24,6 @@ public class TypeMetricsTests extends DesigniteTests {
 		project.resolve();
 		project.extractMetrics();
 		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
-		System.out.println(type.getName());
 		typeMetrics = type.getTypeMetrics();
 	}
 	

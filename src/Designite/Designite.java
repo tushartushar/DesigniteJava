@@ -3,7 +3,7 @@ package Designite;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import Designite.SourceModel.*;
-import Util.Logger;
+import Designite.utils.Logger;
 
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;

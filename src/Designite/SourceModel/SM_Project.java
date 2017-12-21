@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import Designite.InputArgs;
-import Util.Logger;
+import Designite.utils.Logger;
 
 public class SM_Project extends SM_SourceItem implements MetricsExtractable {
 

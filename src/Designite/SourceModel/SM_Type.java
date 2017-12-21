@@ -249,7 +249,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	}
 	
 	private void setReferencedTypes() {
-		System.out.println(this.name);
 		for (SM_Field field:fieldList)
 			if(!field.isPrimitiveType()) {
 				addUniqueReference(this, field.getType(), false);
