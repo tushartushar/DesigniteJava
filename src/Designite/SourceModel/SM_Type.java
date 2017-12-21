@@ -43,7 +43,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
 		parentPkg = pkg;
-		// It has been checked earlier too
 		if (typeDeclaration == null || compilationUnit == null)
 			throw new NullPointerException();
 
@@ -52,7 +51,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		this.compilationUnit = compilationUnit;
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
-//		setSuperClass();
 		setImportList(compilationUnit);
 		typeMetrics = new TypeMetrics(fieldList
 				, methodList
@@ -74,8 +72,24 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 	public TypeDeclaration getTypeDeclaration() {
 		return typeDeclaration;
 	}
+	
+	public void addReferencedTypeList(SM_Type type) {
+		referencedTypeList.add(type);
+	}
+	
+	public boolean containsTypeInReferencedTypeList(SM_Type type) {
+		return referencedTypeList.contains(type);
+	}
+	
+	public void addTypesThatReferenceThisList(SM_Type type) {
+		typesThatReferenceThisList.add(type);
+	}
+	
+	public boolean containsTypeInTypesThatReferenceThisList(SM_Type type) {
+		return typesThatReferenceThisList.contains(type);
+	}
 
-	void setTypeInfo() {
+	private void setTypeInfo() {
 		int modifier = typeDeclaration.getModifiers();
 		if (Modifier.isAbstract(modifier))
 			isAbstract = true;
@@ -234,40 +248,47 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		staticFieldAccessList = (new Resolver()).inferStaticAccess(staticFieldAccesses, this);
 	}
 	
+	private void setReferencedTypes() {
+		System.out.println(this.name);
+		for (SM_Field field:fieldList)
+			if(!field.isPrimitiveType()) {
+				addUniqueReference(this, field.getType(), false);
+			}	
+		for (SM_Method method:methodList) {
+			for (SM_Type refType:method.getReferencedTypeList()) {
+				addUniqueReference(this, refType, false);
+			}
+		}
+		for (SM_Type staticAccessType : staticFieldAccessList) {
+			addUniqueReference(this, staticAccessType, false);
+		}
+	}
+	
+	private void setTypesThatReferenceThis() {
+		for (SM_Type refType : referencedTypeList) {
+			addUniqueReference(refType, this, true);
+		}
+	}
+	
+	private void addUniqueReference(SM_Type type, SM_Type typeToAdd, boolean invardReference) {
+		if(typeToAdd == null)
+			return;
+		if (invardReference) {
+			if (!type.containsTypeInTypesThatReferenceThisList(typeToAdd)) {
+				type.addTypesThatReferenceThisList(typeToAdd);
+			}
+		} else {
+			if (!type.containsTypeInReferencedTypeList(typeToAdd)) {
+				type.addReferencedTypeList(typeToAdd);
+			}
+		}
+	}
 	@Override
 	public void extractMetrics() {
 		for (SM_Method method : methodList) {
 			method.extractMetrics();
 		}
 		typeMetrics.extractMetrics();
-	}
-
-	private void setReferencedTypes() {
-		for (SM_Field field:fieldList)
-			if(!field.isPrimitiveType()) {
-				addUnique(this, field.getType(), referencedTypeList);
-			}	
-		for (SM_Method method:methodList) {
-			for (SM_Type refType:method.getReferencedTypeList()) {
-				addUnique(this, refType, referencedTypeList);
-			}
-		}
-		for (SM_Type staticAccessType : staticFieldAccessList) {
-			addUnique(this, staticAccessType, referencedTypeList);
-		}
-	}
-	
-	private void setTypesThatReferenceThis() {
-		for (SM_Type refType : referencedTypeList) {
-			addUnique(refType, this, typesThatReferenceThisList);
-		}
-	}
-
-	private void addUnique(SM_Type type, SM_Type typeToAdd, List<SM_Type> list) {
-		if(typeToAdd == null)
-			return;
-		if(!type.referencedTypeList.contains(typeToAdd))
-			type.referencedTypeList.add(typeToAdd);
 	}
 
 }

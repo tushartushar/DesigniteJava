@@ -101,11 +101,11 @@ public class TypeMetricsTests extends DesigniteTests {
 		assertEquals(expected, actual);
 	}
 	
-//	@Test
-//	public void testFanInTypes() {
-//		int expected = 2;
-//		int actual = typeMetrics.getFanInTypes();
-//		
-//		assertEquals(expected, actual);
-//	}
+	@Test
+	public void testFanInTypes() {
+		int expected = 2;
+		int actual = typeMetrics.getFanInTypes();
+		
+		assertEquals(expected, actual);
+	}
 }
