@@ -22,6 +22,7 @@ public class TypeMetrics implements MetricExtractor {
 	private int weightedMethodsPerClass;
 	private int fanOutTypes;
 	private int fanInTypes;
+	private int lcom;
 	
 	private List<SM_Field> fieldList;
 	private List<SM_Method> methodList;
