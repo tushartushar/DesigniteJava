@@ -117,6 +117,10 @@ public class TypeMetrics implements MetricExtractor {
 	private void extractFanInTypes() {
 		fanInTypes += typesThatReferenceThisList.size();
 	}
+	
+	private void extractLCOM() {
+		
+	}
 
 	public int getNumOfFields() {
 		return numOfFields;
