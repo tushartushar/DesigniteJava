@@ -91,10 +91,12 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 
 	private void setTypeInfo() {
 		int modifier = typeDeclaration.getModifiers();
-		if (Modifier.isAbstract(modifier))
+		if (Modifier.isAbstract(modifier)) {
 			isAbstract = true;
-		if (typeDeclaration.isInterface())
+		}
+		if (typeDeclaration.isInterface()) {
 			isInterface = true;
+		}
 	}
 
 	public boolean isAbstract() {

@@ -107,4 +107,35 @@ public class TypeMetricsTests extends DesigniteTests {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testLCOMWhenInterface() {
+		SM_Type someInterface = project.getPackageList().get(0).getTypeList().get(0);
+		
+		int expected = -1;
+		int actual = someInterface.getTypeMetrics().getLcom();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLCOMWhenNoFields() {
+		SM_Type foreignClass4 = project.getPackageList().get(0).getTypeList().get(10);
+		
+		int expected = -1;
+		int actual = foreignClass4.getTypeMetrics().getLcom();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLCOMWhenNoMethods() {
+		SM_Type foreignClass1 = project.getPackageList().get(0).getTypeList().get(9);
+		System.out.println(foreignClass1.getName());
+		
+		int expected = -1;
+		int actual = foreignClass1.getTypeMetrics().getLcom();
+		
+		assertEquals(expected, actual);
+	}
 }

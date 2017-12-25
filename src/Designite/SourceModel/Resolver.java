@@ -22,7 +22,7 @@ class Resolver {
 	public List<SM_Type> inferStaticAccess(List<Name> staticFieldAccesses, SM_Type type) {
 		List<SM_Type> typesOfStaticAccesses = new ArrayList<>();
 		for (Name typeName : staticFieldAccesses) {
-			try {
+			if (typeName.resolveBinding() instanceof ITypeBinding) {
 				ITypeBinding iType = (ITypeBinding) typeName.resolveBinding();
 				if (iType != null) {
 					SM_Package sm_pkg = findPackage(iType.getPackage().getName().toString(),
@@ -36,8 +36,6 @@ class Resolver {
 						}
 					}
 				}
-			} catch (ClassCastException e) {
-				
 			}
 		}
 		return typesOfStaticAccesses;

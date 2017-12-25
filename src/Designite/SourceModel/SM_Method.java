@@ -10,8 +10,9 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import Designite.metrics.MethodMetrics;
+import Designite.utils.models.Vertex;
 
-public class SM_Method extends SM_SourceItem implements MetricsExtractable {
+public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex {
 	private boolean abstractMethod = false;
 	private boolean finalMethod = false;
 	private boolean staticMethod = false;

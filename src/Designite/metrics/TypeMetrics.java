@@ -60,6 +60,7 @@ public class TypeMetrics implements MetricExtractor {
 		extractWeightedMethodsPerClass();
 		extractFanOutTypes();
 		extractFanInTypes();
+		extractLCOM();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -119,7 +120,15 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractLCOM() {
-		
+		if (isNotLcomComputable()) {
+			lcom = -1;
+		}
+	}
+	
+	private boolean isNotLcomComputable() {
+		return typeDeclaration.isInterface() 
+				|| fieldList.size() == 0 
+				|| methodList.size() == 0; 
 	}
 
 	public int getNumOfFields() {
@@ -161,5 +170,9 @@ public class TypeMetrics implements MetricExtractor {
 	public int getFanInTypes() {
 		return fanInTypes;
 	}
-	
+
+	public int getLcom() {
+		return lcom;
+	}
+
 }

@@ -8,7 +8,9 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class SM_Field extends SM_EntitiesWithType {
+import Designite.utils.models.Vertex;
+
+public class SM_Field extends SM_EntitiesWithType implements Vertex {
 	private TypeDeclaration typeDeclaration;
 	private FieldDeclaration fieldDeclaration;
 	private SM_Type parentType;
