@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.TypeMetrics;
-import Designite.visitors.FieldAccessVisitor;
+import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
 public class SM_Type extends SM_SourceItem implements MetricsExtractable {
@@ -229,7 +229,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 			fieldList.addAll(fList);
 		parseFields();
 		
-		FieldAccessVisitor fieldAccessVisitor = new FieldAccessVisitor();
+		StaticFieldAccessVisitor fieldAccessVisitor = new StaticFieldAccessVisitor();
 		typeDeclaration.accept(fieldAccessVisitor);
 		staticFieldAccesses = fieldAccessVisitor.getStaticFieldAccesses();
 	}

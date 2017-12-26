@@ -11,7 +11,7 @@ import Designite.SourceModel.SM_Type;
 import Designite.metrics.TypeMetrics;
 import DesigniteTests.DesigniteTests;
 
-public class TypeMetricsTests extends DesigniteTests {
+public class TypeMetricsTest extends DesigniteTests {
 	
 	private SM_Project project;
 	private TypeMetrics typeMetrics;
@@ -131,7 +131,6 @@ public class TypeMetricsTests extends DesigniteTests {
 	@Test
 	public void testLCOMWhenNoMethods() {
 		SM_Type foreignClass1 = project.getPackageList().get(0).getTypeList().get(9);
-		System.out.println(foreignClass1.getName());
 		
 		int expected = -1;
 		int actual = foreignClass1.getTypeMetrics().getLcom();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
+import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Parameter;
 import Designite.visitors.MethodControlFlowVisitor;
 
@@ -15,10 +16,14 @@ public class MethodMetrics implements MetricExtractor {
 	
 	private MethodDeclaration methodDeclaration;
 	private List<SM_Parameter> parameters;
+	private List<SM_Field> directFieldAccesses;
 	
-	public MethodMetrics(List<SM_Parameter> parameters, MethodDeclaration methodDeclaration) {
+	public MethodMetrics(List<SM_Parameter> parameters, 
+			MethodDeclaration methodDeclaration, 
+			List<SM_Field> directFieldAccesses) {
 		this.parameters = parameters;
 		this.methodDeclaration = methodDeclaration;
+		this.directFieldAccesses = directFieldAccesses;
 	}
 	
 	@Override
@@ -69,6 +74,10 @@ public class MethodMetrics implements MetricExtractor {
 
 	public int getNumOfLines() {
 		return numOfLines;
+	}
+
+	public List<SM_Field> getDirectFieldAccesses() {
+		return directFieldAccesses;
 	}
 
 }

@@ -12,7 +12,7 @@ import Designite.SourceModel.SM_Type;
 import Designite.metrics.MethodMetrics;
 import DesigniteTests.DesigniteTests;
 
-public class MethodMetricsTests extends DesigniteTests {
+public class MethodMetricsTest extends DesigniteTests {
 	
 	private SM_Project project;
 	private MethodMetrics methodMetrics;

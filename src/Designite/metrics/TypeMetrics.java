@@ -7,8 +7,11 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_LocalVar;
 import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
+import Designite.utils.models.Edge;
 
 public class TypeMetrics implements MetricExtractor {
 	
@@ -61,6 +64,7 @@ public class TypeMetrics implements MetricExtractor {
 		extractFanOutTypes();
 		extractFanInTypes();
 		extractLCOM();
+		createEdges();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -123,6 +127,16 @@ public class TypeMetrics implements MetricExtractor {
 		if (isNotLcomComputable()) {
 			lcom = -1;
 		}
+		
+	}
+	
+	private List<Edge> createEdges() {
+		for (SM_Method method : methodList) {
+			for (SM_Parameter var : method.getParameterList()) {
+				System.out.println(var.getName());
+			}
+		}
+		return null;
 	}
 	
 	private boolean isNotLcomComputable() {

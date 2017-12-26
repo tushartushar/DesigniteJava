@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.QualifiedName;
 
-public class FieldAccessVisitor extends ASTVisitor {
+public class StaticFieldAccessVisitor extends ASTVisitor {
 	
 	private List<Name> staticFieldAccesses = new ArrayList<>();
 	

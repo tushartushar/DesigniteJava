@@ -1,5 +1,4 @@
 Designite/SourceModel/MethodInvVisitor.class
-Util/FileReader.class
 Designite/SourceModel/SM_Type.class
 Designite/SourceModel/SM_Field.class
 Designite/SourceModel/FieldVisitor.class
@@ -8,7 +7,6 @@ Designite/SourceModel/SM_EntitiesWithType.class
 Designite/SourceModel/MethodVisitor.class
 Designite/SourceModel/VariableVisitor.class
 Designite/SourceModel/Resolver.class
-Util/Logger.class
 Designite/SourceModel/SM_Package.class
 Designite/InputArgs.class
 Designite/SourceModel/SM_LocalVar.class

@@ -7,10 +7,12 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import Designite.metrics.MethodMetrics;
 import Designite.utils.models.Vertex;
+import Designite.visitors.NameVisitor;
 
 public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex {
 	private boolean abstractMethod = false;
@@ -27,6 +29,8 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	private List<SM_LocalVar> localVarList = new ArrayList<SM_LocalVar>();
 	private List<MethodInvocation> calledMethods = new ArrayList<MethodInvocation>();
 	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
+	private List<SimpleName> namesInMethod = new ArrayList<>();
+	private List<SM_Field> directFieldAccesses = new ArrayList<>();
 
 	public SM_Method(MethodDeclaration methodDeclaration, SM_Type typeObj) {
 		name = methodDeclaration.getName().toString();
@@ -34,7 +38,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		this.methodDeclaration = methodDeclaration;
 		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
-		methodMetrics = new MethodMetrics(parameterList, methodDeclaration);
+		methodMetrics = new MethodMetrics(parameterList, methodDeclaration, directFieldAccesses);
 	}
 
 	public void setMethodInfo(MethodDeclaration method) {
@@ -133,17 +137,27 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 			// methodDeclaration.accept(parameterVisitor);
 			var.accept(parameterVisitor);
 			List<SM_Parameter> pList = parameterVisitor.getParameterList();
-			if (pList.size() > 0)
+			if (pList.size() > 0) {
 				parameterList.addAll(pList);
+			}
 			parseParameters();
 		}
 
 		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
 		methodDeclaration.accept(localVarVisitor);
 		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
-		if (lList.size() > 0)
+		if (lList.size() > 0) {
 			localVarList.addAll(lList);
+		}
 		parseLocalVar();
+		
+		NameVisitor nameVisitor = new NameVisitor();
+		methodDeclaration.accept(nameVisitor);
+		List<SimpleName> names = nameVisitor.getNames();
+		if (names.size() > 0) {
+			namesInMethod.addAll(names);
+		}
+		
 
 	}
 
@@ -157,25 +171,59 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		}
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
 		setReferencedTypes();
+		setDirectFieldAccesses();
 	}
 	
-	@Override
-	public void extractMetrics() {
-		methodMetrics.extractMetrics();
-	}
-
 	private void setReferencedTypes() {
-		for (SM_Parameter param : parameterList)
-			if (!param.isPrimitiveType())
+		for (SM_Parameter param : parameterList) {
+			if (!param.isPrimitiveType()) {
 				addunique(param.getType());
-		for (SM_LocalVar localVar : localVarList)
-			if (!localVar.isPrimitiveType())
+			}
+		}
+		for (SM_LocalVar localVar : localVarList) {
+			if (!localVar.isPrimitiveType()) {
 				addunique(localVar.getType());
+			}
+		}
 		for (SM_Method methodCall : calledMethodsList) {
 			if (methodCall.isStatic()) {
 				addunique(methodCall.getParentType());
 			}
 		}
+	}
+	
+	private void setDirectFieldAccesses() {		
+		for (SimpleName name : namesInMethod) {
+			if (!existsAsNameInLocalVars(name.toString())) {
+				SM_Field sameField = getFieldWithSameName(name.toString());
+				if (sameField != null && !directFieldAccesses.contains(sameField)) {
+					directFieldAccesses.add(sameField);
+				}
+			}
+		}
+	}
+	
+	private boolean existsAsNameInLocalVars(String name) {
+		for (SM_LocalVar localVar : localVarList) {
+			if (name.equals(localVar.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private SM_Field getFieldWithSameName(String name) {
+		for (SM_Field field : parentType.getFieldList()) {
+			if (name.equals(field)) {
+				return field;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public void extractMetrics() {
+		methodMetrics.extractMetrics();
 	}
 
 	private void addunique(SM_Type variableType) {
