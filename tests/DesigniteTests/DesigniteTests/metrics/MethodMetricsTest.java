@@ -52,4 +52,15 @@ public class MethodMetricsTest extends DesigniteTests {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testNumberOfDirectFieldsUsed() {
+		SM_Type child1 = project.getPackageList().get(0).getTypeList().get(2);
+		SM_Method method = child1.getMethodList().get(0);
+		
+		int expected = 4;
+		int actual = method.getMethodMetrics().getDirectFieldAccesses().size();
+		
+		assertEquals(expected, actual);
+	}
 }

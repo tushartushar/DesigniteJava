@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.SimpleName;
@@ -12,7 +13,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import Designite.metrics.MethodMetrics;
 import Designite.utils.models.Vertex;
-import Designite.visitors.NameVisitor;
+import Designite.visitors.DirectAceessFieldVisitor;
 
 public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex {
 	private boolean abstractMethod = false;
@@ -30,6 +31,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	private List<MethodInvocation> calledMethods = new ArrayList<MethodInvocation>();
 	private List<SM_Type> referencedTypeList = new ArrayList<SM_Type>();
 	private List<SimpleName> namesInMethod = new ArrayList<>();
+	private List<FieldAccess> thisAccessesInMethod = new ArrayList<>();
 	private List<SM_Field> directFieldAccesses = new ArrayList<>();
 
 	public SM_Method(MethodDeclaration methodDeclaration, SM_Type typeObj) {
@@ -151,11 +153,15 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		}
 		parseLocalVar();
 		
-		NameVisitor nameVisitor = new NameVisitor();
-		methodDeclaration.accept(nameVisitor);
-		List<SimpleName> names = nameVisitor.getNames();
+		DirectAceessFieldVisitor directAceessFieldVisitor = new DirectAceessFieldVisitor();
+		methodDeclaration.accept(directAceessFieldVisitor);
+		List<SimpleName> names = directAceessFieldVisitor.getNames();
+		List<FieldAccess> thisAccesses = directAceessFieldVisitor.getThisAccesses();
 		if (names.size() > 0) {
 			namesInMethod.addAll(names);
+		}
+		if (thisAccesses.size() > 0) {
+			thisAccessesInMethod.addAll(thisAccesses);
 		}
 		
 
@@ -192,7 +198,13 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		}
 	}
 	
-	private void setDirectFieldAccesses() {		
+	private void setDirectFieldAccesses() {
+		for (FieldAccess thisAccess : thisAccessesInMethod) {
+			SM_Field sameField = getFieldWithSameName(thisAccess.getName().toString());
+			if (sameField != null && !directFieldAccesses.contains(sameField)) {
+				directFieldAccesses.add(sameField);
+			}
+		}
 		for (SimpleName name : namesInMethod) {
 			if (!existsAsNameInLocalVars(name.toString())) {
 				SM_Field sameField = getFieldWithSameName(name.toString());
@@ -214,7 +226,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	
 	private SM_Field getFieldWithSameName(String name) {
 		for (SM_Field field : parentType.getFieldList()) {
-			if (name.equals(field)) {
+			if (name.equals(field.getName())) {
 				return field;
 			}
 		}

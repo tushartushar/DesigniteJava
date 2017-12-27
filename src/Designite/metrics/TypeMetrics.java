@@ -131,11 +131,11 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private List<Edge> createEdges() {
-		for (SM_Method method : methodList) {
-			for (SM_Parameter var : method.getParameterList()) {
-				System.out.println(var.getName());
-			}
-		}
+//		for (SM_Method method : methodList) {
+//			for (SM_Parameter var : method.getParameterList()) {
+//				System.out.println(var.getName());
+//			}
+//		}
 		return null;
 	}
 	
