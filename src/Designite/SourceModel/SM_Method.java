@@ -246,5 +246,9 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	public List<SM_Type> getReferencedTypeList() {
 		return referencedTypeList;
 	}
+	
+	public List<SM_Field> getDirectFieldAccesses() {
+		return directFieldAccesses;
+	}
 
 }

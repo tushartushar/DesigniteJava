@@ -12,6 +12,7 @@ import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.utils.models.Edge;
+import Designite.utils.models.Vertex;
 
 public class TypeMetrics implements MetricExtractor {
 	
@@ -35,6 +36,9 @@ public class TypeMetrics implements MetricExtractor {
 	private List<SM_Type> typesThatReferenceThisList;
 	private TypeDeclaration typeDeclaration;
 	
+	private List<Edge> edges;
+	private List<Vertex> vertices;
+	
 	public TypeMetrics(List<SM_Field> fieldList
 			, List<SM_Method> methodList
 			, List<SM_Type> superTypes
@@ -49,6 +53,9 @@ public class TypeMetrics implements MetricExtractor {
 		this.typeDeclaration = typeDeclaration;
 		this.referencedTypeList = referencedTypeList;
 		this.typesThatReferenceThisList = typesThatReferenceThisList;
+		
+		edges = new ArrayList<>();
+		vertices = new ArrayList<>();
 		
 		subTypes = new ArrayList<>();
 	}
@@ -130,13 +137,26 @@ public class TypeMetrics implements MetricExtractor {
 		
 	}
 	
-	private List<Edge> createEdges() {
-//		for (SM_Method method : methodList) {
-//			for (SM_Parameter var : method.getParameterList()) {
-//				System.out.println(var.getName());
-//			}
-//		}
-		return null;
+	private void createEdges() {
+		for (SM_Method method : methodList) {
+			createEdgesWithFields(method);
+//			createEdgesWithCallerMethods(method);
+		}
+	}
+	
+	private void createEdgesWithFields(SM_Method method) {
+		for (SM_Field field : method.getDirectFieldAccesses()) {
+			Edge oneDirectionEdge = new Edge(method, field);
+			Edge opppositeDirectionEdge = new Edge(field, method);
+			edges.add(oneDirectionEdge);
+			edges.add(opppositeDirectionEdge);
+		}
+	}
+	
+	private void createEdgesWithCalledMethods(SM_Method method) {
+		for (SM_Method calledMethod : method.getCalledMethods()) {
+			
+		}
 	}
 	
 	private boolean isNotLcomComputable() {
