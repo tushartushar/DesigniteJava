@@ -289,6 +289,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		for (SM_Method method : methodList) {
 			method.extractMetrics();
 		}
+		System.out.println(this.name);
 		typeMetrics.extractMetrics();
 	}
 

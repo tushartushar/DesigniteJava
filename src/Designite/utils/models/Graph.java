@@ -13,6 +13,10 @@ public class Graph {
 	private Map<Vertex, Boolean> visitedVertices;
 	private List<List<Vertex>> connectedComponents;
 	
+	public Graph(List<Vertex> vertices) {
+		this(vertices, new ArrayList<>());
+	}
+	
 	public Graph(List<Vertex> vertices, List<Edge> edges) {
 		this.vertices = vertices;
 		this.edges = edges;
@@ -22,7 +26,6 @@ public class Graph {
 		
 		visitedVertices = new HashMap<>();
 		connectedComponents = new ArrayList<>();
-		setConnectedComponents();
 	}
 	
 	private void initializeAdjacencyList() {
@@ -31,15 +34,11 @@ public class Graph {
 			adjacencyList.put(vertex, adjacentVertices);			
 		}
 		for (Edge edge : edges) {
-			for (Vertex vertex : edge.getEdge()) {
-				List<Vertex> adjacentVertices = adjacencyList.get(vertex);
-				adjacentVertices.add(edge.getOtherVertex(vertex));
-				adjacencyList.put(vertex, adjacentVertices);
-			}
+			addEdge(edge);
 		}
 	}
 	
-	public void setConnectedComponents() {
+	public void computeConnectedComponents() {
 		initializeVisitedVerices();
 		for (Vertex vertex : vertices) {
 			if (!visitedVertices.get(vertex)) {
@@ -63,6 +62,16 @@ public class Graph {
 			if (!visitedVertices.get(adjacentVertex)) {
 				visitedVertices.put(adjacentVertex, true);
 				depthFirstSearch(connectedComponent, adjacentVertex);
+			}
+		}
+	}
+	
+	public void addEdge(Edge edge) {
+		for (Vertex vertex : edge.getEdge()) {
+			List<Vertex> adjacentVertices = adjacencyList.get(vertex);
+			if (!adjacentVertices.contains(vertex)) {
+				adjacentVertices.add(edge.getOtherVertex(vertex));
+				adjacencyList.put(vertex, adjacentVertices);
 			}
 		}
 	}

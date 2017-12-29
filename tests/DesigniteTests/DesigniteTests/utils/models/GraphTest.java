@@ -68,6 +68,7 @@ public class GraphTest {
 				));
 		
 		graph = new Graph(vertices, edges);
+		graph.computeConnectedComponents();
 	}
 	
 	@Test

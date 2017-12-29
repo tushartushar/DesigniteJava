@@ -111,30 +111,55 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testLCOMWhenInterface() {
 		SM_Type someInterface = project.getPackageList().get(0).getTypeList().get(0);
+		double delta = 0.01;
 		
-		int expected = -1;
-		int actual = someInterface.getTypeMetrics().getLcom();
+		double expected = -1.0;
+		double actual = someInterface.getTypeMetrics().getLcom();
 		
-		assertEquals(expected, actual);
+		assertEquals(expected, actual, delta);
 	}
 	
 	@Test
 	public void testLCOMWhenNoFields() {
 		SM_Type foreignClass4 = project.getPackageList().get(0).getTypeList().get(10);
+		double delta = 0.01;
 		
-		int expected = -1;
-		int actual = foreignClass4.getTypeMetrics().getLcom();
+		double expected = -1.0;
+		double actual = foreignClass4.getTypeMetrics().getLcom();
 		
-		assertEquals(expected, actual);
+		assertEquals(expected, actual, delta);
 	}
 	
 	@Test
 	public void testLCOMWhenNoMethods() {
 		SM_Type foreignClass1 = project.getPackageList().get(0).getTypeList().get(9);
+		double delta = 0.01;
 		
-		int expected = -1;
-		int actual = foreignClass1.getTypeMetrics().getLcom();
+		double expected = -1.0;
+		double actual = foreignClass1.getTypeMetrics().getLcom();
 		
-		assertEquals(expected, actual);
+		assertEquals(expected, actual, delta);
+	}
+	
+	@Test
+	public void testLCOMWhenHasTwoComponents() {
+		double delta = 0.01;
+		
+		double expected = 1.0;
+		double actual = typeMetrics.getLcom();
+		
+		assertEquals(expected, actual, delta);
+	}
+	
+	@Test
+	public void testLCOMWhenHasOneComponent() {
+		SM_Type child2 = project.getPackageList().get(0).getTypeList().get(5);
+		System.out.println(child2.getName());
+		double delta = 0.01;
+		
+		double expected = 0.0;
+		double actual = child2.getTypeMetrics().getLcom();
+		
+		assertEquals(expected, actual, delta);
 	}
 }

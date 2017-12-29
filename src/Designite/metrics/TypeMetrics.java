@@ -12,6 +12,7 @@ import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.utils.models.Edge;
+import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 
 public class TypeMetrics implements MetricExtractor {
@@ -26,7 +27,7 @@ public class TypeMetrics implements MetricExtractor {
 	private int weightedMethodsPerClass;
 	private int fanOutTypes;
 	private int fanInTypes;
-	private int lcom;
+	private double lcom;
 	
 	private List<SM_Field> fieldList;
 	private List<SM_Method> methodList;
@@ -36,8 +37,7 @@ public class TypeMetrics implements MetricExtractor {
 	private List<SM_Type> typesThatReferenceThisList;
 	private TypeDeclaration typeDeclaration;
 	
-	private List<Edge> edges;
-	private List<Vertex> vertices;
+	private Graph graph;
 	
 	public TypeMetrics(List<SM_Field> fieldList
 			, List<SM_Method> methodList
@@ -54,9 +54,6 @@ public class TypeMetrics implements MetricExtractor {
 		this.referencedTypeList = referencedTypeList;
 		this.typesThatReferenceThisList = typesThatReferenceThisList;
 		
-		edges = new ArrayList<>();
-		vertices = new ArrayList<>();
-		
 		subTypes = new ArrayList<>();
 	}
 	
@@ -71,7 +68,6 @@ public class TypeMetrics implements MetricExtractor {
 		extractFanOutTypes();
 		extractFanInTypes();
 		extractLCOM();
-		createEdges();
 	}
 	
 	private void extractNumOfFieldMetrics() {
@@ -132,37 +128,70 @@ public class TypeMetrics implements MetricExtractor {
 	
 	private void extractLCOM() {
 		if (isNotLcomComputable()) {
-			lcom = -1;
+			lcom = -1.0;
+			return;
 		}
-		
-	}
-	
-	private void createEdges() {
-		for (SM_Method method : methodList) {
-			createEdgesWithFields(method);
-//			createEdgesWithCallerMethods(method);
-		}
-	}
-	
-	private void createEdgesWithFields(SM_Method method) {
-		for (SM_Field field : method.getDirectFieldAccesses()) {
-			Edge oneDirectionEdge = new Edge(method, field);
-			Edge opppositeDirectionEdge = new Edge(field, method);
-			edges.add(oneDirectionEdge);
-			edges.add(opppositeDirectionEdge);
-		}
-	}
-	
-	private void createEdgesWithCalledMethods(SM_Method method) {
-		for (SM_Method calledMethod : method.getCalledMethods()) {
-			
-		}
+		initializeGraph();
+		lcom = computeLCOM();
+
 	}
 	
 	private boolean isNotLcomComputable() {
 		return typeDeclaration.isInterface() 
 				|| fieldList.size() == 0 
 				|| methodList.size() == 0; 
+	}
+	
+	private void initializeGraph() {
+		initializeVertices();
+		initializeEdges();
+	}
+	
+	private void initializeVertices() {
+		List<Vertex> vertices = new ArrayList<>();
+		vertices.addAll(methodList);
+		vertices.addAll(fieldList);
+		graph = new Graph(vertices);
+	}
+	
+	private void initializeEdges() {
+		for (SM_Method method : methodList) {
+			addAdjacentFields(method);
+			addAdjacentMethods(method);
+		}
+	}
+	
+	private void addAdjacentFields(SM_Method method) {
+		for (SM_Field fieldVertex : method.getDirectFieldAccesses()) {
+			graph.addEdge(new Edge(method, fieldVertex));
+		}
+	}
+	
+	private void addAdjacentMethods(SM_Method method) {
+		for (SM_Method methodVertex : methodList) {
+			if (!method.equals(methodVertex) && method.getCalledMethods().contains(methodVertex)) {
+				graph.addEdge(new Edge(method, methodVertex));
+			}
+		}
+	}
+	
+	private double computeLCOM() {
+		graph.computeConnectedComponents();
+		List<List<Vertex>> nonSingleElementFieldComponents = getNonSingleElementFieldComponents();
+		if (nonSingleElementFieldComponents.size() > 1) {
+			return ((double) getNonSingleElementFieldComponents().size()) / methodList.size();
+		}
+		return 0.0;
+	}
+	
+	private List<List<Vertex>> getNonSingleElementFieldComponents() {
+		List<List<Vertex>> cleanComponents = new ArrayList<>();;
+		for (List<Vertex> component : graph.getConnectedComponnents()) {
+			if (component.size() != 1 || !(component.get(0) instanceof SM_Field)) {
+				cleanComponents.add(component);
+			}
+		}
+		return cleanComponents;
 	}
 
 	public int getNumOfFields() {
@@ -205,7 +234,7 @@ public class TypeMetrics implements MetricExtractor {
 		return fanInTypes;
 	}
 
-	public int getLcom() {
+	public double getLcom() {
 		return lcom;
 	}
 
