@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import Designite.InputArgs;
+import Designite.utils.CSVUtils;
 import Designite.utils.Logger;
 
 public class SM_Project extends SM_SourceItem implements MetricsExtractable {
@@ -213,6 +214,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable {
 	@Override
 	public void extractMetrics() {
 		Logger.log("Extracting metrics...");
+		CSVUtils.initializeCSVDirectory();
 		for (SM_Package pkg : packageList) {
 			pkg.extractMetrics();
 		}

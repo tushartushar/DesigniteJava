@@ -1,5 +1,9 @@
 package Designite.SourceModel;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +20,12 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.TypeMetrics;
+import Designite.utils.CSVUtils;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractable {
+public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExportalbe {
+	
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
 	private SM_Package parentPkg;
@@ -289,8 +295,38 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable {
 		for (SM_Method method : methodList) {
 			method.extractMetrics();
 		}
-		System.out.println(this.name);
 		typeMetrics.extractMetrics();
+		exportMetricsToCSV();
+	}
+
+	@Override
+	public void exportMetricsToCSV() {
+		try {
+			File file = new File(CSVUtils.TYPE_METRICS_PATH);
+			FileWriter fileWriter = new FileWriter(file, true);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			bufferedWriter.append(getMetricsAsARow());
+			bufferedWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getMetricsAsARow() {
+		return parentPkg.getName()
+				+ "," + name
+				+ "," + typeMetrics.getNumOfFields()
+				+ "," + typeMetrics.getNumOfPublicFields()
+				+ "," + typeMetrics.getNumOfMethods()
+				+ "," + typeMetrics.getNumOfPublicMethods()
+				+ "," + typeMetrics.getNumOfLines()
+				+ "," + typeMetrics.getWeightedMethodsPerClass()
+				+ "," + typeMetrics.getNumOfChildren()
+				+ "," + typeMetrics.getInheritanceDepth()
+				+ "," + typeMetrics.getLcom()
+				+ "," + typeMetrics.getFanInTypes()
+				+ "," + typeMetrics.getFanOutTypes()
+				+ "\n";
 	}
 
 }

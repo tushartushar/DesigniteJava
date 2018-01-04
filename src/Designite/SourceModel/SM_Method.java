@@ -1,5 +1,9 @@
 package Designite.SourceModel;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -12,10 +16,12 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import Designite.metrics.MethodMetrics;
+import Designite.utils.CSVUtils;
 import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
 
-public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex {
+public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex, CSVExportalbe {
+		
 	private boolean abstractMethod = false;
 	private boolean finalMethod = false;
 	private boolean staticMethod = false;
@@ -236,6 +242,30 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	@Override
 	public void extractMetrics() {
 		methodMetrics.extractMetrics();
+		exportMetricsToCSV();
+	}
+	
+	@Override
+	public void exportMetricsToCSV() {
+		try {
+			File file = new File(CSVUtils.METHOD_METRICS_PATH);
+			FileWriter fileWriter = new FileWriter(file, true);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			bufferedWriter.append(getMetricsAsARow());
+			bufferedWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getMetricsAsARow() {
+		return parentType.getParentPkg().getName()
+				+ "," + parentType.getName()
+				+ "," + name
+				+ "," + methodMetrics.getNumOfLines()
+				+ "," + methodMetrics.getCyclomaticComplexity()
+				+ "," + methodMetrics.getNumOfParameters()
+				+ "\n";
 	}
 
 	private void addunique(SM_Type variableType) {
@@ -250,5 +280,5 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	public List<SM_Field> getDirectFieldAccesses() {
 		return directFieldAccesses;
 	}
-
+	
 }
