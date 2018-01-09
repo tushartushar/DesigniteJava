@@ -2,7 +2,7 @@ package Designite.SourceModel;
 
 import java.io.File;
 
-public interface CSVExportalbe {
+public interface CSVMetricsExportable {
 	
 	void exportMetricsToCSV();
 }

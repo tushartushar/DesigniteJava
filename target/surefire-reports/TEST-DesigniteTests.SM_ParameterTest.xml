@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="DesigniteTests.SM_ParameterTest" time="0.06" errors="0" skipped="0">
+<testsuite tests="4" failures="0" name="DesigniteTests.SM_ParameterTest" time="0.059" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf640113194720830681.tmp"/>
+    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf7233467058775849268.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,8 +60,8 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_check_getName" time="0.016"/>
-  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_check_listParameter" time="0.016"/>
+  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_check_getName" time="0.013"/>
+  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_check_listParameter" time="0.014"/>
   <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_getType" time="0.015"/>
-  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_getType_from_source" time="0.013"/>
+  <testcase classname="DesigniteTests.SM_ParameterTest" name="SM_Parameter_getType_from_source" time="0.017"/>
 </testsuite>

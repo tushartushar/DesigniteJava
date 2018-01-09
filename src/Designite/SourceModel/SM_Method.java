@@ -20,7 +20,7 @@ import Designite.utils.CSVUtils;
 import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
 
-public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex, CSVExportalbe {
+public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex, CSVMetricsExportable {
 		
 	private boolean abstractMethod = false;
 	private boolean finalMethod = false;
@@ -46,7 +46,6 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		this.methodDeclaration = methodDeclaration;
 		setMethodInfo(methodDeclaration);
 		setAccessModifier(methodDeclaration.getModifiers());
-		methodMetrics = new MethodMetrics(parameterList, methodDeclaration, directFieldAccesses);
 	}
 
 	public void setMethodInfo(MethodDeclaration method) {
@@ -241,8 +240,15 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	
 	@Override
 	public void extractMetrics() {
+		methodMetrics = initializeMethodMetrics();
 		methodMetrics.extractMetrics();
 		exportMetricsToCSV();
+	}
+	
+	private MethodMetrics initializeMethodMetrics() {
+		return new MethodMetrics(parameterList
+				, methodDeclaration
+				, directFieldAccesses);
 	}
 	
 	@Override
@@ -259,7 +265,8 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	}
 	
 	private String getMetricsAsARow() {
-		return parentType.getParentPkg().getName()
+		return parentType.getParentPkg().getParentProject().getName()
+				+ "," + parentType.getParentPkg().getName()
 				+ "," + parentType.getName()
 				+ "," + name
 				+ "," + methodMetrics.getNumOfLines()

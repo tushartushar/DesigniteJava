@@ -20,11 +20,13 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.TypeMetrics;
+import Designite.smells.designSmells.DesignSmellFacade;
+import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExportalbe {
+public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMetricsExportable, CodeSmellExtractable {
 	
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
@@ -37,6 +39,8 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExp
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
 	private TypeMetrics typeMetrics;
+	private List<DesignCodeSmell> designCodeSmells;
+	
 	private List<SM_Type> superTypes = new ArrayList<>();
 	private List<SM_Type> subTypes = new ArrayList<>();
 	private List<SM_Type> referencedTypeList = new ArrayList<>();
@@ -58,13 +62,6 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExp
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setImportList(compilationUnit);
-		typeMetrics = new TypeMetrics(fieldList
-				, methodList
-				, superTypes
-				, subTypes
-				, referencedTypeList
-				, typesThatReferenceThisList
-				, typeDeclaration);
 	}
 	
 	public List<SM_Type> getSuperTypes() {
@@ -290,13 +287,25 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExp
 			}
 		}
 	}
+
 	@Override
 	public void extractMetrics() {
 		for (SM_Method method : methodList) {
 			method.extractMetrics();
 		}
+		typeMetrics = initializeTypeMetrics();
 		typeMetrics.extractMetrics();
 		exportMetricsToCSV();
+	}
+	
+	private TypeMetrics initializeTypeMetrics() {
+		return new TypeMetrics(fieldList
+				, methodList
+				, superTypes
+				, subTypes
+				, referencedTypeList
+				, typesThatReferenceThisList
+				, typeDeclaration);
 	}
 
 	@Override
@@ -313,7 +322,8 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExp
 	}
 	
 	private String getMetricsAsARow() {
-		return parentPkg.getName()
+		return parentPkg.getParentProject().getName()
+				+ "," + parentPkg.getName()
 				+ "," + name
 				+ "," + typeMetrics.getNumOfFields()
 				+ "," + typeMetrics.getNumOfPublicFields()
@@ -327,6 +337,20 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVExp
 				+ "," + typeMetrics.getFanInTypes()
 				+ "," + typeMetrics.getFanOutTypes()
 				+ "\n";
+	}
+
+	@Override
+	public void extractCodeSmells() {
+		DesignSmellFacade detector = new DesignSmellFacade(typeMetrics
+				, new SourceItemInfo(parentPkg.getParentProject().getName()
+						, parentPkg.getName()
+						, name)
+				);
+		designCodeSmells.addAll(detector.detectCodeSmells());
+	}
+	
+	public List<DesignCodeSmell> getDesignCodeSmells() {
+		return designCodeSmells;
 	}
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="5" failures="0" name="DesigniteTests.SM_ProjectTest" time="1.627" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="DesigniteTests.SM_ProjectTest" time="1.584" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf640113194720830681.tmp"/>
+    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf7233467058775849268.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -61,8 +61,8 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_nullCU" time="0"/>
-  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_sourceFilesCounter" time="0.076"/>
-  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_packageCounter" time="0.077"/>
-  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_cuCounter" time="0.082"/>
-  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_positive_case" time="1.392"/>
+  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_sourceFilesCounter" time="0.072"/>
+  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_packageCounter" time="0.074"/>
+  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_cuCounter" time="0.079"/>
+  <testcase classname="DesigniteTests.SM_ProjectTest" name="testSM_Project_positive_case" time="1.359"/>
 </testsuite>

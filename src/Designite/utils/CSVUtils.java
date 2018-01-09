@@ -13,7 +13,8 @@ public class CSVUtils {
 	public static final String TYPE_METRICS_PATH = CSV_DIRECTORY_PATH + File.separator + "typeMetrics.csv";
 	public static final String METHOD_METRICS_PATH = CSV_DIRECTORY_PATH + File.separator + "methodMetrics.csv";
 	
-	private static final String TYPE_METRICS_HEADER = "Package Name"
+	private static final String TYPE_METRICS_HEADER = "Project Name"
+			+ ",Package Name"
 			+ ",Type Name"
 			+ ",NOF"
 			+ ",NOPF"
@@ -28,7 +29,8 @@ public class CSVUtils {
 			+ ",FANOUT"
 			+ "\n";
 	
-	private static final String METHOD_METRICS_HEADER = "Package Name"
+	private static final String METHOD_METRICS_HEADER = "Project Name"
+			+ ",Package Name"
 			+ ",Type Name"
 			+ ",MethodName"
 			+ ",LOC"

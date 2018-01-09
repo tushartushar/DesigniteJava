@@ -27,13 +27,11 @@ public class Designite {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
+		project.extractCodeSmells();
 		PrintWriter writer = getDebugLogStream(argsObj);
 		project.printDebugLog(writer);
 		if (writer != null)
 			writer.close();
-		/*project.computeMetrics();
-		project.detectSmells();
-		project.printResults();*/
 		Logger.log("Done.");
 	}
 

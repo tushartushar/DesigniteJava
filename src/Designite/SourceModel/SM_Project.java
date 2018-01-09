@@ -19,7 +19,7 @@ import Designite.InputArgs;
 import Designite.utils.CSVUtils;
 import Designite.utils.Logger;
 
-public class SM_Project extends SM_SourceItem implements MetricsExtractable {
+public class SM_Project extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;
@@ -217,6 +217,14 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable {
 		CSVUtils.initializeCSVDirectory();
 		for (SM_Package pkg : packageList) {
 			pkg.extractMetrics();
+		}
+	}
+
+	@Override
+	public void extractCodeSmells() {
+		Logger.log("Extracting code smells...");
+		for (SM_Package pkg : packageList) {
+			pkg.extractCodeSmells();
 		}
 	}
 

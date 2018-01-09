@@ -7,7 +7,9 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
-public class SM_Package extends SM_SourceItem implements MetricsExtractable {
+import Designite.smells.models.DesignCodeSmell;
+
+public class SM_Package extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
 	private List<CompilationUnit> compilationUnitList;
 	// private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<>();
@@ -101,6 +103,13 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable {
 	public void extractMetrics() {
 		for (SM_Type type : typeList) { 
 			type.extractMetrics();
+		}
+	}
+
+	@Override
+	public void extractCodeSmells() {
+		for (SM_Type type : typeList) { 
+			type.extractCodeSmells();
 		}
 	}
 

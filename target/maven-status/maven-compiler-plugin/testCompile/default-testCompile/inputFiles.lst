@@ -4,9 +4,9 @@
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_PackageTest.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_FieldTest.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_ProjectTest.java
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/visitors/VariableVisitorTest.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_Method_CalledMethodsTests.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_LocalVarTests.java
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/smells/designSmells/ModularizationSmellDetectorTest.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/DesigniteTests.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/SM_MethodTest.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/DesigniteTests/DesigniteTests/metrics/TypeMetricsTest.java
