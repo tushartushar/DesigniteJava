@@ -214,7 +214,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 	@Override
 	public void extractMetrics() {
 		Logger.log("Extracting metrics...");
-		CSVUtils.initializeCSVDirectory();
+		CSVUtils.initializeCSVDirectory(name);
 		for (SM_Package pkg : packageList) {
 			pkg.extractMetrics();
 		}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="15" failures="0" name="DesigniteTests.metrics.TypeMetricsTest" time="2.538" errors="0" skipped="0">
+<testsuite tests="15" failures="0" name="DesigniteTests.metrics.TypeMetricsTest" time="3.378" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf7233467058775849268.tmp"/>
+    <property name="classworlds.conf" value="/home/thodoras/Documents/PhD/javaSmells/DesigniteJava/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf3894846842596939171.tmp"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,19 +60,19 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testWeightedMethodsPerClass" time="0.185"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfFieldsProperlyReturned" time="0.174"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenInterface" time="0.17"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfChildren" time="0.173"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfLines" time="0.188"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanInTypes" time="0.173"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testWeightedMethodsPerClass" time="0.219"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfFieldsProperlyReturned" time="0.175"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenInterface" time="0.272"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfChildren" time="0.312"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfLines" time="0.198"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanInTypes" time="0.189"/>
   <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testInheritanceDepth" time="0.172"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoMethods" time="0.177"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicFieldsProperlyReturned" time="0.166"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfMethodsProperlyReturned" time="0.16"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoFields" time="0.162"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasTwoComponents" time="0.156"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasOneComponent" time="0.158"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanOutTypes" time="0.17"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicMethodsProperlyReturned" time="0.154"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoMethods" time="0.185"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicFieldsProperlyReturned" time="0.169"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfMethodsProperlyReturned" time="0.174"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoFields" time="0.208"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasTwoComponents" time="0.331"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasOneComponent" time="0.315"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanOutTypes" time="0.291"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicMethodsProperlyReturned" time="0.168"/>
 </testsuite>

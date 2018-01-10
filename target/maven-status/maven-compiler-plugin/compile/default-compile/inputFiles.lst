@@ -35,10 +35,12 @@
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/visitors/MethodControlFlowVisitor.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_EntitiesWithType.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/FieldVisitor.java
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/smells/ConstantsParser.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Field.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SourceItemInfo.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/utils/Logger.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/smells/designSmells/HierarchySmellDetector.java
+/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/smells/Constants.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/smells/designSmells/DesignSmellDetector.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/Designite.java
 /home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/src/Designite/SourceModel/SM_Package.java

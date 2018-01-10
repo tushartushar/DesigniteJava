@@ -23,6 +23,7 @@ import Designite.metrics.TypeMetrics;
 import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
+import Designite.utils.Constants;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
@@ -311,7 +312,9 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 	@Override
 	public void exportMetricsToCSV() {
 		try {
-			File file = new File(CSVUtils.TYPE_METRICS_PATH);
+			File file = new File(Constants.CSV_DIRECTORY_PATH
+					+ File.separator + this.getParentPkg().getParentProject().getName()
+					+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX);
 			FileWriter fileWriter = new FileWriter(file, true);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.append(getMetricsAsARow());

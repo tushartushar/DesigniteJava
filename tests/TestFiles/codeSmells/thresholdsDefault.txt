@@ -1,0 +1,3 @@
+insufficientModularizationLargePublicInterface = 20
+insufficientModularizationLargeNumOfMethods = 30
+insufficientModularizationHighComplexity = 100

@@ -7,12 +7,6 @@ import java.io.IOException;
 
 public class CSVUtils {
 	
-	private static final String CSV_DIRECTORY_PATH = System.getProperty("user.dir") 
-			+ File.separator + "csv";
-	
-	public static final String TYPE_METRICS_PATH = CSV_DIRECTORY_PATH + File.separator + "typeMetrics.csv";
-	public static final String METHOD_METRICS_PATH = CSV_DIRECTORY_PATH + File.separator + "methodMetrics.csv";
-	
 	private static final String TYPE_METRICS_HEADER = "Project Name"
 			+ ",Package Name"
 			+ ",Type Name"
@@ -38,11 +32,13 @@ public class CSVUtils {
 			+ ",PC"
 			+ "\n";
 	
-	public static void initializeCSVDirectory() {
-		File dir = new File(CSV_DIRECTORY_PATH);
+	public static void initializeCSVDirectory(String projectName) {
+		File dir = new File(Constants.CSV_DIRECTORY_PATH 
+				+ File.separator
+				+ projectName);
 		createDirIfNotExists(dir);
 		cleanup(dir);
-		initializeNeededFiles();
+		initializeNeededFiles(dir);
 	}
 	
 	private static void createDirIfNotExists(File dir) {
@@ -61,9 +57,9 @@ public class CSVUtils {
 		}
 	}
 	
-	private static void initializeNeededFiles() {
-		createCSVFile(TYPE_METRICS_PATH, TYPE_METRICS_HEADER);
-		createCSVFile(METHOD_METRICS_PATH, METHOD_METRICS_HEADER);
+	private static void initializeNeededFiles(File dir) {
+		createCSVFile(dir.getPath() + File.separator + Constants.TYPE_METRICS_PATH_SUFFIX, TYPE_METRICS_HEADER);
+		createCSVFile(Constants.METHOD_METRICS_PATH_SUFFIX, METHOD_METRICS_HEADER);
 	}
 	
 	private static void createCSVFile(String path, String header) {

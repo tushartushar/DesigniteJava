@@ -1,0 +1,3 @@
+INS_MOD_Threshold = 20
+INS_MOD_Threshold2 = 30
+INS_MOD_Threshold3 = 100

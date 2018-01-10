@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import Designite.metrics.MethodMetrics;
 import Designite.utils.CSVUtils;
+import Designite.utils.Constants;
 import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
 
@@ -254,7 +255,9 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	@Override
 	public void exportMetricsToCSV() {
 		try {
-			File file = new File(CSVUtils.METHOD_METRICS_PATH);
+			File file = new File(Constants.CSV_DIRECTORY_PATH
+					+ File.separator + this.getParentType().getParentPkg().getParentProject().getName()
+					+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX);
 			FileWriter fileWriter = new FileWriter(file, true);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.append(getMetricsAsARow());
