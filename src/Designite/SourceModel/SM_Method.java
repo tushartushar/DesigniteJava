@@ -254,17 +254,10 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	
 	@Override
 	public void exportMetricsToCSV() {
-		try {
-			File file = new File(Constants.CSV_DIRECTORY_PATH
-					+ File.separator + this.getParentType().getParentPkg().getParentProject().getName()
-					+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX);
-			FileWriter fileWriter = new FileWriter(file, true);
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			bufferedWriter.append(getMetricsAsARow());
-			bufferedWriter.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		String path = Constants.CSV_DIRECTORY_PATH
+				+ File.separator + this.getParentType().getParentPkg().getParentProject().getName()
+				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
+		CSVUtils.addToCSVFile(path, getMetricsAsARow());
 	}
 	
 	private String getMetricsAsARow() {

@@ -32,5 +32,14 @@ public class DesignCodeSmell extends CodeSmell {
 	public String getSmellName() {
 		return smellName;
 	}
+	
+	@Override
+	public String toString() {
+		return projectName
+				+ "," + packageName
+				+ "," + typeName
+				+ "," + smellName
+				+ "\n";
+	}
 
 }

@@ -20,7 +20,7 @@ public class ThresholdsParser {
 	private final Pattern emptySpacePattern = Pattern.compile(emptySpaceRegex);
 	private final Pattern legalFormatPattern = Pattern.compile(legalFormatRegex);
 	
-	private ThresholdsDTO constants = new ThresholdsDTO();
+	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	private File file;
 	
 	public ThresholdsParser(String thresholdPath) {
@@ -52,7 +52,7 @@ public class ThresholdsParser {
 					throw new IllegalArgumentException(message);
 				}
 				String[] decomposedLine = line.replaceAll("\\s", "").split("=");
-				setConstantStrategy(decomposedLine[0], Double.parseDouble(decomposedLine[1]));
+				setThresholdsStrategy(decomposedLine[0], Double.parseDouble(decomposedLine[1]));
 			}
 		}
 		bufferedReader.close();
@@ -66,18 +66,22 @@ public class ThresholdsParser {
 		return legalFormatPattern.matcher(line).matches();
 	}
 	
-	private void setConstantStrategy(String key, Double value) throws IllegalArgumentException {
+	private void setThresholdsStrategy(String key, Double value) throws IllegalArgumentException {
 		if (key.equals("insufficientModularizationLargePublicInterface")) {
-			constants.setInsufficientModularizationLargePublicInterface(value.intValue());
+			thresholds.setInsufficientModularizationLargePublicInterface(value.intValue());
 		} else if (key.equals("insufficientModularizationLargeNumOfMethods")) {
-			constants.setInsufficientModularizationLargeNumOfMethods(value.intValue());
+			thresholds.setInsufficientModularizationLargeNumOfMethods(value.intValue());
 		} else if (key.equals("insufficientModularizationHighComplexity")) {
-			constants.setInsufficientModularizationHighComplexity(value.intValue());
+			thresholds.setInsufficientModularizationHighComplexity(value.intValue());
 		} else {
 			String message = "No such threshold: " + key;
 			Logger.log(message);
 			throw new IllegalArgumentException(message);
 		}
+	}
+	
+	public ThresholdsDTO getThresholds() {
+		return thresholds;
 	}
 
 }

@@ -27,7 +27,8 @@ import Designite.utils.Constants;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMetricsExportable, CodeSmellExtractable {
+public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMetricsExportable, CodeSmellExtractable, CSVSmellsExportable {
+	
 	
 	private boolean isAbstract = false;
 	private boolean isInterface = false;
@@ -40,7 +41,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
 	private TypeMetrics typeMetrics;
-	private List<DesignCodeSmell> designCodeSmells;
+	private List<DesignCodeSmell> designCodeSmells = new ArrayList<>();
 	
 	private List<SM_Type> superTypes = new ArrayList<>();
 	private List<SM_Type> subTypes = new ArrayList<>();
@@ -311,17 +312,10 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 
 	@Override
 	public void exportMetricsToCSV() {
-		try {
-			File file = new File(Constants.CSV_DIRECTORY_PATH
-					+ File.separator + this.getParentPkg().getParentProject().getName()
-					+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX);
-			FileWriter fileWriter = new FileWriter(file, true);
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			bufferedWriter.append(getMetricsAsARow());
-			bufferedWriter.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		String path = Constants.CSV_DIRECTORY_PATH
+				+ File.separator + this.getParentPkg().getParentProject().getName()
+				+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX;
+		CSVUtils.addToCSVFile(path, getMetricsAsARow());
 	}
 	
 	private String getMetricsAsARow() {
@@ -350,10 +344,19 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 						, name)
 				);
 		designCodeSmells.addAll(detector.detectCodeSmells());
+		exportSmellsToCSV();
 	}
 	
 	public List<DesignCodeSmell> getDesignCodeSmells() {
 		return designCodeSmells;
+	}
+
+	@Override
+	public void exportSmellsToCSV() {
+		String path = Constants.CSV_DIRECTORY_PATH
+				+ File.separator + getParentPkg().getParentProject().getName()
+				+ File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX;
+		CSVUtils.addAllToCSVFile(path, designCodeSmells);
 	}
 
 }

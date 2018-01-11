@@ -111,10 +111,30 @@ public class ThresholdsParserTest extends DesigniteTests {
 				+ File.separator + "notExistingThreshold.txt");
 		try {
 			parser.parseThresholds();
+			fail();
 		} catch(IllegalArgumentException e) {
 			String expected = "No such threshold: myTheshold";
 			String actual = e.getMessage();
 			System.out.println(actual);
+			assertEquals(expected, actual);
+		} catch(Exception e) {
+			fail();	
+		}
+	}
+	
+	@Test
+	public void testParseThresholdReadsSuccessfullyFromConfigFile() {
+		ThresholdsParser parser = new ThresholdsParser(getTestingPath() 
+				+ File.separator + "codeSmells"
+				+ File.separator + "thresholdsNonDefault.txt");
+		try {
+			parser.parseThresholds();
+			
+			int expected = 14;
+			int actual = parser
+					.getThresholds()
+					.getInsufficientModularizationLargePublicInterface();
+			
 			assertEquals(expected, actual);
 		} catch(Exception e) {
 			fail();	

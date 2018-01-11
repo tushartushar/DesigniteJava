@@ -4,33 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 public class CSVUtils {
-	
-	private static final String TYPE_METRICS_HEADER = "Project Name"
-			+ ",Package Name"
-			+ ",Type Name"
-			+ ",NOF"
-			+ ",NOPF"
-			+ ",NOM"
-			+ ",NOPM"
-			+ ",LOC"
-			+ ",WMC"
-			+ ",NC"
-			+ ",DIT"
-			+ ",LCOM"
-			+ ",FANIN"
-			+ ",FANOUT"
-			+ "\n";
-	
-	private static final String METHOD_METRICS_HEADER = "Project Name"
-			+ ",Package Name"
-			+ ",Type Name"
-			+ ",MethodName"
-			+ ",LOC"
-			+ ",CC"
-			+ ",PC"
-			+ "\n";
 	
 	public static void initializeCSVDirectory(String projectName) {
 		File dir = new File(Constants.CSV_DIRECTORY_PATH 
@@ -44,7 +21,7 @@ public class CSVUtils {
 	private static void createDirIfNotExists(File dir) {
 		if (!dir.exists()) {
 			try {
-				dir.mkdir();
+				dir.mkdirs();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -58,8 +35,9 @@ public class CSVUtils {
 	}
 	
 	private static void initializeNeededFiles(File dir) {
-		createCSVFile(dir.getPath() + File.separator + Constants.TYPE_METRICS_PATH_SUFFIX, TYPE_METRICS_HEADER);
-		createCSVFile(Constants.METHOD_METRICS_PATH_SUFFIX, METHOD_METRICS_HEADER);
+		createCSVFile(dir.getPath() + File.separator + Constants.TYPE_METRICS_PATH_SUFFIX, Constants.TYPE_METRICS_HEADER);
+		createCSVFile(dir.getPath() + File.separator + Constants.METHOD_METRICS_PATH_SUFFIX, Constants.METHOD_METRICS_HEADER);
+		createCSVFile(dir.getPath() + File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX, Constants.DESIGN_CODE_SMELLS_HEADER);
 	}
 	
 	private static void createCSVFile(String path, String header) {
@@ -69,6 +47,33 @@ public class CSVUtils {
 			FileWriter fileWriter = new FileWriter(file, true);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.append(header);
+			bufferedWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addToCSVFile(String path, String row) {
+		try {
+			File file = new File(path);
+			FileWriter fileWriter = new FileWriter(file, true);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			bufferedWriter.append(row);
+			bufferedWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addAllToCSVFile(String path, List collection) {
+		try {
+			File file = new File(path);
+			FileWriter fileWriter = new FileWriter(file, true);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			for (Object obj : collection) {
+				String row = (obj instanceof String) ? (String) obj : obj.toString();
+				bufferedWriter.append(row);
+			}
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
