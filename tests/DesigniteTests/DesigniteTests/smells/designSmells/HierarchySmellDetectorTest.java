@@ -17,6 +17,32 @@ public class HierarchySmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
+	public void testDeepHierarchyHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getInheritanceDepth())
+				.thenReturn(thresholds.getDeepHierarchy() - 1);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectCodeSmells().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testDeepHierarchyHappyPositive() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getInheritanceDepth())
+				.thenReturn(thresholds.getDeepHierarchy() + 1);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectCodeSmells().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testWideHierarchyHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getNumOfChildren())
@@ -41,4 +67,5 @@ public class HierarchySmellDetectorTest {
 		
 		assertEquals(expected, actual);
 	}
+	
 }

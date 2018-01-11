@@ -1,4 +1,5 @@
+deepHierarchy = 6
+wideHierarchy = 10
 insufficientModularizationLargePublicInterface = 20
 insufficientModularizationLargeNumOfMethods = 30
 insufficientModularizationHighComplexity = 100
-wideHierarchy = 10

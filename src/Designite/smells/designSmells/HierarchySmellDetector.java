@@ -8,6 +8,7 @@ import Designite.smells.models.DesignCodeSmell;
 
 public class HierarchySmellDetector extends DesignSmellDetector {
 	
+	private static final String DEEP_HIERARCHY = "Deep Hierarchy";
 	private static final String WIDE_HIERARCHY = "Wide Hierarchy";
 	
 	public HierarchySmellDetector(TypeMetrics typeMetrics, SourceItemInfo info) {
@@ -15,8 +16,20 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	}
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectDeepHierarchy();
 		detectWideHierarchy();
 		return getSmells();
+	}
+	
+	private void detectDeepHierarchy() {
+		if (hasDeepHierarchy()) {
+			addToSmells(initializeCodeSmell(DEEP_HIERARCHY));
+		}
+	}
+	
+	private boolean hasDeepHierarchy() {
+		return getTypeMetrics().getInheritanceDepth()
+				> getThresholdsDTO().getDeepHierarchy();
 	}
 	
 	private void detectWideHierarchy() {
@@ -29,4 +42,5 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 		return getTypeMetrics().getNumOfChildren() 
 				> getThresholdsDTO().getWideHierarchy();
 	}
+
 }

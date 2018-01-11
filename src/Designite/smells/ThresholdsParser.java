@@ -67,7 +67,11 @@ public class ThresholdsParser {
 	}
 	
 	private void setThresholdsStrategy(String key, Double value) throws IllegalArgumentException {
-		if (key.equals("insufficientModularizationLargePublicInterface")) {
+		if (key.equals("deepHierarchy")) {
+			thresholds.setDeepHierarchy(value.intValue());
+		} else if (key.equals("wideHierarchy")) {
+			thresholds.setWideHierarchy(value.intValue());
+		} else if (key.equals("insufficientModularizationLargePublicInterface")) {
 			thresholds.setInsufficientModularizationLargePublicInterface(value.intValue());
 		} else if (key.equals("insufficientModularizationLargeNumOfMethods")) {
 			thresholds.setInsufficientModularizationLargeNumOfMethods(value.intValue());
