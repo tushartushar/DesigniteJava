@@ -73,6 +73,8 @@ public class ThresholdsParser {
 			thresholds.setInsufficientModularizationLargeNumOfMethods(value.intValue());
 		} else if (key.equals("insufficientModularizationHighComplexity")) {
 			thresholds.setInsufficientModularizationHighComplexity(value.intValue());
+		} else if (key.equals("wideHierarchy")) {
+			thresholds.setWideHierarchy(value.intValue());
 		} else {
 			String message = "No such threshold: " + key;
 			Logger.log(message);

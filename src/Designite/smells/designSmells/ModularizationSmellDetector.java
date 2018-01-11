@@ -8,7 +8,7 @@ import Designite.smells.models.DesignCodeSmell;
 
 public class ModularizationSmellDetector extends DesignSmellDetector {
 	
-	private static final String INSUFFICINT_MODULARIZATION = "Insufficient Modularization";
+	private static final String INSUFFICIENT_MODULARIZATION = "Insufficient Modularization";
 	
 	public ModularizationSmellDetector(TypeMetrics typeMetrics, SourceItemInfo info) {
 		super(typeMetrics, info);
@@ -21,19 +21,29 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 	
 	private void detectInsufficientModularization() {
 		if (hasInsufficientModularization()) {
-			addToSmells(new DesignCodeSmell(getSourceItemInfo().getProjectName()
-					, getSourceItemInfo().getPackageName()
-					, getSourceItemInfo().getTypeName()
-					, INSUFFICINT_MODULARIZATION));
+			addToSmells(initializeCodeSmell(INSUFFICIENT_MODULARIZATION));
 		}
 	}
 	
 	private boolean hasInsufficientModularization() {
-		return hasLargePublicInterface();
+		return hasLargePublicInterface()
+				|| hasLargeNumberOfMethods()
+				|| hasHighComplexity();
 	}
 	
 	private boolean hasLargePublicInterface() {
-		return getTypeMetrics().getNumOfPublicMethods() > 20;
+		return getTypeMetrics().getNumOfPublicMethods() 
+				> getThresholdsDTO().getInsufficientModularizationLargePublicInterface();
+	}
+	
+	private boolean hasLargeNumberOfMethods() {
+		return getTypeMetrics().getNumOfMethods() 
+				> getThresholdsDTO().getInsufficientModularizationLargeNumOfMethods();
+	}
+	
+	private boolean hasHighComplexity() {
+		return getTypeMetrics().getWeightedMethodsPerClass()
+				> getThresholdsDTO().getInsufficientModularizationHighComplexity();
 	}
 
 }
