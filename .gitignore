@@ -1,5 +1,14 @@
 *.class
+*/*.class
+*/*/*.class
+
+*.csv
+*/*.csv
+*/*/*.csv
+csv/
+
 DesigniteLog*.txt
+designCodeSmells.txt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
