@@ -331,8 +331,8 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 				+ "," + typeMetrics.getNumOfChildren()
 				+ "," + typeMetrics.getInheritanceDepth()
 				+ "," + typeMetrics.getLcom()
-				+ "," + typeMetrics.getFanInTypes()
-				+ "," + typeMetrics.getFanOutTypes()
+				+ "," + typeMetrics.getNumOfFanInTypes()
+				+ "," + typeMetrics.getNumOfFanOutTypes()
 				+ "\n";
 	}
 

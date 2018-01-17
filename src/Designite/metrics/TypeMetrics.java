@@ -29,8 +29,8 @@ public class TypeMetrics implements MetricExtractor {
 	private int numOfLines;
 	private int numOfChildren;
 	private int weightedMethodsPerClass;
-	private int fanOutTypes;
-	private int fanInTypes;
+	private int numOfFanOutTypes;
+	private int numOfFanInTypes;
 	private double lcom;
 	
 	private List<SM_Field> fieldList;
@@ -69,8 +69,8 @@ public class TypeMetrics implements MetricExtractor {
 		extractNumberOfLines();
 		extractNumberOfChildren();
 		extractWeightedMethodsPerClass();
-		extractFanOutTypes();
-		extractFanInTypes();
+		extractNumOfFanOutTypes();
+		extractNumOfFanInTypes();
 		extractLCOM();
 	}
 	
@@ -122,12 +122,12 @@ public class TypeMetrics implements MetricExtractor {
 		} 
 	}
 	
-	private void extractFanOutTypes() {
-		fanOutTypes += referencedTypeList.size();
+	private void extractNumOfFanOutTypes() {
+		numOfFanOutTypes += referencedTypeList.size();
 	}
 	
-	private void extractFanInTypes() {
-		fanInTypes += typesThatReferenceThisList.size();
+	private void extractNumOfFanInTypes() {
+		numOfFanInTypes += typesThatReferenceThisList.size();
 	}
 	
 	private void extractLCOM() {
@@ -230,16 +230,20 @@ public class TypeMetrics implements MetricExtractor {
 		return weightedMethodsPerClass;
 	}
 
-	public int getFanOutTypes() {
-		return fanOutTypes;
+	public int getNumOfFanOutTypes() {
+		return numOfFanOutTypes;
 	}
 
-	public int getFanInTypes() {
-		return fanInTypes;
+	public int getNumOfFanInTypes() {
+		return numOfFanInTypes;
 	}
 
 	public double getLcom() {
 		return lcom;
+	}
+	
+	public List<SM_Type> getSuperTypes() {
+		return superTypes;
 	}
 
 }

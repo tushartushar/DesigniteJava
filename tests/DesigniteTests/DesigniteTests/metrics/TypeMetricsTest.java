@@ -95,7 +95,7 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testFanOutTypes() {
 		int expected = 5;
-		int actual = typeMetrics.getFanOutTypes();
+		int actual = typeMetrics.getNumOfFanOutTypes();
 		
 		assertEquals(expected, actual);
 	}
@@ -103,7 +103,7 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testFanInTypes() {
 		int expected = 2;
-		int actual = typeMetrics.getFanInTypes();
+		int actual = typeMetrics.getNumOfFanInTypes();
 		
 		assertEquals(expected, actual);
 	}
