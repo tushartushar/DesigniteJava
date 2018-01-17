@@ -2,6 +2,7 @@ package Designite.smells.designSmells;
 
 import java.util.List;
 
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
@@ -27,14 +28,27 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	private boolean hasUnutilizedAbstraction() {
-		return hasNoSuperClassAndNoFanIn();
+		if (hasSuperTypes()) {
+			return !hasSuperTypeWithFanIn() || !hasFanIn(getTypeMetrics());
+		}
+		return !hasFanIn(getTypeMetrics());
 	}
 	
-	private boolean hasNoSuperClassAndNoFanIn() {
-		return hasNoSuperClass() && getTypeMetrics().getNumOfFanInTypes() == 0; 
+	private boolean hasSuperTypes() {
+		return getTypeMetrics().getSuperTypes().size() > 0; 
 	}
 	
-	private boolean hasNoSuperClass() {
-		return getTypeMetrics().getSuperTypes().size() == 0;
+	private boolean hasSuperTypeWithFanIn() {
+		for (SM_Type superType : getTypeMetrics().getSuperTypes()) {
+			if (hasFanIn(superType.getTypeMetrics())) {
+				return true;
+			}
+		}
+		return false;
 	}
+	
+	private boolean hasFanIn(TypeMetrics metrics) {
+		return metrics.getNumOfFanInTypes() > 0;
+	}
+
 }

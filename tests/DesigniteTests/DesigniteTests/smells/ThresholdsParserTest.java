@@ -17,7 +17,7 @@ public class ThresholdsParserTest extends DesigniteTests {
 	public void testNumberOfThresholds() {
 		ThresholdsDTO dto = new ThresholdsDTO();
 		
-		int expected = 4;
+		int expected = 5;
 		int actual = dto.getClass().getDeclaredFields().length;
 		
 		assertEquals(expected, actual);
