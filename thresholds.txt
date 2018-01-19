@@ -1,6 +1,7 @@
 multifacetedAbstractionLargeLCOM = 0.8
 multifacetedAbstractionManyFields = 7
 multifacetedAbstractionManyMethods = 7
+unnecessaryAbstractionFewFields = 5
 
 deepHierarchy = 6
 wideHierarchy = 10

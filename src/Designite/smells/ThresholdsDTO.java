@@ -5,6 +5,7 @@ public class ThresholdsDTO {
 	private double multifacetedAbstractionLargeLCOM = 0.8;
 	private int multifacetedAbstractionManyFields = 7;
 	private int multifacetedAbstractionManyMethods = 7;
+	private int unnecessaryAbstractionFewFields = 5;
 	
 	private int deepHierarchy = 6;
 	private int wideHierarchy = 10;
@@ -37,6 +38,14 @@ public class ThresholdsDTO {
 
 	public void setMultifacetedAbstractionManyMethods(int multifacetedAbstractionManyMethods) {
 		this.multifacetedAbstractionManyMethods = multifacetedAbstractionManyMethods;
+	}
+
+	public int getUnnecessaryAbstractionFewFields() {
+		return unnecessaryAbstractionFewFields;
+	}
+
+	public void setUnnecessaryAbstractionFewFields(int unnecessaryAbstractionFewFields) {
+		this.unnecessaryAbstractionFewFields = unnecessaryAbstractionFewFields;
 	}
 
 	public int getDeepHierarchy() {

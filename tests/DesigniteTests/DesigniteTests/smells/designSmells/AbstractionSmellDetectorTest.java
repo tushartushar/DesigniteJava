@@ -14,7 +14,6 @@ import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.AbstractionSmellDetector;
-import Designite.smells.designSmells.ModularizationSmellDetector;
 
 public class AbstractionSmellDetectorTest {
 	
@@ -34,6 +33,53 @@ public class AbstractionSmellDetectorTest {
 		
 		int expected = 0;
 		int actual = detector.detectMultifacetedAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testMultifacetedAbstractonWhenHasSmell() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getLcom())
+			.thenReturn(thresholds.getMultifacetedAbstractionLargeLCOM() + 1);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyFields() + 1);
+		when(metrics.getNumOfMethods())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyMethods() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectMultifacetedAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testUnnecessaryAbstractionWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfMethods())
+			.thenReturn(1);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getUnnecessaryAbstractionFewFields() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectUnnecessaryAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testUnnecessaryAbstractionWhenHasSmell() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfMethods())
+			.thenReturn(0);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getUnnecessaryAbstractionFewFields() - 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectUnnecessaryAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
