@@ -19,10 +19,11 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 		return getSmells();
 	}
 	
-	private void detectInsufficientModularization() {
+	public List<DesignCodeSmell> detectInsufficientModularization() {
 		if (hasInsufficientModularization()) {
 			addToSmells(initializeCodeSmell(INSUFFICIENT_MODULARIZATION));
 		}
+		return getSmells();
 	}
 	
 	private boolean hasInsufficientModularization() {
@@ -33,17 +34,17 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 	
 	private boolean hasLargePublicInterface() {
 		return getTypeMetrics().getNumOfPublicMethods() 
-				> getThresholdsDTO().getInsufficientModularizationLargePublicInterface();
+				>= getThresholdsDTO().getInsufficientModularizationLargePublicInterface();
 	}
 	
 	private boolean hasLargeNumberOfMethods() {
 		return getTypeMetrics().getNumOfMethods() 
-				> getThresholdsDTO().getInsufficientModularizationLargeNumOfMethods();
+				>= getThresholdsDTO().getInsufficientModularizationLargeNumOfMethods();
 	}
 	
 	private boolean hasHighComplexity() {
 		return getTypeMetrics().getWeightedMethodsPerClass()
-				> getThresholdsDTO().getInsufficientModularizationHighComplexity();
+				>= getThresholdsDTO().getInsufficientModularizationHighComplexity();
 	}
 
 }

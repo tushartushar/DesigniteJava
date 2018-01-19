@@ -24,7 +24,7 @@ public class HierarchySmellDetectorTest {
 		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectDeepHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -37,7 +37,7 @@ public class HierarchySmellDetectorTest {
 		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectDeepHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -50,7 +50,7 @@ public class HierarchySmellDetectorTest {
 		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectWideHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -63,7 +63,7 @@ public class HierarchySmellDetectorTest {
 		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectWideHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}

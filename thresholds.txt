@@ -1,5 +1,10 @@
+multifacetedAbstractionLargeLCOM = 0.8
+multifacetedAbstractionManyFields = 7
+multifacetedAbstractionManyMethods = 7
+
 deepHierarchy = 6
 wideHierarchy = 10
+
 insufficientModularizationLargePublicInterface = 20
 insufficientModularizationLargeNumOfMethods = 30
 insufficientModularizationHighComplexity = 100

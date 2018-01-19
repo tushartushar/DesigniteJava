@@ -9,7 +9,8 @@ import Designite.smells.models.DesignCodeSmell;
 
 public class AbstractionSmellDetector extends DesignSmellDetector {
 	
-	private static final String UNUTILIZED_ABSTRACTION = "Unutilized abstraction";
+	private static final String MULTIFACETED_ABSTRACTION = "Multifaceted Abstraction";
+	private static final String UNUTILIZED_ABSTRACTION = "Unutilized Abstraction";
 	
 	public AbstractionSmellDetector(TypeMetrics typeMetrics
 			, SourceItemInfo info) {
@@ -17,14 +18,29 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectMultifacetedAbstraction();
 		detectUnutilizedAbstraction();
 		return getSmells();
 	}
 	
-	public void detectUnutilizedAbstraction() {
+	public List<DesignCodeSmell> detectMultifacetedAbstraction() {
+		if (hasMultifacetedAbstraction()) {
+			addToSmells(initializeCodeSmell(MULTIFACETED_ABSTRACTION));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasMultifacetedAbstraction() {
+		return getTypeMetrics().getLcom() >= getThresholdsDTO().getMultifacetedAbstractionLargeLCOM()
+				&& getTypeMetrics().getNumOfFields() >= getThresholdsDTO().getMultifacetedAbstractionManyFields()
+				&& getTypeMetrics().getNumOfFields() >= getThresholdsDTO().getMultifacetedAbstractionManyMethods();
+	}
+	
+	public List<DesignCodeSmell> detectUnutilizedAbstraction() {
 		if (hasUnutilizedAbstraction()) {
 			addToSmells(initializeCodeSmell(UNUTILIZED_ABSTRACTION));
 		}
+		return getSmells();
 	}
 	
 	private boolean hasUnutilizedAbstraction() {

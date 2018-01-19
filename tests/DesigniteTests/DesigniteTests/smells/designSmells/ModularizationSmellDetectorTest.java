@@ -27,7 +27,7 @@ public class ModularizationSmellDetectorTest {
 		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectInsufficientModularization().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -40,7 +40,7 @@ public class ModularizationSmellDetectorTest {
 		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectInsufficientModularization().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -53,7 +53,7 @@ public class ModularizationSmellDetectorTest {
 		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectInsufficientModularization().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -66,7 +66,7 @@ public class ModularizationSmellDetectorTest {
 		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectInsufficientModularization().size();
 		
 		assertEquals(expected, actual);
 	}

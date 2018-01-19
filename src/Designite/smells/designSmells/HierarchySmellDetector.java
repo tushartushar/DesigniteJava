@@ -21,10 +21,11 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 		return getSmells();
 	}
 	
-	private void detectDeepHierarchy() {
+	public List<DesignCodeSmell> detectDeepHierarchy() {
 		if (hasDeepHierarchy()) {
 			addToSmells(initializeCodeSmell(DEEP_HIERARCHY));
 		}
+		return getSmells();
 	}
 	
 	private boolean hasDeepHierarchy() {
@@ -32,10 +33,11 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 				> getThresholdsDTO().getDeepHierarchy();
 	}
 	
-	private void detectWideHierarchy() {
+	public List<DesignCodeSmell> detectWideHierarchy() {
 		if (hasWideHierarchy()) {
 			addToSmells(initializeCodeSmell(WIDE_HIERARCHY));
 		}
+		return getSmells();
 	}
 	
 	private boolean hasWideHierarchy() {

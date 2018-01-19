@@ -19,6 +19,24 @@ import Designite.smells.designSmells.ModularizationSmellDetector;
 public class AbstractionSmellDetectorTest {
 	
 	private SourceItemInfo info = new SourceItemInfo("testProject", "testPackage", "testType");
+	private ThresholdsDTO thresholds = new ThresholdsDTO();
+	
+	@Test
+	public void testMultifacetedAbstractionWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getLcom())
+			.thenReturn(thresholds.getMultifacetedAbstractionLargeLCOM() - 1);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyFields() - 1);
+		when(metrics.getNumOfMethods())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyMethods() - 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMultifacetedAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
 	
 	@Test
 	public void testUnutilizedAbstractionNoSuperClassWhenHappyPath() {
@@ -30,7 +48,7 @@ public class AbstractionSmellDetectorTest {
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectUnutilizedAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -45,7 +63,7 @@ public class AbstractionSmellDetectorTest {
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectUnutilizedAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -64,7 +82,7 @@ public class AbstractionSmellDetectorTest {
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectUnutilizedAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -83,7 +101,7 @@ public class AbstractionSmellDetectorTest {
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectUnutilizedAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -102,7 +120,7 @@ public class AbstractionSmellDetectorTest {
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectCodeSmells().size();
+		int actual = detector.detectUnutilizedAbstraction().size();
 		
 		assertEquals(expected, actual);
 	}
