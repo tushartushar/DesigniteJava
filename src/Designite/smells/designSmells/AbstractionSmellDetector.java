@@ -9,6 +9,7 @@ import Designite.smells.models.DesignCodeSmell;
 
 public class AbstractionSmellDetector extends DesignSmellDetector {
 	
+	private static final String IMPERATIVE_ABSTRACTION = "Imperative Abstraction";
 	private static final String MULTIFACETED_ABSTRACTION = "Multifaceted Abstraction";
 	private static final String UNNECESSARY_ABSTRACTION = "Unnecessary Abstraction";
 	private static final String UNUTILIZED_ABSTRACTION = "Unutilized Abstraction";
@@ -19,10 +20,23 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectImperativeAbstraction();
 		detectMultifacetedAbstraction();
 		detectUnnecessaryAbstraction();
 		detectUnutilizedAbstraction();
 		return getSmells();
+	}
+	
+	public List<DesignCodeSmell> detectImperativeAbstraction() {
+		if (hasImperativeAbstraction()) {
+			addToSmells(initializeCodeSmell(IMPERATIVE_ABSTRACTION));
+		}
+		return getSmells();
+	}
+	
+	public boolean hasImperativeAbstraction() {
+		return getTypeMetrics().getNumOfPublicFields() == 1 && 
+				getTypeMetrics().getNumOfLines() <= getThresholdsDTO().getImperativeAbstractionLargeNumOfLines();
 	}
 	
 	public List<DesignCodeSmell> detectMultifacetedAbstraction() {

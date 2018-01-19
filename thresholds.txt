@@ -1,3 +1,4 @@
+imperativeAbstractionLargeNumOfLines = 100
 multifacetedAbstractionLargeLCOM = 0.8
 multifacetedAbstractionManyFields = 7
 multifacetedAbstractionManyMethods = 7

@@ -21,6 +21,36 @@ public class AbstractionSmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
+	public void testImperativeAbstractionWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfPublicMethods())
+			.thenReturn(2);
+		when(metrics.getNumOfLines())
+			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() - 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectImperativeAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testImperativeAbstractionWhenHasSmell() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfPublicMethods())
+			.thenReturn(1);
+		when(metrics.getNumOfLines())
+			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectImperativeAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testMultifacetedAbstractionWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getLcom())
