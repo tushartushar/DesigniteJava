@@ -11,6 +11,8 @@ public class ThresholdsDTO {
 	private int deepHierarchy = 6;
 	private int wideHierarchy = 10;
 	
+	private int hubLikeModularizationLargeFanIn = 20;
+	private int hubLikeModularizationLargeFanOut = 20;
 	private int insufficientModularizationLargePublicInterface = 20;
 	private int insufficientModularizationLargeNumOfMethods = 30;
 	private int insufficientModularizationHighComplexity = 100;
@@ -72,6 +74,22 @@ public class ThresholdsDTO {
 		this.wideHierarchy = wideHierarchy;
 	}
 	
+	public int getHubLikeModularizationLargeFanIn() {
+		return hubLikeModularizationLargeFanIn;
+	}
+
+	public void setHubLikeModularizationLargeFanIn(int hubLikeModularizationLargeFanIn) {
+		this.hubLikeModularizationLargeFanIn = hubLikeModularizationLargeFanIn;
+	}
+
+	public int getHubLikeModularizationLargeFanOut() {
+		return hubLikeModularizationLargeFanOut;
+	}
+
+	public void setHubLikeModularizationLargeFanOut(int hubLikeModularizationLargeFanOut) {
+		this.hubLikeModularizationLargeFanOut = hubLikeModularizationLargeFanOut;
+	}
+
 	public int getInsufficientModularizationLargePublicInterface() {
 		return insufficientModularizationLargePublicInterface;
 	}

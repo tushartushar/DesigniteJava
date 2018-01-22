@@ -7,6 +7,8 @@ unnecessaryAbstractionFewFields = 5
 deepHierarchy = 6
 wideHierarchy = 10
 
+hubLikeModularizationLargeFanIn = 20
+hubLikeModularizationLargeFanOut = 20
 insufficientModularizationLargePublicInterface = 20
 insufficientModularizationLargeNumOfMethods = 30
 insufficientModularizationHighComplexity = 100

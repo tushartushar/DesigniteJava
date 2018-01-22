@@ -70,4 +70,49 @@ public class ModularizationSmellDetectorTest {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testHubLikeModularizationWhenHappyPathWithSmallFanIn() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfFanInTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanIn() - 1);
+		when(metrics.getNumOfFanInTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanOut() + 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectHubLikeModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHubLikeModularizationWhenHappyPathWithSmallFanOut() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfFanInTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanIn() + 1);
+		when(metrics.getNumOfFanInTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanOut() - 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectHubLikeModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHubLikeModularizationWhenSmellIsDetected() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfFanInTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanIn() + 1);
+		when(metrics.getNumOfFanOutTypes())
+				.thenReturn(thresholds.getHubLikeModularizationLargeFanOut() + 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectHubLikeModularization().size();
+		
+		assertEquals(expected, actual);
+	}
 }

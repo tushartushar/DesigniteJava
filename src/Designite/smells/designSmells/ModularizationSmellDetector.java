@@ -9,6 +9,7 @@ import Designite.smells.models.DesignCodeSmell;
 public class ModularizationSmellDetector extends DesignSmellDetector {
 	
 	private static final String INSUFFICIENT_MODULARIZATION = "Insufficient Modularization";
+	private static final String HUB_LIKE_MODULARIZATION = "Hub-like Modularization";
 	
 	public ModularizationSmellDetector(TypeMetrics typeMetrics, SourceItemInfo info) {
 		super(typeMetrics, info);
@@ -16,6 +17,7 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectInsufficientModularization();
+		detectHubLikeModularization();
 		return getSmells();
 	}
 	
@@ -45,6 +47,20 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 	private boolean hasHighComplexity() {
 		return getTypeMetrics().getWeightedMethodsPerClass()
 				>= getThresholdsDTO().getInsufficientModularizationHighComplexity();
+	}
+	
+	public List<DesignCodeSmell> detectHubLikeModularization() {
+		if (hasHubLikeModularization()) {
+			addToSmells(initializeCodeSmell(HUB_LIKE_MODULARIZATION));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasHubLikeModularization() {
+		return getTypeMetrics().getNumOfFanInTypes()
+				>= getThresholdsDTO().getHubLikeModularizationLargeFanIn()
+				&& getTypeMetrics().getNumOfFanOutTypes()
+				>= getThresholdsDTO().getHubLikeModularizationLargeFanOut();
 	}
 
 }
