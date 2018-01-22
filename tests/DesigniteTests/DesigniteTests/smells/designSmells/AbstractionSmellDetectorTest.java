@@ -21,10 +21,25 @@ public class AbstractionSmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
-	public void testImperativeAbstractionWhenHappyPath() {
+	public void testImperativeAbstractionWhenHappyPathWithEnoughPublicMethods() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getNumOfPublicMethods())
 			.thenReturn(2);
+		when(metrics.getNumOfLines())
+			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectImperativeAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testImperativeAbstractionWhenHappyPathWithFewLines() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfPublicMethods())
+			.thenReturn(1);
 		when(metrics.getNumOfLines())
 			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() - 1);
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
@@ -51,12 +66,46 @@ public class AbstractionSmellDetectorTest {
 	}
 	
 	@Test
-	public void testMultifacetedAbstractionWhenHappyPath() {
+	public void testMultifacetedAbstractionWhenHappyPathWithEnoughLCOM() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getLcom())
 			.thenReturn(thresholds.getMultifacetedAbstractionLargeLCOM() - 1);
 		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyFields() + 1);
+		when(metrics.getNumOfMethods())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyMethods() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMultifacetedAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testMultifacetedAbstractionWhenHappyPathWithFewFields() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getLcom())
+			.thenReturn(thresholds.getMultifacetedAbstractionLargeLCOM() + 1);
+		when(metrics.getNumOfFields())
 			.thenReturn(thresholds.getMultifacetedAbstractionManyFields() - 1);
+		when(metrics.getNumOfMethods())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyMethods() + 1);
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMultifacetedAbstraction().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testMultifacetedAbstractionWhenHappyPathWithFewMethods() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getLcom())
+			.thenReturn(thresholds.getMultifacetedAbstractionLargeLCOM() + 1);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getMultifacetedAbstractionManyFields() + 1);
 		when(metrics.getNumOfMethods())
 			.thenReturn(thresholds.getMultifacetedAbstractionManyMethods() - 1);
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);

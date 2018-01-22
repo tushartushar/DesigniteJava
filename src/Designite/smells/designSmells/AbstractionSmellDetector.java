@@ -49,7 +49,7 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	private boolean hasMultifacetedAbstraction() {
 		return getTypeMetrics().getLcom() >= getThresholdsDTO().getMultifacetedAbstractionLargeLCOM()
 				&& getTypeMetrics().getNumOfFields() >= getThresholdsDTO().getMultifacetedAbstractionManyFields()
-				&& getTypeMetrics().getNumOfFields() >= getThresholdsDTO().getMultifacetedAbstractionManyMethods();
+				&& getTypeMetrics().getNumOfMethods() >= getThresholdsDTO().getMultifacetedAbstractionManyMethods();
 	}
 	
 	public List<DesignCodeSmell> detectUnnecessaryAbstraction() {
