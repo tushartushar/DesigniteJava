@@ -4,8 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
@@ -25,6 +29,51 @@ public class HierarchySmellDetectorTest {
 		
 		int expected = 0;
 		int actual = detector.detectDeepHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testCyclicHierarchyWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Type superSuperType = mock(SM_Type.class);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Type> superSuperTypes = new ArrayList<>();
+		superSuperTypes.add(superSuperType);
+		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		when(superType.getSuperTypes()).thenReturn(superSuperTypes);
+		when(superType.getName()).thenReturn("foo");
+		when(superSuperType.getSuperTypes()).thenReturn(new ArrayList<>());
+		when(superSuperType.getName()).thenReturn("bar");
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+
+		int expected = 0;
+		int actual = detector.detectCyclicHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testCyclicHierarchyWhenSmellIsDetected() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Type superSuperType = mock(SM_Type.class);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Type> superSuperTypes = new ArrayList<>();
+		superSuperTypes.add(superSuperType);
+		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		when(superType.getSuperTypes()).thenReturn(superSuperTypes);
+		when(superType.getName()).thenReturn("foo");
+		when(superSuperType.getName()).thenReturn("testType");
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+
+		int expected = 1;
+		int actual = detector.detectCyclicHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
