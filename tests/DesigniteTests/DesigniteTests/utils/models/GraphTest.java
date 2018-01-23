@@ -54,20 +54,18 @@ public class GraphTest {
 				vertex10
 				));
 		
-		List<Edge> edges = new ArrayList<>(Arrays.asList(
-				edge1,
-				edge2,
-				edge3,
-				edge4,
-				edge5,
-				edge6,
-				edge7,
-				edge8,
-				edge9,
-				edge10
-				));
-		
-		graph = new Graph(vertices, edges);
+		graph = new Graph(vertices);
+		graph.addEdge(edge1);
+		graph.addEdge(edge2);
+		graph.addEdge(edge3);
+		graph.addEdge(edge4);
+		graph.addEdge(edge5);
+		graph.addEdge(edge6);
+		graph.addEdge(edge7);
+		graph.addEdge(edge8);
+		graph.addEdge(edge9);
+		graph.addEdge(edge10);
+
 		graph.computeConnectedComponents();
 	}
 	

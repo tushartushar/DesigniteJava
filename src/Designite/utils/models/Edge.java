@@ -5,15 +5,28 @@ import java.util.List;
 
 public class Edge {
 
+	private Vertex firstVertex;
+	private Vertex secondVertex;
 	private List<Vertex> edge;
 	
 	public Edge(Vertex firstVertex, Vertex secondVertex) {
+		this.firstVertex = firstVertex;
+		this.secondVertex = secondVertex;
+		
 		edge = new ArrayList<>();
 		edge.add(firstVertex);
 		edge.add(secondVertex);
 	}
 	
-	public List<Vertex> getEdge() {
+	public Vertex getFirstVertex() {
+		return firstVertex;
+	}
+	
+	public Vertex getSecondVertex() {
+		return secondVertex;
+	}
+	
+	public List<Vertex> getVertices() {
 		return edge;
 	}
 	
