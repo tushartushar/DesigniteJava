@@ -14,12 +14,14 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 
 import Designite.metrics.MethodMetrics;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
+import Designite.visitors.InstanceOfVisitor;
 
 public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex, CSVMetricsExportable {
 		
@@ -40,6 +42,8 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	private List<SimpleName> namesInMethod = new ArrayList<>();
 	private List<FieldAccess> thisAccessesInMethod = new ArrayList<>();
 	private List<SM_Field> directFieldAccesses = new ArrayList<>();
+	private List<Type> typesInInstanceOf = new ArrayList<>();
+	private List<SM_Type> smTypesInInstanceOf = new ArrayList<>();
 
 	public SM_Method(MethodDeclaration methodDeclaration, SM_Type typeObj) {
 		name = methodDeclaration.getName().toString();
@@ -130,6 +134,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		print(writer, "\t\t----");
 	}
 
+	//TODO: Modularize parser with private functions
 	@Override
 	public void parse() {
 		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
@@ -170,7 +175,12 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 			thisAccessesInMethod.addAll(thisAccesses);
 		}
 		
-
+		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
+		methodDeclaration.accept(instanceOfVisitor);
+		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
+		if (instanceOfTypes.size() > 0) {
+			typesInInstanceOf.addAll(instanceOfTypes);
+		}
 	}
 
 	@Override
@@ -184,6 +194,7 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
 		setReferencedTypes();
 		setDirectFieldAccesses();
+		setSMTypesInInstanceOf();
 	}
 	
 	private void setReferencedTypes() {
@@ -239,6 +250,16 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		return null;
 	}
 	
+	private void setSMTypesInInstanceOf() {
+		Resolver resolver = new Resolver();
+		for (Type type : typesInInstanceOf) {
+			SM_Type smType = resolver.resolveType(type, parentType.getParentPkg().getParentProject());
+			if (smType != null && !smTypesInInstanceOf.contains(smType)) {
+				smTypesInInstanceOf.add(smType);
+			}
+		}
+	}
+	
 	@Override
 	public void extractMetrics() {
 		methodMetrics = initializeMethodMetrics();
@@ -248,8 +269,9 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	
 	private MethodMetrics initializeMethodMetrics() {
 		return new MethodMetrics(parameterList
-				, methodDeclaration
-				, directFieldAccesses);
+				, directFieldAccesses
+				, smTypesInInstanceOf
+				, methodDeclaration);
 	}
 	
 	@Override

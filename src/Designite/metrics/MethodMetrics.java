@@ -1,11 +1,13 @@
 package Designite.metrics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Parameter;
+import Designite.SourceModel.SM_Type;
 import Designite.visitors.MethodControlFlowVisitor;
 
 public class MethodMetrics implements MetricExtractor {
@@ -17,13 +19,16 @@ public class MethodMetrics implements MetricExtractor {
 	private MethodDeclaration methodDeclaration;
 	private List<SM_Parameter> parameters;
 	private List<SM_Field> directFieldAccesses;
+	private List<SM_Type> smTypesInInstanceOf;
 	
-	public MethodMetrics(List<SM_Parameter> parameters, 
-			MethodDeclaration methodDeclaration, 
-			List<SM_Field> directFieldAccesses) {
+	public MethodMetrics(List<SM_Parameter> parameters
+			, List<SM_Field> directFieldAccesses
+			, List<SM_Type> smTypesInInstanceOf
+			, MethodDeclaration methodDeclaration) {
 		this.parameters = parameters;
-		this.methodDeclaration = methodDeclaration;
 		this.directFieldAccesses = directFieldAccesses;
+		this.smTypesInInstanceOf = smTypesInInstanceOf;
+		this.methodDeclaration = methodDeclaration;
 	}
 	
 	@Override
@@ -78,6 +83,10 @@ public class MethodMetrics implements MetricExtractor {
 
 	public List<SM_Field> getDirectFieldAccesses() {
 		return directFieldAccesses;
+	}
+	
+	public List<SM_Type> getSMTypesInInstanceOf() {
+		return smTypesInInstanceOf;
 	}
 
 }

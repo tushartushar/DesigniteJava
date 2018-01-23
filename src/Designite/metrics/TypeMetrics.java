@@ -245,5 +245,9 @@ public class TypeMetrics implements MetricExtractor {
 	public List<SM_Type> getSuperTypes() {
 		return superTypes;
 	}
+	
+	public List<SM_Method> getMethodList() {
+		return methodList;
+	}
 
 }
