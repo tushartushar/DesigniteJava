@@ -41,20 +41,7 @@ public class GraphTest {
 		Edge edge9 = new Edge(vertex7, vertex9);
 		Edge edge10 = new Edge(vertex8, vertex9);
 		
-		List<Vertex> vertices = new ArrayList<>(Arrays.asList(
-				vertex1,
-				vertex2,
-				vertex3,
-				vertex4,
-				vertex5,
-				vertex6,
-				vertex7,
-				vertex8,
-				vertex9,
-				vertex10
-				));
-		
-		graph = new Graph(vertices);
+		graph = new Graph();
 		graph.addEdge(edge1);
 		graph.addEdge(edge2);
 		graph.addEdge(edge3);
@@ -65,6 +52,7 @@ public class GraphTest {
 		graph.addEdge(edge8);
 		graph.addEdge(edge9);
 		graph.addEdge(edge10);
+		graph.addVertex(vertex10);
 
 		graph.computeConnectedComponents();
 	}

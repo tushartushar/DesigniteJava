@@ -27,10 +27,12 @@ import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
+import Designite.utils.models.Edge;
+import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable, CSVSmellsExportable {
+public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable, CodeSmellExtractable, CSVSmellsExportable {
 	
 	
 	private boolean isAbstract = false;
@@ -265,6 +267,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CodeSm
 		setReferencedTypes();
 		setTypesThatReferenceThis();
 		setSuperTypes();
+		updateHierarchyGraph();
 	}
 	
 	private void setStaticAccessList() {
@@ -290,6 +293,16 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CodeSm
 		for (SM_Type refType : referencedTypeList) {
 			addUniqueReference(refType, this, true);
 		}
+	}
+	
+	private void updateHierarchyGraph() {
+		if (superTypes.size() > 0) {
+			for (SM_Type superType : superTypes) {
+				getParentPkg().getParentProject().addEdgeToHierarchyGraph(
+						new Edge(this, superType));
+			}
+		}
+		getParentPkg().getParentProject().addVertexToHierarchyGraph(this);		
 	}
 	
 	private void addUniqueReference(SM_Type type, SM_Type typeToAdd, boolean invardReference) {

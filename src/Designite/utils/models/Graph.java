@@ -13,24 +13,15 @@ public class Graph {
 	private Map<Vertex, Boolean> visitedVertices;
 	private List<List<Vertex>> connectedComponents;
 	
-	public Graph(List<Vertex> vertices) {
-		this.vertices = vertices;
+	public Graph() {
+		
+		vertices = new ArrayList<>();
 		
 		adjacencyList = new HashMap<>();
 		directedAdjacencyList = new HashMap<>();
 		
-		initializeAdjacencyLists();
-		
 		visitedVertices = new HashMap<>();
 		connectedComponents = new ArrayList<>();
-	}
-	
-	private void initializeAdjacencyLists() {
-		for (Vertex vertex : vertices) {
-			List<Vertex> adjacentVertices = new ArrayList<>();
-			adjacencyList.put(vertex, adjacentVertices);
-			directedAdjacencyList.put(vertex, adjacentVertices);
-		}
 	}
 	
 	public void computeConnectedComponents() {
@@ -43,6 +34,7 @@ public class Graph {
 				connectedComponents.add(connectedComponent);
 			}
 		}
+		System.out.println(toString());
 	}
 	
 	private void initializeVisitedVerices() {
@@ -61,16 +53,38 @@ public class Graph {
 		}
 	}
 	
+	public void addVertex(Vertex vertex) {
+		if (!vertices.contains(vertex)) {
+			initializeVertex(vertex);
+		}
+	}
+	
 	public void addEdge(Edge edge) {
+		initializeEdge(edge);
 		addDirectedEdge(edge);
 		addUndirectedEdge(edge);
+	}
+	
+	private void initializeEdge(Edge edge) {
+		if (!adjacencyList.containsKey(edge.getFirstVertex())) {
+			initializeVertex(edge.getFirstVertex());
+		}
+		if (!adjacencyList.containsKey(edge.getSecondVertex())) {
+			initializeVertex(edge.getSecondVertex());
+		}
+	}
+	
+	private void initializeVertex(Vertex vertex) {
+		adjacencyList.put(vertex, new ArrayList<>());
+		directedAdjacencyList.put(vertex, new ArrayList<>());
+		vertices.add(vertex);
 	}
 	
 	private void addDirectedEdge(Edge edge) {
 		List<Vertex> adjacentVertices = directedAdjacencyList.get(edge.getFirstVertex());
 		if (!adjacentVertices.contains(edge.getSecondVertex())) {
 			adjacentVertices.add(edge.getSecondVertex());
-			adjacencyList.put(edge.getFirstVertex(), adjacentVertices);
+			directedAdjacencyList.put(edge.getFirstVertex(), adjacentVertices);
 		}
 	}
 	
@@ -102,4 +116,5 @@ public class Graph {
 	public List<List<Vertex>> getConnectedComponnents() {
 		return connectedComponents;
 	}
+
 }

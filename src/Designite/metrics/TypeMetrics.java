@@ -134,9 +134,13 @@ public class TypeMetrics implements MetricExtractor {
 	
 	private void initializeVertices() {
 		List<Vertex> vertices = new ArrayList<>();
-		vertices.addAll(type.getMethodList());
-		vertices.addAll(type.getFieldList());
-		graph = new Graph(vertices);
+		graph = new Graph();
+		for (SM_Method method : type.getMethodList()) {
+			graph.addVertex(method);
+		}
+		for (SM_Field field : type.getFieldList()) {
+			graph.addVertex(field);
+		}
 	}
 	
 	private void initializeEdges() {

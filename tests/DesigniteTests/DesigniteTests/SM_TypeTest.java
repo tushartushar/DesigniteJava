@@ -136,6 +136,19 @@ public class SM_TypeTest extends DesigniteTests {
 		}
 	}
 	
+	@Test
+	public void testHierarchyGraph() {
+		createFileForArguments(METRICS_FILE_PATH, METRICS_FILE_CONTENT);
+		project = new SM_Project(new InputArgs(METRICS_FILE_PATH));
+		project.parse();
+		project.resolve();
+		
+		int expected = 6;
+		int actual = project.getHierarchyGraph().getConnectedComponnents().size();
+		
+		assertEquals(expected, actual);
+	}
+	
 	/*@Test
 	public void SM_Type_getParent() {
 		project.parse();

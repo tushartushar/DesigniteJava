@@ -18,6 +18,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import Designite.InputArgs;
 import Designite.utils.CSVUtils;
 import Designite.utils.Logger;
+import Designite.utils.models.Edge;
+import Designite.utils.models.Graph;
+import Designite.utils.models.Vertex;
 
 public class SM_Project extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
 
@@ -25,6 +28,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 	private List<String> sourceFileList;
 	private List<CompilationUnit> compilationUnitList;
 	private List<SM_Package> packageList;
+	private Graph hierarchyGraph;
 	private String unitName;
 
 	// TODO set project name
@@ -33,6 +37,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		sourceFileList = new ArrayList<String>();
 		compilationUnitList = new ArrayList<CompilationUnit>();
 		packageList = new ArrayList<SM_Package>();
+		hierarchyGraph = new Graph();
 		setName("Project");
 	}
 
@@ -80,6 +85,18 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		for (SM_Package pkg : packageList) {
 			pkg.parse();
 		}
+	}
+	
+	public Graph getHierarchyGraph() {
+		return hierarchyGraph;
+	}
+	
+	public void addEdgeToHierarchyGraph(Edge edge) {
+		hierarchyGraph.addEdge(edge);
+	}
+	
+	public void addVertexToHierarchyGraph(Vertex vertex) {
+		hierarchyGraph.addVertex(vertex);
 	}
 
 	private void createPackageObjects() {
@@ -209,6 +226,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		for (SM_Package pkg : packageList) {
 			pkg.resolve();
 		}
+		hierarchyGraph.computeConnectedComponents();
 	}
 	
 	@Override
