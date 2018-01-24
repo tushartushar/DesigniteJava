@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
 import Designite.metrics.TypeMetrics;
+import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
@@ -22,6 +23,7 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable, Cod
 	// private List<SM_Type> nestedClassList;
 	private SM_Project parentProject;
 	private Map<SM_Type, TypeMetrics> metricsMapping = new HashMap<>();
+	private Map<SM_Type, List<DesignCodeSmell>> smellMapping = new HashMap<>();
 
 	public SM_Package(String packageName, SM_Project parentObj) {
 		name = packageName;
@@ -149,9 +151,21 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable, Cod
 	@Override
 	public void extractCodeSmells() {
 		for (SM_Type type : typeList) { 
-			type.extractCodeSmells();
+			DesignSmellFacade detector = new DesignSmellFacade(metricsMapping.get(type)
+					, new SourceItemInfo(getParentProject().getName()
+							, getName()
+							, type.getName())
+					);
+			smellMapping.put(type, detector.detectCodeSmells());
+			exportDesignSmellsToCSV(type);
 		}
 	}
 
+	private void exportDesignSmellsToCSV(SM_Type type) {
+		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH 
+				+ File.separator 
+				+ Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX
+				, smellMapping.get(type));
+	}
 
 }

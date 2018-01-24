@@ -116,5 +116,14 @@ public class Graph {
 	public List<List<Vertex>> getConnectedComponnents() {
 		return connectedComponents;
 	}
+	
+	public List<Vertex> getComponentOfVertex(Vertex vertex) {
+		for (List<Vertex> vertices : getConnectedComponnents()) {
+			if (vertices.contains(vertex)) {
+				return vertices;
+			}
+		}
+		return null;
+	}
 
 }

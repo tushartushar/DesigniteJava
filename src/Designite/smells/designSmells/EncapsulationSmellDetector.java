@@ -3,9 +3,12 @@ package Designite.smells.designSmells;
 import java.util.List;
 
 import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
+import Designite.utils.models.Graph;
 
 public class EncapsulationSmellDetector extends DesignSmellDetector {
 	
@@ -18,6 +21,8 @@ public class EncapsulationSmellDetector extends DesignSmellDetector {
 	}
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectDeficientEncapsulation();
+		detectUnexploitedEncapsulation();
 		return getSmells();
 	}
 	
@@ -41,9 +46,28 @@ public class EncapsulationSmellDetector extends DesignSmellDetector {
 	
 	private boolean hasUnexploitedEncapsulation() {
 		for (SM_Method method : getTypeMetrics().getMethodList()) {
-			
+			for (SM_Type type : method.getSMTypesInInstanceOf()) {
+				for (SM_Type crossType : method.getSMTypesInInstanceOf()) {
+					if (!type.equals(crossType) && inSameHierarchy(type, crossType)) {
+						return true;
+					}
+				}
+			}
 		}
 		return false;
+	}
+	
+	private boolean inSameHierarchy(SM_Type type, SM_Type crossType) {
+		Graph hierarchyGraph = getProject(type).getHierarchyGraph();
+		hierarchyGraph.getComponentOfVertex(type);
+		if  (hierarchyGraph.getComponentOfVertex(type).contains(crossType)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private SM_Project getProject(SM_Type type) {
+		return type.getParentPkg().getParentProject();
 	}
 	
 }

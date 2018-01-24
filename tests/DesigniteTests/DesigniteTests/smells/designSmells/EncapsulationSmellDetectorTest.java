@@ -4,13 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
+import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Package;
+import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.AbstractionSmellDetector;
 import Designite.smells.designSmells.EncapsulationSmellDetector;
+import Designite.utils.models.Graph;
+import Designite.utils.models.Vertex;
 
 public class EncapsulationSmellDetectorTest {
 
@@ -37,6 +46,72 @@ public class EncapsulationSmellDetectorTest {
 		
 		int expected = 1;
 		int actual = detector.detectDeficientEncapsulation().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testUnexploitedEncapsulationWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Type type1 = mock(SM_Type.class);
+		SM_Type type2 = mock(SM_Type.class);
+		SM_Package pkg = mock(SM_Package.class);
+		SM_Project project = mock(SM_Project.class);
+		Graph hierarchyGraph = mock(Graph.class);
+		List<SM_Method> methodList = new ArrayList<>();
+		methodList.add(method);
+		List<Vertex> type1Components = new ArrayList<>();
+		List<Vertex> type2Components = new ArrayList<>();
+		List<SM_Type> instanceOfTypes = new ArrayList<>();
+		instanceOfTypes.add(type1);
+		instanceOfTypes.add(type2);
+		when(metrics.getMethodList()).thenReturn(methodList);
+		when(method.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
+		when(type1.getParentPkg()).thenReturn(pkg);
+		when(type2.getParentPkg()).thenReturn(pkg);
+		when(pkg.getParentProject()).thenReturn(project);
+		when(project.getHierarchyGraph()).thenReturn(hierarchyGraph);
+		when(hierarchyGraph.getComponentOfVertex(type1)).thenReturn(type1Components);
+		when(hierarchyGraph.getComponentOfVertex(type2)).thenReturn(type2Components);
+		EncapsulationSmellDetector detector = new EncapsulationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectUnexploitedEncapsulation().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testUnexploitedEncapsulationWhenSmellOccurs() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Type type1 = mock(SM_Type.class);
+		SM_Type type2 = mock(SM_Type.class);
+		SM_Package pkg = mock(SM_Package.class);
+		SM_Project project = mock(SM_Project.class);
+		Graph hierarchyGraph = mock(Graph.class);
+		List<SM_Method> methodList = new ArrayList<>();
+		methodList.add(method);
+		List<Vertex> type1Components = new ArrayList<>();
+		type1Components.add(type2);
+		List<Vertex> type2Components = new ArrayList<>();
+		type2Components.add(type1);
+		List<SM_Type> instanceOfTypes = new ArrayList<>();
+		instanceOfTypes.add(type1);
+		instanceOfTypes.add(type2);
+		when(metrics.getMethodList()).thenReturn(methodList);
+		when(method.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
+		when(type1.getParentPkg()).thenReturn(pkg);
+		when(type2.getParentPkg()).thenReturn(pkg);
+		when(pkg.getParentProject()).thenReturn(project);
+		when(project.getHierarchyGraph()).thenReturn(hierarchyGraph);
+		when(hierarchyGraph.getComponentOfVertex(type1)).thenReturn(type1Components);
+		when(hierarchyGraph.getComponentOfVertex(type2)).thenReturn(type2Components);
+		EncapsulationSmellDetector detector = new EncapsulationSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectUnexploitedEncapsulation().size();
 		
 		assertEquals(expected, actual);
 	}

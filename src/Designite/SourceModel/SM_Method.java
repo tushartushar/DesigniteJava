@@ -30,7 +30,6 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	private boolean staticMethod = false;
 	private boolean isConstructor = false;
 	private SM_Type parentType;
-	private MethodMetrics methodMetrics;
 
 	private MethodDeclaration methodDeclaration;
 
@@ -111,10 +110,6 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		for (SM_LocalVar var : localVarList) {
 			var.parse();
 		}
-	}
-	
-	public MethodMetrics getMethodMetrics() {
-		return methodMetrics;
 	}
 	
 	@Override

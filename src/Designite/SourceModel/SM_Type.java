@@ -32,7 +32,7 @@ import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable, CodeSmellExtractable, CSVSmellsExportable {
+public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable {
 	
 	
 	private boolean isAbstract = false;
@@ -45,8 +45,6 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
-	private TypeMetrics typeMetrics;
-	private List<DesignCodeSmell> designCodeSmells = new ArrayList<>();
 	
 	private List<SM_Type> superTypes = new ArrayList<>();
 	private List<SM_Type> subTypes = new ArrayList<>();
@@ -86,10 +84,6 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 	
 	public List<SM_Type> getTypesThatReferenceThis() {
 		return typesThatReferenceThisList;
-	}
-	
-	public TypeMetrics getTypeMetrics() {
-		return typeMetrics;
 	}
 
 	public TypeDeclaration getTypeDeclaration() {
@@ -325,7 +319,7 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 			MethodMetrics metrics = new MethodMetrics(method);
 			metrics.extractMetrics();
 			metricsMapping.put(method, metrics);
-			exportMetricsToCSV(metrics, method.getName());
+			exportMethodMetricsToCSV(metrics, method.getName());
 		}
 	}
 	
@@ -333,7 +327,7 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 		return metricsMapping.get(method);
 	}
 	
-	public void exportMetricsToCSV(MethodMetrics metrics, String methodName) {
+	public void exportMethodMetricsToCSV(MethodMetrics metrics, String methodName) {
 		String path = Constants.CSV_DIRECTORY_PATH
 				+ File.separator + getParentPkg().getParentProject().getName()
 				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
@@ -349,29 +343,6 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 				+ "," + metrics.getCyclomaticComplexity()
 				+ "," + metrics.getNumOfParameters()
 				+ "\n";
-	}
-
-	@Override
-	public void extractCodeSmells() {
-		DesignSmellFacade detector = new DesignSmellFacade(typeMetrics
-				, new SourceItemInfo(parentPkg.getParentProject().getName()
-						, parentPkg.getName()
-						, name)
-				);
-		designCodeSmells.addAll(detector.detectCodeSmells());
-		exportSmellsToCSV();
-	}
-	
-	public List<DesignCodeSmell> getDesignCodeSmells() {
-		return designCodeSmells;
-	}
-
-	@Override
-	public void exportSmellsToCSV() {
-		String path = Constants.CSV_DIRECTORY_PATH
-				+ File.separator + getParentPkg().getParentProject().getName()
-				+ File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX;
-		CSVUtils.addAllToCSVFile(path, designCodeSmells);
 	}
 
 }

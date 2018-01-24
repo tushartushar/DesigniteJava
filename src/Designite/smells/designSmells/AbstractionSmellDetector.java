@@ -85,7 +85,7 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	
 	private boolean hasSuperTypeWithFanIn() {
 		for (SM_Type superType : getTypeMetrics().getSuperTypes()) {
-			if (hasFanIn(superType.getTypeMetrics())) {
+			if (hasFanIn(superType.getParentPkg().getMetricsFromType(superType))) {
 				return true;
 			}
 		}

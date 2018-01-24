@@ -5,7 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -193,60 +195,61 @@ public class AbstractionSmellDetectorTest {
 		assertEquals(expected, actual);
 	}
 	
-	@Test
-	public void testUnutilizedAbstractionWithSuperClassWhenHappyPath() {
-		TypeMetrics metrics = mock(TypeMetrics.class);
-		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
-		SM_Type superType = mock(SM_Type.class);
-		List<SM_Type> superTypes = new ArrayList<>();
-		superTypes.add(superType);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
-		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
-		when(metrics.getNumOfFanInTypes()).thenReturn(1);
-		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(1);
-		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
-		
-		int expected = 0;
-		int actual = detector.detectUnutilizedAbstraction().size();
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void testUnutilizedAbstractionWithSuperClassWhenTypeNoFanIn() {
-		TypeMetrics metrics = mock(TypeMetrics.class);
-		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
-		SM_Type superType = mock(SM_Type.class);
-		List<SM_Type> superTypes = new ArrayList<>();
-		superTypes.add(superType);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
-		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
-		when(metrics.getNumOfFanInTypes()).thenReturn(0);
-		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(1);
-		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
-		
-		int expected = 1;
-		int actual = detector.detectUnutilizedAbstraction().size();
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
-	public void testUnutilizedAbstractionWithSuperClassWhenSuperTypeNoFanIn() {
-		TypeMetrics metrics = mock(TypeMetrics.class);
-		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
-		SM_Type superType = mock(SM_Type.class);
-		List<SM_Type> superTypes = new ArrayList<>();
-		superTypes.add(superType);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
-		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
-		when(metrics.getNumOfFanInTypes()).thenReturn(1);
-		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(0);
-		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
-		
-		int expected = 1;
-		int actual = detector.detectUnutilizedAbstraction().size();
-		
-		assertEquals(expected, actual);
-	}
+//	@Test
+//	public void testUnutilizedAbstractionWithSuperClassWhenHappyPath() {
+//		TypeMetrics metrics = mock(TypeMetrics.class);
+//		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
+//		SM_Type superType = mock(SM_Type.class);
+//		List<SM_Type> superTypes = new ArrayList<>();
+//		superTypes.add(superType);
+//		when(metrics.getSuperTypes()).thenReturn(superTypes);
+//		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
+//		when(metrics.getNumOfFanInTypes()).thenReturn(1);
+//		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(1);
+//		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+//		
+//		int expected = 0;
+//		int actual = detector.detectUnutilizedAbstraction().size();
+//		
+//		assertEquals(expected, actual);
+//	}
+//	
+//	@Test
+//	public void testUnutilizedAbstractionWithSuperClassWhenTypeNoFanIn() {
+//		TypeMetrics metrics = mock(TypeMetrics.class);
+//		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
+//		SM_Type superType = mock(SM_Type.class);
+//		List<SM_Type> superTypes = new ArrayList<>();
+//		superTypes.add(superType);
+//		
+//		when(metrics.getSuperTypes()).thenReturn(superTypes);
+//		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
+//		when(metrics.getNumOfFanInTypes()).thenReturn(0);
+//		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(1);
+//		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+//		
+//		int expected = 1;
+//		int actual = detector.detectUnutilizedAbstraction().size();
+//		
+//		assertEquals(expected, actual);
+//	}
+//	
+//	@Test
+//	public void testUnutilizedAbstractionWithSuperClassWhenSuperTypeNoFanIn() {
+//		TypeMetrics metrics = mock(TypeMetrics.class);
+//		TypeMetrics superTypeMetrics = mock(TypeMetrics.class);
+//		SM_Type superType = mock(SM_Type.class);
+//		List<SM_Type> superTypes = new ArrayList<>();
+//		superTypes.add(superType);
+//		when(metrics.getSuperTypes()).thenReturn(superTypes);
+//		when(superType.getTypeMetrics()).thenReturn(superTypeMetrics);
+//		when(metrics.getNumOfFanInTypes()).thenReturn(1);
+//		when(superTypeMetrics.getNumOfFanInTypes()).thenReturn(0);
+//		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+//		
+//		int expected = 1;
+//		int actual = detector.detectUnutilizedAbstraction().size();
+//		
+//		assertEquals(expected, actual);
+//	}
 }
