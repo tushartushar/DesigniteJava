@@ -6,7 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldAccess;
@@ -19,6 +21,7 @@ import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
@@ -27,7 +30,7 @@ import Designite.utils.Constants;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMetricsExportable, CodeSmellExtractable, CSVSmellsExportable {
+public class SM_Type extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable, CSVSmellsExportable {
 	
 	
 	private boolean isAbstract = false;
@@ -52,6 +55,7 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 	private List<SM_Field> fieldList = new ArrayList<>();
 	private List<Name> staticFieldAccesses = new ArrayList<>();
 	private List<SM_Type> staticFieldAccessList = new ArrayList<>();
+	private Map<SM_Method, MethodMetrics> metricsMapping = new HashMap<>();
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
 		parentPkg = pkg;
@@ -68,6 +72,18 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 	
 	public List<SM_Type> getSuperTypes() {
 		return superTypes;
+	}
+	
+	public List<SM_Type> getSubTypes() {
+		return subTypes;
+	}
+	
+	public List<SM_Type> getReferencedTypeList() {
+		return referencedTypeList;
+	}
+	
+	public List<SM_Type> getTypesThatReferenceThis() {
+		return typesThatReferenceThisList;
 	}
 	
 	public TypeMetrics getTypeMetrics() {
@@ -293,46 +309,32 @@ public class SM_Type extends SM_SourceItem implements MetricsExtractable, CSVMet
 	@Override
 	public void extractMetrics() {
 		for (SM_Method method : methodList) {
-			method.extractMetrics();
+			MethodMetrics metrics = new MethodMetrics(method);
+			metrics.extractMetrics();
+			metricsMapping.put(method, metrics);
+			exportMetricsToCSV(metrics, method.getName());
 		}
-		typeMetrics = initializeTypeMetrics();
-		typeMetrics.extractMetrics();
-		exportMetricsToCSV();
 	}
 	
-	private TypeMetrics initializeTypeMetrics() {
-		return new TypeMetrics(fieldList
-				, methodList
-				, superTypes
-				, subTypes
-				, referencedTypeList
-				, typesThatReferenceThisList
-				, typeDeclaration);
+	public MethodMetrics getMetricsFromMethod(SM_Method method) {
+		return metricsMapping.get(method);
 	}
-
-	@Override
-	public void exportMetricsToCSV() {
+	
+	public void exportMetricsToCSV(MethodMetrics metrics, String methodName) {
 		String path = Constants.CSV_DIRECTORY_PATH
-				+ File.separator + this.getParentPkg().getParentProject().getName()
-				+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX;
-		CSVUtils.addToCSVFile(path, getMetricsAsARow());
+				+ File.separator + getParentPkg().getParentProject().getName()
+				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
+		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, methodName));
 	}
 	
-	private String getMetricsAsARow() {
-		return parentPkg.getParentProject().getName()
-				+ "," + parentPkg.getName()
+	private String getMetricsAsARow(MethodMetrics metrics, String methodName) {
+		return getParentPkg().getParentProject().getName()
+				+ "," + getParentPkg().getName()
+				+ "," + getName()
 				+ "," + name
-				+ "," + typeMetrics.getNumOfFields()
-				+ "," + typeMetrics.getNumOfPublicFields()
-				+ "," + typeMetrics.getNumOfMethods()
-				+ "," + typeMetrics.getNumOfPublicMethods()
-				+ "," + typeMetrics.getNumOfLines()
-				+ "," + typeMetrics.getWeightedMethodsPerClass()
-				+ "," + typeMetrics.getNumOfChildren()
-				+ "," + typeMetrics.getInheritanceDepth()
-				+ "," + typeMetrics.getLcom()
-				+ "," + typeMetrics.getNumOfFanInTypes()
-				+ "," + typeMetrics.getNumOfFanOutTypes()
+				+ "," + metrics.getNumOfLines()
+				+ "," + metrics.getCyclomaticComplexity()
+				+ "," + metrics.getNumOfParameters()
 				+ "\n";
 	}
 

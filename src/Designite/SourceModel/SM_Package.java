@@ -1,13 +1,19 @@
 package Designite.SourceModel;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
+import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
+import Designite.utils.CSVUtils;
+import Designite.utils.Constants;
 
 public class SM_Package extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
 	private List<CompilationUnit> compilationUnitList;
@@ -15,6 +21,7 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable, Cod
 	private List<SM_Type> typeList = new ArrayList<>();
 	// private List<SM_Type> nestedClassList;
 	private SM_Project parentProject;
+	private Map<SM_Type, TypeMetrics> metricsMapping = new HashMap<>();
 
 	public SM_Package(String packageName, SM_Project parentObj) {
 		name = packageName;
@@ -101,9 +108,42 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable, Cod
 
 	@Override
 	public void extractMetrics() {
-		for (SM_Type type : typeList) { 
+		for (SM_Type type : typeList) {
 			type.extractMetrics();
+			TypeMetrics metrics = new TypeMetrics(type);
+			metrics.extractMetrics();
+			metricsMapping.put(type, metrics);
+			exportMetricsToCSV(metrics, type.getName());
 		}
+	}
+	
+	public TypeMetrics getMetricsFromType(SM_Type type) {
+		return metricsMapping.get(type);
+	}
+	
+	private void exportMetricsToCSV(TypeMetrics metrics, String typeName) {
+		String path = Constants.CSV_DIRECTORY_PATH
+				+ File.separator + getParentProject().getName()
+				+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX;
+		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, typeName));
+	}
+	
+	private String getMetricsAsARow(TypeMetrics metrics, String typeName) {
+		return getParentProject().getName()
+				+ "," + getName()
+				+ "," + typeName
+				+ "," + metrics.getNumOfFields()
+				+ "," + metrics.getNumOfPublicFields()
+				+ "," + metrics.getNumOfMethods()
+				+ "," + metrics.getNumOfPublicMethods()
+				+ "," + metrics.getNumOfLines()
+				+ "," + metrics.getWeightedMethodsPerClass()
+				+ "," + metrics.getNumOfChildren()
+				+ "," + metrics.getInheritanceDepth()
+				+ "," + metrics.getLcom()
+				+ "," + metrics.getNumOfFanInTypes()
+				+ "," + metrics.getNumOfFanOutTypes()
+				+ "\n";
 	}
 
 	@Override

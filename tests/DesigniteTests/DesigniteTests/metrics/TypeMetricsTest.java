@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
+import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.metrics.TypeMetrics;
@@ -23,8 +24,9 @@ public class TypeMetricsTest extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
-		typeMetrics = type.getTypeMetrics();
+		SM_Package pkg = project.getPackageList().get(0);
+		SM_Type type = pkg.getTypeList().get(7);
+		typeMetrics = pkg.getMetricsFromType(type);
 	}
 	
 	@Test
@@ -110,33 +112,36 @@ public class TypeMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testLCOMWhenInterface() {
-		SM_Type someInterface = project.getPackageList().get(0).getTypeList().get(0);
+		SM_Package pkg = project.getPackageList().get(0);
+		SM_Type someInterface = pkg.getTypeList().get(0);
 		double delta = 0.01;
 		
 		double expected = -1.0;
-		double actual = someInterface.getTypeMetrics().getLcom();
+		double actual = pkg.getMetricsFromType(someInterface).getLcom();
 		
 		assertEquals(expected, actual, delta);
 	}
 	
 	@Test
 	public void testLCOMWhenNoFields() {
-		SM_Type foreignClass4 = project.getPackageList().get(0).getTypeList().get(10);
+		SM_Package pkg = project.getPackageList().get(0);
+		SM_Type foreignClass4 = pkg.getTypeList().get(10);
 		double delta = 0.01;
 		
 		double expected = -1.0;
-		double actual = foreignClass4.getTypeMetrics().getLcom();
+		double actual = pkg.getMetricsFromType(foreignClass4).getLcom();
 		
 		assertEquals(expected, actual, delta);
 	}
 	
 	@Test
 	public void testLCOMWhenNoMethods() {
-		SM_Type foreignClass1 = project.getPackageList().get(0).getTypeList().get(9);
+		SM_Package pkg = project.getPackageList().get(0);
+		SM_Type foreignClass1 = pkg.getTypeList().get(9);
 		double delta = 0.01;
 		
 		double expected = -1.0;
-		double actual = foreignClass1.getTypeMetrics().getLcom();
+		double actual = pkg.getMetricsFromType(foreignClass1).getLcom();
 		
 		assertEquals(expected, actual, delta);
 	}
@@ -153,12 +158,12 @@ public class TypeMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testLCOMWhenHasOneComponent() {
-		SM_Type child2 = project.getPackageList().get(0).getTypeList().get(5);
-		System.out.println(child2.getName());
+		SM_Package pkg = project.getPackageList().get(0);
+		SM_Type child2 = pkg.getTypeList().get(5);
 		double delta = 0.01;
 		
 		double expected = 0.0;
-		double actual = child2.getTypeMetrics().getLcom();
+		double actual = pkg.getMetricsFromType(child2).getLcom();
 		
 		assertEquals(expected, actual, delta);
 	}

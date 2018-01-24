@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.visitors.MethodControlFlowVisitor;
@@ -16,19 +17,10 @@ public class MethodMetrics implements MetricExtractor {
 	private int cyclomaticComplexity;
 	private int numOfLines;
 	
-	private MethodDeclaration methodDeclaration;
-	private List<SM_Parameter> parameters;
-	private List<SM_Field> directFieldAccesses;
-	private List<SM_Type> smTypesInInstanceOf;
+	private SM_Method method;
 	
-	public MethodMetrics(List<SM_Parameter> parameters
-			, List<SM_Field> directFieldAccesses
-			, List<SM_Type> smTypesInInstanceOf
-			, MethodDeclaration methodDeclaration) {
-		this.parameters = parameters;
-		this.directFieldAccesses = directFieldAccesses;
-		this.smTypesInInstanceOf = smTypesInInstanceOf;
-		this.methodDeclaration = methodDeclaration;
+	public MethodMetrics(SM_Method method) {
+		this.method = method;
 	}
 	
 	@Override
@@ -39,7 +31,7 @@ public class MethodMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumOfParametersMetrics() {
-		numOfParameters = parameters.size();
+		numOfParameters = method.getParameterList().size();
 	}
 	
 	private void extractCyclomaticComplexity() {
@@ -48,7 +40,7 @@ public class MethodMetrics implements MetricExtractor {
 	
 	private int calculateCyclomaticComplexity() {
 		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
-		methodDeclaration.accept(visitor);
+		method.getMethodDeclaration().accept(visitor);
 		return visitor.getNumOfIfStatements()
 			 + visitor.getNumOfSwitchCaseStatements()
 			 + visitor.getNumOfForStatements()
@@ -60,13 +52,13 @@ public class MethodMetrics implements MetricExtractor {
 	
 	private void extractNumberOfLines() {
 		if (methodHasBody()) {
-			String body = methodDeclaration.getBody().toString();
+			String body = method.getMethodDeclaration().getBody().toString();
 			numOfLines = body.length() - body.replace("\n", "").length();
 		}
 	}
 	
 	private boolean methodHasBody() {
-		return methodDeclaration.getBody() != null;
+		return method.getMethodDeclaration().getBody() != null;
 	}
 	
 	public int getNumOfParameters() {
@@ -82,11 +74,11 @@ public class MethodMetrics implements MetricExtractor {
 	}
 
 	public List<SM_Field> getDirectFieldAccesses() {
-		return directFieldAccesses;
+		return method.getDirectFieldAccesses();
 	}
 	
 	public List<SM_Type> getSMTypesInInstanceOf() {
-		return smTypesInInstanceOf;
+		return method.getSMTypesInInstanceOf();
 	}
 
 }

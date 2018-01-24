@@ -33,32 +33,13 @@ public class TypeMetrics implements MetricExtractor {
 	private int numOfFanInTypes;
 	private double lcom;
 	
-	private List<SM_Field> fieldList;
-	private List<SM_Method> methodList;
-	private List<SM_Type> superTypes;
-	private List<SM_Type> subTypes;
-	private List<SM_Type> referencedTypeList;
-	private List<SM_Type> typesThatReferenceThisList;
-	private TypeDeclaration typeDeclaration;
+	private SM_Type type;
 	
 	private Graph graph;
 	
-	public TypeMetrics(List<SM_Field> fieldList
-			, List<SM_Method> methodList
-			, List<SM_Type> superTypes
-			, List<SM_Type> subTypes
-			, List<SM_Type> referencedTypeList
-			, List<SM_Type> typesThatReferenceThisList
-			, TypeDeclaration typeDeclaration) {
-		this.fieldList = fieldList;
-		this.methodList = methodList;
-		this.superTypes = superTypes;
-		this.subTypes = subTypes;
-		this.typeDeclaration = typeDeclaration;
-		this.referencedTypeList = referencedTypeList;
-		this.typesThatReferenceThisList = typesThatReferenceThisList;
+	public TypeMetrics(SM_Type type) {
 		
-		subTypes = new ArrayList<>();
+		this.type = type;
 	}
 	
 	@Override
@@ -75,7 +56,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumOfFieldMetrics() {
-		for (SM_Field field : fieldList) {
+		for (SM_Field field : type.getFieldList()) {
 			numOfFields++;
 			if (field.getAccessModifier() == AccessStates.PUBLIC) {
 				numOfPublicFields++;
@@ -84,7 +65,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumOfMethodsMetrics() {
-		for (SM_Method method : methodList) {
+		for (SM_Method method : type.getMethodList()) {
 			numOfMethods++;
 			if (method.getAccessModifier() == AccessStates.PUBLIC) {
 				numOfPublicMethods++;
@@ -93,16 +74,16 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractDepthOfInheritance() {
-		depthOfInheritance += findInheritanceDepth(superTypes);
+		depthOfInheritance += findInheritanceDepth(type.getSuperTypes());
 	}
 	
 	private void extractNumberOfLines() {
-		String body = typeDeclaration.toString();
+		String body = type.getTypeDeclaration().toString();
 		numOfLines = body.length() - body.replace("\n", "").length();
 	}
 	
 	private void extractNumberOfChildren() {
-		numOfChildren = subTypes.size();
+		numOfChildren = type.getSubTypes().size();
 	}
 	
 	private int findInheritanceDepth(List<SM_Type> superTypes) {
@@ -117,17 +98,17 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractWeightedMethodsPerClass() {
-		for (SM_Method method : methodList) {
-			weightedMethodsPerClass += method.getMethodMetrics().getCyclomaticComplexity();
+		for (SM_Method method : type.getMethodList()) {
+			weightedMethodsPerClass += type.getMetricsFromMethod(method).getCyclomaticComplexity();
 		} 
 	}
 	
 	private void extractNumOfFanOutTypes() {
-		numOfFanOutTypes += referencedTypeList.size();
+		numOfFanOutTypes += type.getReferencedTypeList().size();
 	}
 	
 	private void extractNumOfFanInTypes() {
-		numOfFanInTypes += typesThatReferenceThisList.size();
+		numOfFanInTypes += type.getTypesThatReferenceThis().size();
 	}
 	
 	private void extractLCOM() {
@@ -141,9 +122,9 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private boolean isNotLcomComputable() {
-		return typeDeclaration.isInterface() 
-				|| fieldList.size() == 0 
-				|| methodList.size() == 0; 
+		return type.isInterface() 
+				|| type.getFieldList().size() == 0 
+				|| type.getMethodList().size() == 0; 
 	}
 	
 	private void initializeGraph() {
@@ -153,13 +134,13 @@ public class TypeMetrics implements MetricExtractor {
 	
 	private void initializeVertices() {
 		List<Vertex> vertices = new ArrayList<>();
-		vertices.addAll(methodList);
-		vertices.addAll(fieldList);
+		vertices.addAll(type.getMethodList());
+		vertices.addAll(type.getFieldList());
 		graph = new Graph(vertices);
 	}
 	
 	private void initializeEdges() {
-		for (SM_Method method : methodList) {
+		for (SM_Method method : type.getMethodList()) {
 			addAdjacentFields(method);
 			addAdjacentMethods(method);
 		}
@@ -172,7 +153,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void addAdjacentMethods(SM_Method method) {
-		for (SM_Method methodVertex : methodList) {
+		for (SM_Method methodVertex : type.getMethodList()) {
 			if (!method.equals(methodVertex) && method.getCalledMethods().contains(methodVertex)) {
 				graph.addEdge(new Edge(method, methodVertex));
 			}
@@ -183,7 +164,7 @@ public class TypeMetrics implements MetricExtractor {
 		graph.computeConnectedComponents();
 		List<List<Vertex>> nonSingleElementFieldComponents = getNonSingleElementFieldComponents();
 		if (nonSingleElementFieldComponents.size() > 1) {
-			return ((double) getNonSingleElementFieldComponents().size()) / methodList.size();
+			return ((double) getNonSingleElementFieldComponents().size()) / type.getMethodList().size();
 		}
 		return 0.0;
 	}
@@ -243,11 +224,11 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	public List<SM_Type> getSuperTypes() {
-		return superTypes;
+		return type.getSuperTypes();
 	}
 	
 	public List<SM_Method> getMethodList() {
-		return methodList;
+		return type.getMethodList();
 	}
 
 }

@@ -26,7 +26,7 @@ public class MethodMetricsTest extends DesigniteTests {
 		project.extractMetrics();
 		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
 		SM_Method method = type.getMethodList().get(0);
-		methodMetrics = method.getMethodMetrics();
+		methodMetrics = type.getMetricsFromMethod(method);
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class MethodMetricsTest extends DesigniteTests {
 		SM_Method method = child1.getMethodList().get(0);
 		
 		int expected = 4;
-		int actual = method.getMethodMetrics().getDirectFieldAccesses().size();
+		int actual = child1.getMetricsFromMethod(method).getDirectFieldAccesses().size();
 		
 		assertEquals(expected, actual);
 	}

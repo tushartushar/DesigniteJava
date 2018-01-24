@@ -23,7 +23,7 @@ import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
 import Designite.visitors.InstanceOfVisitor;
 
-public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vertex, CSVMetricsExportable {
+public class SM_Method extends SM_SourceItem implements Vertex {
 		
 	private boolean abstractMethod = false;
 	private boolean finalMethod = false;
@@ -95,6 +95,10 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 
 	public List<SM_Method> getCalledMethods() {
 		return calledMethodsList;
+	}
+	
+	public MethodDeclaration getMethodDeclaration() {
+		return methodDeclaration;
 	}
 
 	private void parseParameters() {
@@ -260,39 +264,6 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 		}
 	}
 	
-	@Override
-	public void extractMetrics() {
-		methodMetrics = initializeMethodMetrics();
-		methodMetrics.extractMetrics();
-		exportMetricsToCSV();
-	}
-	
-	private MethodMetrics initializeMethodMetrics() {
-		return new MethodMetrics(parameterList
-				, directFieldAccesses
-				, smTypesInInstanceOf
-				, methodDeclaration);
-	}
-	
-	@Override
-	public void exportMetricsToCSV() {
-		String path = Constants.CSV_DIRECTORY_PATH
-				+ File.separator + this.getParentType().getParentPkg().getParentProject().getName()
-				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
-		CSVUtils.addToCSVFile(path, getMetricsAsARow());
-	}
-	
-	private String getMetricsAsARow() {
-		return parentType.getParentPkg().getParentProject().getName()
-				+ "," + parentType.getParentPkg().getName()
-				+ "," + parentType.getName()
-				+ "," + name
-				+ "," + methodMetrics.getNumOfLines()
-				+ "," + methodMetrics.getCyclomaticComplexity()
-				+ "," + methodMetrics.getNumOfParameters()
-				+ "\n";
-	}
-
 	private void addunique(SM_Type variableType) {
 		if (!referencedTypeList.contains(variableType))
 			referencedTypeList.add(variableType);
@@ -304,6 +275,10 @@ public class SM_Method extends SM_SourceItem implements MetricsExtractable, Vert
 	
 	public List<SM_Field> getDirectFieldAccesses() {
 		return directFieldAccesses;
+	}
+	
+	public List<SM_Type> getSMTypesInInstanceOf() {
+		return smTypesInInstanceOf;
 	}
 	
 }
