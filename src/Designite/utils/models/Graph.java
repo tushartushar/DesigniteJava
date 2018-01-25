@@ -7,34 +7,57 @@ import java.util.Map;
 
 public class Graph {
 	
-	private List<Vertex> vertices;
-	private Map<Vertex, List<Vertex>> adjacencyList;
-	private Map<Vertex, List<Vertex>> directedAdjacencyList;
-	private Map<Vertex, Boolean> visitedVertices;
-	private List<List<Vertex>> connectedComponents;
-	
-	public Graph() {
-		
-		vertices = new ArrayList<>();
-		
-		adjacencyList = new HashMap<>();
-		directedAdjacencyList = new HashMap<>();
-		
-		visitedVertices = new HashMap<>();
-		connectedComponents = new ArrayList<>();
-	}
+	private List<Vertex> vertices = new ArrayList<>();
+	private Map<Vertex, List<Vertex>> adjacencyList = new HashMap<>();
+	private Map<Vertex, List<Vertex>> directedAdjacencyList = new HashMap<>();
+	private Map<Vertex, List<Vertex>> reversedDirectedAdjacencyList = new HashMap<>();
+	private Map<Vertex, Boolean> visitedVertices = new HashMap<>();
+	private List<List<Vertex>> connectedComponents = new ArrayList<>();
+	private List<List<Vertex>> stronglyConnectedComponents = new ArrayList<>();
+	private List<Vertex> helperVertexList = new ArrayList<>();
 	
 	public void computeConnectedComponents() {
 		initializeVisitedVerices();
 		for (Vertex vertex : vertices) {
 			if (!visitedVertices.get(vertex)) {
-				visitedVertices.put(vertex, true);
 				List<Vertex> connectedComponent = new ArrayList<>();
-				depthFirstSearch(connectedComponent, vertex, true);
+				depthFirstSearch(connectedComponent, vertex, GraphAlingment.UNDIRECTED);
 				connectedComponents.add(connectedComponent);
 			}
 		}
-		System.out.println(toString());
+	}
+	
+	public void computeStronglyConnectedComponents() {
+		for (Vertex xertex : vertices) {
+			System.out.print(xertex);
+			System.out.println(directedAdjacencyList.get(xertex));
+		}
+		for (Vertex xertex : vertices) {
+			System.out.print(xertex);
+			System.out.println(reversedDirectedAdjacencyList.get(xertex));
+		}
+		reversePassDFS();
+		straightPassDFS();
+	}
+	
+	public void reversePassDFS() {
+		initializeVisitedVerices();
+		for (int i = vertices.size()-1; i >= 0 ; i--) { 
+			if (!visitedVertices.get(vertices.get(i))) {
+				depthFirstSearch(new ArrayList<>(), vertices.get(i), GraphAlingment.REVERSE_DIRECTED);
+			}
+		}
+	}
+	
+	public void straightPassDFS() {
+		initializeVisitedVerices();
+		for (int i = vertices.size()-1; i >= 0 ; i--) {
+			if (!visitedVertices.get(helperVertexList.get(i))) {
+				List<Vertex> stronglyConnectedComponent = new ArrayList<>();
+				depthFirstSearch(stronglyConnectedComponent, helperVertexList.get(i), GraphAlingment.DIRECTED);
+				stronglyConnectedComponents.add(stronglyConnectedComponent);
+			}
+		}
 	}
 	
 	private void initializeVisitedVerices() {
@@ -43,13 +66,18 @@ public class Graph {
 		}
 	}
 	
-	private void depthFirstSearch(List<Vertex> connectedComponent, Vertex vertex, boolean undirected) {
-		connectedComponent.add(vertex);
-		for (Vertex adjacentVertex : getAdjacentVertices(vertex, undirected)) {
+	private void depthFirstSearch(List<Vertex> connectedComponent, Vertex vertex, GraphAlingment align) {
+		visitedVertices.put(vertex, true);
+		if (align != GraphAlingment.REVERSE_DIRECTED) {
+			connectedComponent.add(vertex);
+		}
+		for (Vertex adjacentVertex : getAdjacentVertices(vertex, align)) {
 			if (!visitedVertices.get(adjacentVertex)) {
-				visitedVertices.put(adjacentVertex, true);
-				depthFirstSearch(connectedComponent, adjacentVertex, undirected);
+				depthFirstSearch(connectedComponent, adjacentVertex, align);
 			}
+		}
+		if (align == GraphAlingment.REVERSE_DIRECTED) {
+			helperVertexList.add(vertex);
 		}
 	}
 	
@@ -77,6 +105,7 @@ public class Graph {
 	private void initializeVertex(Vertex vertex) {
 		adjacencyList.put(vertex, new ArrayList<>());
 		directedAdjacencyList.put(vertex, new ArrayList<>());
+		reversedDirectedAdjacencyList.put(vertex, new ArrayList<>());
 		vertices.add(vertex);
 	}
 	
@@ -85,7 +114,14 @@ public class Graph {
 		if (!adjacentVertices.contains(edge.getSecondVertex())) {
 			adjacentVertices.add(edge.getSecondVertex());
 			directedAdjacencyList.put(edge.getFirstVertex(), adjacentVertices);
+			addReverseDirectedEdge(edge);
 		}
+	}
+	
+	private void addReverseDirectedEdge(Edge edge) {
+		List<Vertex> adjacentVertices = reversedDirectedAdjacencyList.get(edge.getSecondVertex());
+		adjacentVertices.add(edge.getFirstVertex());
+		reversedDirectedAdjacencyList.put(edge.getSecondVertex(), adjacentVertices);
 	}
 	
 	private void addUndirectedEdge(Edge edge) {
@@ -98,23 +134,27 @@ public class Graph {
 		}
 	}
 	
-	public List<Vertex> getVertices() {
+	private List<Vertex> getVertices() {
 		return vertices;
 	}
 	
-	public List<Vertex> getAdjacentVertices(Vertex vertex) {
-		return getAdjacentVertices(vertex, false);
-	}
-	
-	public List<Vertex> getAdjacentVertices(Vertex vertex, boolean undirected) {
-		if (undirected) {
+	private List<Vertex> getAdjacentVertices(Vertex vertex, GraphAlingment align) {
+		if (align == GraphAlingment.UNDIRECTED) {
 			return adjacencyList.get(vertex);
+		} else if (align == GraphAlingment.DIRECTED) {
+			return directedAdjacencyList.get(vertex);
+		} else if (align == GraphAlingment.REVERSE_DIRECTED) {
+			return reversedDirectedAdjacencyList.get(vertex);
 		}
-		return directedAdjacencyList.get(vertex);
+		return null;
 	}
 	
 	public List<List<Vertex>> getConnectedComponnents() {
 		return connectedComponents;
+	}
+	
+	public List<List<Vertex>> getStronglyConnectedComponents() {
+		return stronglyConnectedComponents;
 	}
 	
 	public List<Vertex> getComponentOfVertex(Vertex vertex) {
@@ -124,6 +164,10 @@ public class Graph {
 			}
 		}
 		return null;
+	}
+	
+	private enum GraphAlingment {
+		UNDIRECTED, DIRECTED, REVERSE_DIRECTED
 	}
 
 }
