@@ -63,7 +63,6 @@ public class GraphTest {
 		graph.addEdge(edge8);
 		graph.addEdge(edge9);
 		graph.addEdge(edge10);
-		graph.addVertex(vertex10);
 	
 		graph.computeConnectedComponents();
 		graph.computeStronglyConnectedComponents();

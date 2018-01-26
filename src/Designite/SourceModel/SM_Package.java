@@ -15,8 +15,9 @@ import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
+import Designite.utils.models.Edge;
 
-public class SM_Package extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
+public class SM_Package extends SM_SourceItem implements CodeSmellExtractable {
 	private List<CompilationUnit> compilationUnitList;
 	// private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<>();
@@ -108,15 +109,24 @@ public class SM_Package extends SM_SourceItem implements MetricsExtractable, Cod
 		}
 	}
 
-	@Override
-	public void extractMetrics() {
+	public void extractTypeMetrics() {
 		for (SM_Type type : typeList) {
-			type.extractMetrics();
+			type.extractMethodMetrics();
 			TypeMetrics metrics = new TypeMetrics(type);
 			metrics.extractMetrics();
 			metricsMapping.put(type, metrics);
 			exportMetricsToCSV(metrics, type.getName());
+			updateDependencyGraph(type);
 		}
+	}
+	
+	private void updateDependencyGraph(SM_Type type) {
+		if (type.getReferencedTypeList().size() > 0) {
+			for (SM_Type dependency : type.getReferencedTypeList()) {
+				getParentProject().getHierarchyGraph().addEdge(new Edge(type, dependency));
+			}
+		}
+		getParentProject().getHierarchyGraph().addVertex(type);
 	}
 	
 	public TypeMetrics getMetricsFromType(SM_Type type) {

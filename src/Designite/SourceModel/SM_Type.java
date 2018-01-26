@@ -28,11 +28,12 @@ import Designite.smells.models.DesignCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
+import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable {
+public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	
 	private boolean isAbstract = false;
@@ -292,11 +293,11 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 	private void updateHierarchyGraph() {
 		if (superTypes.size() > 0) {
 			for (SM_Type superType : superTypes) {
-				getParentPkg().getParentProject().addEdgeToHierarchyGraph(
+				getParentPkg().getParentProject().getHierarchyGraph().addEdge(
 						new Edge(this, superType));
 			}
 		}
-		getParentPkg().getParentProject().addVertexToHierarchyGraph(this);		
+		getParentPkg().getParentProject().getHierarchyGraph().addVertex(this);		
 	}
 	
 	private void addUniqueReference(SM_Type type, SM_Type typeToAdd, boolean invardReference) {
@@ -313,8 +314,7 @@ public class SM_Type extends SM_SourceItem implements Vertex, MetricsExtractable
 		}
 	}
 
-	@Override
-	public void extractMetrics() {
+	public void extractMethodMetrics() {
 		for (SM_Method method : methodList) {
 			MethodMetrics metrics = new MethodMetrics(method);
 			metrics.extractMetrics();

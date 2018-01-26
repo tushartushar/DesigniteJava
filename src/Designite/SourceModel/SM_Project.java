@@ -22,13 +22,14 @@ import Designite.utils.models.Edge;
 import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 
-public class SM_Project extends SM_SourceItem implements MetricsExtractable, CodeSmellExtractable {
+public class SM_Project extends SM_SourceItem implements CodeSmellExtractable {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;
 	private List<CompilationUnit> compilationUnitList;
 	private List<SM_Package> packageList;
 	private Graph hierarchyGraph;
+	private Graph dependencyGraph;
 	private String unitName;
 
 	// TODO set project name
@@ -38,17 +39,13 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		compilationUnitList = new ArrayList<CompilationUnit>();
 		packageList = new ArrayList<SM_Package>();
 		hierarchyGraph = new Graph();
+		dependencyGraph = new Graph();
 		setName("Project");
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	/*
-	 * public void setSourceFileList(List<String> list) { sourceFileList = list;
-	 * }
-	 */
 
 	public List<String> getSourceFileList() {
 		return sourceFileList;
@@ -91,12 +88,8 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		return hierarchyGraph;
 	}
 	
-	public void addEdgeToHierarchyGraph(Edge edge) {
-		hierarchyGraph.addEdge(edge);
-	}
-	
-	public void addVertexToHierarchyGraph(Vertex vertex) {
-		hierarchyGraph.addVertex(vertex);
+	public Graph getDependencyGraph() {
+		return dependencyGraph;
 	}
 
 	private void createPackageObjects() {
@@ -157,10 +150,7 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setBindingsRecovery(true);
 		parser.setStatementsRecovery(true);
-
 		parser.setUnitName(unitName);
-		// String [] sources =
-		// {"/Users/Tushar/Documents/Workspace/DesigniteJava/src/"};
 		Map<String, String> options = JavaCore.getOptions();
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parser.setCompilerOptions(options);
@@ -179,7 +169,6 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 	private void getFileList(String path) {
 		File root = new File(path);
 		File[] list = root.listFiles();
-		// List<String> sourceFileList = new ArrayList<String>();
 
 		if (list == null)
 			return;
@@ -229,12 +218,11 @@ public class SM_Project extends SM_SourceItem implements MetricsExtractable, Cod
 		hierarchyGraph.computeConnectedComponents();
 	}
 	
-	@Override
 	public void extractMetrics() {
 		Logger.log("Extracting metrics...");
 		CSVUtils.initializeCSVDirectory(name);
 		for (SM_Package pkg : packageList) {
-			pkg.extractMetrics();
+			pkg.extractTypeMetrics();
 		}
 	}
 
