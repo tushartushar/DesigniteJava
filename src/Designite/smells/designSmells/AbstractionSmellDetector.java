@@ -80,11 +80,11 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	private boolean hasSuperTypes() {
-		return getTypeMetrics().getSuperTypes().size() > 0; 
+		return getTypeMetrics().getType().getSuperTypes().size() > 0; 
 	}
 	
 	private boolean hasSuperTypeWithFanIn() {
-		for (SM_Type superType : getTypeMetrics().getSuperTypes()) {
+		for (SM_Type superType : getTypeMetrics().getType().getSuperTypes()) {
 			if (hasFanIn(superType.getParentPkg().getMetricsFromType(superType))) {
 				return true;
 			}

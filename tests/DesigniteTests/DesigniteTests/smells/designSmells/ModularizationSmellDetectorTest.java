@@ -3,17 +3,71 @@ package DesigniteTests.smells.designSmells;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.junit.Test;
 
+import Designite.SourceModel.SM_Package;
+import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.ModularizationSmellDetector;
+import Designite.utils.models.Graph;
+import Designite.utils.models.Vertex;
 
 public class ModularizationSmellDetectorTest {
 	
 	private SourceItemInfo info = new SourceItemInfo("testProject", "testPackage", "testType");
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
+	
+	@Test
+	public void testCyclicDependentModularizationWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Package pkg = mock(SM_Package.class);
+		SM_Project project = mock(SM_Project.class);
+		Graph dependencyGraph = mock(Graph.class);
+		List<Vertex> component = new ArrayList<>();
+		component.add(type);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getParentPkg()).thenReturn(pkg);
+		when(pkg.getParentProject()).thenReturn(project);
+		when(project.getDependencyGraph()).thenReturn(dependencyGraph);
+		when(dependencyGraph.getStrongComponentOfVertex(type)).thenReturn(component);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectCyclicDependentModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testCyclicDependentModularizationWhenSmellOccurs() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Type cyclicDependentType = mock(SM_Type.class);
+		SM_Package pkg = mock(SM_Package.class);
+		SM_Project project = mock(SM_Project.class);
+		Graph dependencyGraph = mock(Graph.class);
+		List<Vertex> component = new ArrayList<>();
+		component.add(type);
+		component.add(cyclicDependentType);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getParentPkg()).thenReturn(pkg);
+		when(pkg.getParentProject()).thenReturn(project);
+		when(project.getDependencyGraph()).thenReturn(dependencyGraph);
+		when(dependencyGraph.getStrongComponentOfVertex(type)).thenReturn(component);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectCyclicDependentModularization().size();
+		
+		assertEquals(expected, actual);
+	}
 	
 	@Test
 	public void testInsufficientModularizationHappyPath() {
@@ -115,4 +169,5 @@ public class ModularizationSmellDetectorTest {
 		
 		assertEquals(expected, actual);
 	}
+
 }

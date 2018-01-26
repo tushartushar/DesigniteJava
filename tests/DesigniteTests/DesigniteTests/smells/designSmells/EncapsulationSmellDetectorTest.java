@@ -53,6 +53,7 @@ public class EncapsulationSmellDetectorTest {
 	@Test
 	public void testUnexploitedEncapsulationWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		SM_Method method = mock(SM_Method.class);
 		SM_Type type1 = mock(SM_Type.class);
 		SM_Type type2 = mock(SM_Type.class);
@@ -64,7 +65,8 @@ public class EncapsulationSmellDetectorTest {
 		List<SM_Type> instanceOfTypes = new ArrayList<>();
 		instanceOfTypes.add(type1);
 		instanceOfTypes.add(type2);
-		when(metrics.getMethodList()).thenReturn(methodList);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(methodList);
 		when(method.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
 		when(type1.getParentPkg()).thenReturn(pkg);
 		when(type2.getParentPkg()).thenReturn(pkg);
@@ -82,6 +84,7 @@ public class EncapsulationSmellDetectorTest {
 	@Test
 	public void testUnexploitedEncapsulationWhenSmellOccurs() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		SM_Method method = mock(SM_Method.class);
 		SM_Type type1 = mock(SM_Type.class);
 		SM_Type type2 = mock(SM_Type.class);
@@ -93,7 +96,8 @@ public class EncapsulationSmellDetectorTest {
 		List<SM_Type> instanceOfTypes = new ArrayList<>();
 		instanceOfTypes.add(type1);
 		instanceOfTypes.add(type2);
-		when(metrics.getMethodList()).thenReturn(methodList);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(methodList);
 		when(method.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
 		when(type1.getParentPkg()).thenReturn(pkg);
 		when(type2.getParentPkg()).thenReturn(pkg);

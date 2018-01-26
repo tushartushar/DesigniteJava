@@ -45,7 +45,7 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	}
 	
 	private boolean hasCyclicDependency() {
-		for (SM_Type superType : getTypeMetrics().getSuperTypes()) {
+		for (SM_Type superType : getTypeMetrics().getType().getSuperTypes()) {
 			if (hasCyclicDependency(superType)) {
 				return true;
 			}

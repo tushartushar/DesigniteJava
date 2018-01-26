@@ -168,9 +168,11 @@ public class AbstractionSmellDetectorTest {
 	@Test
 	public void testUnutilizedAbstractionNoSuperClassWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		List<SM_Type> superTypes = mock(List.class);
 		when(metrics.getNumOfFanInTypes()).thenReturn(1);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
 		when(superTypes.size()).thenReturn(0);
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
@@ -183,9 +185,11 @@ public class AbstractionSmellDetectorTest {
 	@Test
 	public void testUnutilizedAbstractionNoSuperClassWhenNoFanIn() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		List<SM_Type> superTypes = mock(List.class);
 		when(metrics.getNumOfFanInTypes()).thenReturn(0);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
 		when(superTypes.size()).thenReturn(0);
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		

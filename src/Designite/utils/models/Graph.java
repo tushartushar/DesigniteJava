@@ -163,6 +163,10 @@ public class Graph {
 		return connectedComponnentsMapping.get(vertex);
 	}
 	
+	public List<Vertex> getStrongComponentOfVertex(Vertex vertex) {
+		return stronglyConnectedComponnentsMapping.get(vertex);
+	}
+	
 	public boolean inSameConnectedComponent(Vertex vertex1, Vertex vertex2) {
 		return getComponentOfVertex(vertex1).equals(getComponentOfVertex(vertex2));
 	}

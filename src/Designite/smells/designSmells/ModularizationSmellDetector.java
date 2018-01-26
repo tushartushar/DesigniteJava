@@ -5,9 +5,11 @@ import java.util.List;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
+import Designite.utils.models.Graph;
 
 public class ModularizationSmellDetector extends DesignSmellDetector {
 	
+	private static final String CYCLIC_DEPENDENT_MODULARIZATION = "Cyclic-Dependent Modularization";
 	private static final String INSUFFICIENT_MODULARIZATION = "Insufficient Modularization";
 	private static final String HUB_LIKE_MODULARIZATION = "Hub-like Modularization";
 	
@@ -19,6 +21,21 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 		detectInsufficientModularization();
 		detectHubLikeModularization();
 		return getSmells();
+	}
+	
+	public List<DesignCodeSmell> detectCyclicDependentModularization() {
+		if (hasCyclicDependentModularization()) {
+			addToSmells(initializeCodeSmell(CYCLIC_DEPENDENT_MODULARIZATION));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasCyclicDependentModularization() {
+		Graph dependencyGraph = getTypeMetrics().getType().getParentPkg().getParentProject().getDependencyGraph();
+		if (dependencyGraph.getStrongComponentOfVertex(getTypeMetrics().getType()).size() > 1) {
+			return true;
+		}
+		return false;
 	}
 	
 	public List<DesignCodeSmell> detectInsufficientModularization() {

@@ -45,7 +45,7 @@ public class EncapsulationSmellDetector extends DesignSmellDetector {
 	}
 	
 	private boolean hasUnexploitedEncapsulation() {
-		for (SM_Method method : getTypeMetrics().getMethodList()) {
+		for (SM_Method method : getTypeMetrics().getType().getMethodList()) {
 			for (SM_Type type : method.getSMTypesInInstanceOf()) {
 				for (SM_Type crossType : method.getSMTypesInInstanceOf()) {
 					if (!type.equals(crossType) && inSameHierarchy(type, crossType)) {

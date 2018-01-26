@@ -36,13 +36,15 @@ public class HierarchySmellDetectorTest {
 	@Test
 	public void testCyclicHierarchyWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		SM_Type superType = mock(SM_Type.class);
 		SM_Type superSuperType = mock(SM_Type.class);
 		List<SM_Type> superTypes = new ArrayList<>();
 		superTypes.add(superType);
 		List<SM_Type> superSuperTypes = new ArrayList<>();
-		superSuperTypes.add(superSuperType);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		superSuperTypes.add(superSuperType); 
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
 		when(superType.getSuperTypes()).thenReturn(superSuperTypes);
 		when(superType.getName()).thenReturn("foo");
 		when(superSuperType.getSuperTypes()).thenReturn(new ArrayList<>());
@@ -59,13 +61,15 @@ public class HierarchySmellDetectorTest {
 	@Test
 	public void testCyclicHierarchyWhenSmellIsDetected() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
 		SM_Type superType = mock(SM_Type.class);
 		SM_Type superSuperType = mock(SM_Type.class);
 		List<SM_Type> superTypes = new ArrayList<>();
 		superTypes.add(superType);
 		List<SM_Type> superSuperTypes = new ArrayList<>();
 		superSuperTypes.add(superSuperType);
-		when(metrics.getSuperTypes()).thenReturn(superTypes);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
 		when(superType.getSuperTypes()).thenReturn(superSuperTypes);
 		when(superType.getName()).thenReturn("foo");
 		when(superSuperType.getName()).thenReturn("testType");

@@ -227,12 +227,8 @@ public class TypeMetrics implements MetricExtractor {
 		return lcom;
 	}
 	
-	public List<SM_Type> getSuperTypes() {
-		return type.getSuperTypes();
-	}
-	
-	public List<SM_Method> getMethodList() {
-		return type.getMethodList();
+	public SM_Type getType() {
+		return type;
 	}
 
 }
