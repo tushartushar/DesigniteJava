@@ -59,11 +59,7 @@ public class EncapsulationSmellDetector extends DesignSmellDetector {
 	
 	private boolean inSameHierarchy(SM_Type type, SM_Type crossType) {
 		Graph hierarchyGraph = getProject(type).getHierarchyGraph();
-		hierarchyGraph.getComponentOfVertex(type);
-		if  (hierarchyGraph.getComponentOfVertex(type).contains(crossType)) {
-			return true;
-		}
-		return false;
+		return hierarchyGraph.inSameConnectedComponent(type, crossType);
 	}
 	
 	private SM_Project getProject(SM_Type type) {

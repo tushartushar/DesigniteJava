@@ -13,7 +13,9 @@ public class Graph {
 	private Map<Vertex, List<Vertex>> reversedDirectedAdjacencyList = new HashMap<>();
 	private Map<Vertex, Boolean> visitedVertices = new HashMap<>();
 	private List<List<Vertex>> connectedComponents = new ArrayList<>();
+	private Map<Vertex, List<Vertex>> connectedComponnentsMapping = new HashMap<>();
 	private List<List<Vertex>> stronglyConnectedComponents = new ArrayList<>();
+	private Map<Vertex, List<Vertex>> stronglyConnectedComponnentsMapping = new HashMap<>();
 	private List<Vertex> helperVertexList = new ArrayList<>();
 	
 	public void computeConnectedComponents() {
@@ -23,19 +25,12 @@ public class Graph {
 				List<Vertex> connectedComponent = new ArrayList<>();
 				depthFirstSearch(connectedComponent, vertex, GraphAlingment.UNDIRECTED);
 				connectedComponents.add(connectedComponent);
+				updateMapping(connectedComponnentsMapping, connectedComponent);
 			}
 		}
 	}
 	
 	public void computeStronglyConnectedComponents() {
-		for (Vertex xertex : vertices) {
-			System.out.print(xertex);
-			System.out.println(directedAdjacencyList.get(xertex));
-		}
-		for (Vertex xertex : vertices) {
-			System.out.print(xertex);
-			System.out.println(reversedDirectedAdjacencyList.get(xertex));
-		}
 		reversePassDFS();
 		straightPassDFS();
 	}
@@ -56,6 +51,7 @@ public class Graph {
 				List<Vertex> stronglyConnectedComponent = new ArrayList<>();
 				depthFirstSearch(stronglyConnectedComponent, helperVertexList.get(i), GraphAlingment.DIRECTED);
 				stronglyConnectedComponents.add(stronglyConnectedComponent);
+				updateMapping(stronglyConnectedComponnentsMapping, stronglyConnectedComponent);
 			}
 		}
 	}
@@ -63,6 +59,12 @@ public class Graph {
 	private void initializeVisitedVerices() {
 		for (Vertex vertex : vertices) {
 			visitedVertices.put(vertex, false);
+		}
+	}
+	
+	private void updateMapping(Map<Vertex, List<Vertex>> mapping, List<Vertex> component) {
+		for (Vertex vertex : component) {
+			mapping.put(vertex, component);
 		}
 	}
 	
@@ -158,12 +160,11 @@ public class Graph {
 	}
 	
 	public List<Vertex> getComponentOfVertex(Vertex vertex) {
-		for (List<Vertex> vertices : getConnectedComponnents()) {
-			if (vertices.contains(vertex)) {
-				return vertices;
-			}
-		}
-		return null;
+		return connectedComponnentsMapping.get(vertex);
+	}
+	
+	public boolean inSameConnectedComponent(Vertex vertex1, Vertex vertex2) {
+		return getComponentOfVertex(vertex1).equals(getComponentOfVertex(vertex2));
 	}
 	
 	private enum GraphAlingment {

@@ -61,8 +61,6 @@ public class EncapsulationSmellDetectorTest {
 		Graph hierarchyGraph = mock(Graph.class);
 		List<SM_Method> methodList = new ArrayList<>();
 		methodList.add(method);
-		List<Vertex> type1Components = new ArrayList<>();
-		List<Vertex> type2Components = new ArrayList<>();
 		List<SM_Type> instanceOfTypes = new ArrayList<>();
 		instanceOfTypes.add(type1);
 		instanceOfTypes.add(type2);
@@ -72,8 +70,7 @@ public class EncapsulationSmellDetectorTest {
 		when(type2.getParentPkg()).thenReturn(pkg);
 		when(pkg.getParentProject()).thenReturn(project);
 		when(project.getHierarchyGraph()).thenReturn(hierarchyGraph);
-		when(hierarchyGraph.getComponentOfVertex(type1)).thenReturn(type1Components);
-		when(hierarchyGraph.getComponentOfVertex(type2)).thenReturn(type2Components);
+		when(hierarchyGraph.inSameConnectedComponent(type1, type2)).thenReturn(false);
 		EncapsulationSmellDetector detector = new EncapsulationSmellDetector(metrics, info);
 		
 		int expected = 0;
@@ -93,10 +90,6 @@ public class EncapsulationSmellDetectorTest {
 		Graph hierarchyGraph = mock(Graph.class);
 		List<SM_Method> methodList = new ArrayList<>();
 		methodList.add(method);
-		List<Vertex> type1Components = new ArrayList<>();
-		type1Components.add(type2);
-		List<Vertex> type2Components = new ArrayList<>();
-		type2Components.add(type1);
 		List<SM_Type> instanceOfTypes = new ArrayList<>();
 		instanceOfTypes.add(type1);
 		instanceOfTypes.add(type2);
@@ -106,8 +99,7 @@ public class EncapsulationSmellDetectorTest {
 		when(type2.getParentPkg()).thenReturn(pkg);
 		when(pkg.getParentProject()).thenReturn(project);
 		when(project.getHierarchyGraph()).thenReturn(hierarchyGraph);
-		when(hierarchyGraph.getComponentOfVertex(type1)).thenReturn(type1Components);
-		when(hierarchyGraph.getComponentOfVertex(type2)).thenReturn(type2Components);
+		when(hierarchyGraph.inSameConnectedComponent(type1, type2)).thenReturn(true);
 		EncapsulationSmellDetector detector = new EncapsulationSmellDetector(metrics, info);
 		
 		int expected = 1;
