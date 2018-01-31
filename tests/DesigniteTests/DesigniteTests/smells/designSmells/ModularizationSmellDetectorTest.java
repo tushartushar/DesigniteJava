@@ -24,6 +24,51 @@ public class ModularizationSmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
+	public void testBrokenModularizationWhenHappyPathWithAtLeastOneMethod() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfMethods())
+			.thenReturn(1);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getBrokenModularizationLargeFieldSet() + 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectBrokenModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBrokenModularizationWhenHappyPathWithFewFields() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfMethods())
+			.thenReturn(0);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getBrokenModularizationLargeFieldSet() - 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectBrokenModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testBrokenModularizationWhenSmellIsDetected() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getNumOfMethods())
+			.thenReturn(0);
+		when(metrics.getNumOfFields())
+			.thenReturn(thresholds.getBrokenModularizationLargeFieldSet() + 1);
+		ModularizationSmellDetector detector = new ModularizationSmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectBrokenModularization().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testCyclicDependentModularizationWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);

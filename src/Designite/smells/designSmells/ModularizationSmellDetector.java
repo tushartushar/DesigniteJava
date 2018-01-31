@@ -9,6 +9,7 @@ import Designite.utils.models.Graph;
 
 public class ModularizationSmellDetector extends DesignSmellDetector {
 	
+	private static final String BROKEN_MODULARIZATION = "Broken Modularization";
 	private static final String CYCLIC_DEPENDENT_MODULARIZATION = "Cyclic-Dependent Modularization";
 	private static final String INSUFFICIENT_MODULARIZATION = "Insufficient Modularization";
 	private static final String HUB_LIKE_MODULARIZATION = "Hub-like Modularization";
@@ -18,10 +19,24 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 	}
 	
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectBrokenModularization();
+		detectCyclicDependentModularization();
 		detectInsufficientModularization();
 		detectHubLikeModularization();
 		return getSmells();
 	}
+	
+	public List<DesignCodeSmell> detectBrokenModularization() {
+		if (hasBrokenModularization()) {
+			addToSmells(initializeCodeSmell(BROKEN_MODULARIZATION));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasBrokenModularization() {
+		return getTypeMetrics().getNumOfMethods() == 0
+				&& getTypeMetrics().getNumOfFields() >= getThresholdsDTO().getBrokenModularizationLargeFieldSet();
+	} 
 	
 	public List<DesignCodeSmell> detectCyclicDependentModularization() {
 		if (hasCyclicDependentModularization()) {

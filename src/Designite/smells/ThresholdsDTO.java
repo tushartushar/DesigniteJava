@@ -11,6 +11,7 @@ public class ThresholdsDTO {
 	private int deepHierarchy = 6;
 	private int wideHierarchy = 10;
 	
+	private int brokenModularizationLargeFieldSet = 5;
 	private int hubLikeModularizationLargeFanIn = 20;
 	private int hubLikeModularizationLargeFanOut = 20;
 	private int insufficientModularizationLargePublicInterface = 20;
@@ -72,6 +73,14 @@ public class ThresholdsDTO {
 	
 	public void setWideHierarchy(int wideHierarchy) {
 		this.wideHierarchy = wideHierarchy;
+	}
+	
+	public int getBrokenModularizationLargeFieldSet() {
+		return brokenModularizationLargeFieldSet;
+	}
+
+	public void setBrokenModularizationLargeFieldSet(int brokenModularizationLargeFieldSet) {
+		this.brokenModularizationLargeFieldSet = brokenModularizationLargeFieldSet;
 	}
 	
 	public int getHubLikeModularizationLargeFanIn() {
