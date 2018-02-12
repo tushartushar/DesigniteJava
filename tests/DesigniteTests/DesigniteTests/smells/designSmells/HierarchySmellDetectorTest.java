@@ -21,19 +21,6 @@ public class HierarchySmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
-	public void testDeepHierarchyHappyPath() {
-		TypeMetrics metrics = mock(TypeMetrics.class);
-		when(metrics.getInheritanceDepth())
-				.thenReturn(thresholds.getDeepHierarchy() - 1);
-		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
-		
-		int expected = 0;
-		int actual = detector.detectDeepHierarchy().size();
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
 	public void testCyclicHierarchyWhenHappyPath() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);
@@ -83,7 +70,20 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
-	public void testDeepHierarchyHappyPositive() {
+	public void testDeepHierarchyHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		when(metrics.getInheritanceDepth())
+				.thenReturn(thresholds.getDeepHierarchy() - 1);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectDeepHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testDeepHierarchyWhenSmellIsDetected() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getInheritanceDepth())
 				.thenReturn(thresholds.getDeepHierarchy() + 1);
@@ -91,6 +91,60 @@ public class HierarchySmellDetectorTest {
 		
 		int expected = 1;
 		int actual = detector.detectDeepHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHasMultipathHierachyWhenHappyPathNoParent() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		List<SM_Type> superTypes = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMultipathHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHasMultipathHierachyWhenHappyPathWithParent() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Type superType = mock(SM_Type.class);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMultipathHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHasMultipathHierachyWhenSmellIsDetected() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Type intefaceType = mock(SM_Type.class);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		superTypes.add(intefaceType);
+		List<SM_Type> superSuperTypes = new ArrayList<>();
+		superSuperTypes.add(intefaceType);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(superType.getSuperTypes()).thenReturn(superSuperTypes);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectMultipathHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -109,7 +163,7 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
-	public void testWideHierarchyPositive() {
+	public void testWideHierarchyWhenSmellIsDetected() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getNumOfChildren())
 				.thenReturn(thresholds.getWideHierarchy() + 1);
