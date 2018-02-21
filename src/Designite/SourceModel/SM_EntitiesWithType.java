@@ -26,6 +26,14 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 		return typeInfo.getNonPrimitiveTypeParameters();
 	}
 	
+	public String getTypeOverallToString() {
+		if (isPrimitiveType()) {
+			return getPrimitiveType();
+		} else {
+			return getType().getName();
+		}
+	}
+	
 	@Override
 	public void parse() {
 		

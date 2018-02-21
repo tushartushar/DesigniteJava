@@ -263,6 +263,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		setTypesThatReferenceThis();
 		setSuperTypes();
 		updateHierarchyGraph();
+		updateDependencyGraph();
 	}
 	
 	private void setStaticAccessList() {
@@ -298,6 +299,16 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 			}
 		}
 		getParentPkg().getParentProject().getHierarchyGraph().addVertex(this);		
+	}
+	
+	private void updateDependencyGraph() {
+		if (getReferencedTypeList().size() > 0) {
+			for (SM_Type dependency : getReferencedTypeList()) {
+				getParentPkg().getParentProject().getDependencyGraph().addEdge(
+						new Edge(this, dependency));
+			}
+		}
+		getParentPkg().getParentProject().getDependencyGraph().addVertex(this);
 	}
 	
 	private void addUniqueReference(SM_Type type, SM_Type typeToAdd, boolean invardReference) {

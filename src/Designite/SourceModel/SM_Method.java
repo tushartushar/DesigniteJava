@@ -16,19 +16,18 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 
-import Designite.metrics.MethodMetrics;
-import Designite.utils.CSVUtils;
-import Designite.utils.Constants;
 import Designite.utils.models.Vertex;
 import Designite.visitors.DirectAceessFieldVisitor;
 import Designite.visitors.InstanceOfVisitor;
+import Designite.visitors.ThrowVisitor;
 
 public class SM_Method extends SM_SourceItem implements Vertex {
 		
-	private boolean abstractMethod = false;
-	private boolean finalMethod = false;
-	private boolean staticMethod = false;
-	private boolean isConstructor = false;
+	private boolean abstractMethod;
+	private boolean finalMethod;
+	private boolean staticMethod;
+	private boolean isConstructor;
+	private boolean throwsException;
 	private SM_Type parentType;
 
 	private MethodDeclaration methodDeclaration;
@@ -82,6 +81,10 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 
 	public SM_Type getParentType() {
 		return parentType;
+	}
+	
+	public boolean throwsException() {
+		return throwsException;
 	}
 
 	public List<SM_Parameter> getParameterList() {
@@ -180,6 +183,10 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		if (instanceOfTypes.size() > 0) {
 			typesInInstanceOf.addAll(instanceOfTypes);
 		}
+		
+		ThrowVisitor throwVisithor = new ThrowVisitor();
+		methodDeclaration.accept(throwVisithor);
+		throwsException = throwVisithor.throwsException();
 	}
 
 	@Override

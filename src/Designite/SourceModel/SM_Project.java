@@ -216,6 +216,7 @@ public class SM_Project extends SM_SourceItem implements CodeSmellExtractable {
 			pkg.resolve();
 		}
 		hierarchyGraph.computeConnectedComponents();
+		dependencyGraph.computeStronglyConnectedComponents();
 	}
 	
 	public void extractMetrics() {

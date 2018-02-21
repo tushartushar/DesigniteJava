@@ -9,8 +9,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
+import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.HierarchySmellDetector;
@@ -96,7 +99,7 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
-	public void testHasMultipathHierachyWhenHappyPathNoParent() {
+	public void testMultipathHierachyWhenHappyPathNoParent() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);
 		List<SM_Type> superTypes = new ArrayList<>();
@@ -111,7 +114,7 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
-	public void testHasMultipathHierachyWhenHappyPathWithParent() {
+	public void testMultipathHierachyWhenHappyPathWithParent() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);
 		SM_Type superType = mock(SM_Type.class);
@@ -128,7 +131,7 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
-	public void testHasMultipathHierachyWhenSmellIsDetected() {
+	public void testMultipathHierachyWhenSmellIsDetected() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);
 		SM_Type superType = mock(SM_Type.class);
@@ -145,6 +148,180 @@ public class HierarchySmellDetectorTest {
 		
 		int expected = 1;
 		int actual = detector.detectMultipathHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testRebeliousHierarchyWhenSmellIsDetectedWithEmptyBody() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method superTypeMethod = mock(SM_Method.class);
+		List<SM_Method> typeMethods = new ArrayList<>();
+		typeMethods.add(typeMethod);
+		List<SM_Method> superTypeMethods = new ArrayList<>();
+		superTypeMethods.add(superTypeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(typeMethods);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(superType.getMethodList()).thenReturn(superTypeMethods);
+		when(typeMethod.getName()).thenReturn("foo");
+		when(superTypeMethod.getName()).thenReturn("foo");
+		when(typeMethod.getParameterList()).thenReturn(parameters);
+		when(superTypeMethod.getParameterList()).thenReturn(parameters);
+		when(methodMetrics.getNumOfLines()).thenReturn(0);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectRebeliousHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testRebeliousHierarchyWhenSmellIsDetectedWithOneLineThrowable() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method superTypeMethod = mock(SM_Method.class);
+		List<SM_Method> typeMethods = new ArrayList<>();
+		typeMethods.add(typeMethod);
+		List<SM_Method> superTypeMethods = new ArrayList<>();
+		superTypeMethods.add(superTypeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(typeMethods);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(superType.getMethodList()).thenReturn(superTypeMethods);
+		when(typeMethod.getName()).thenReturn("foo");
+		when(typeMethod.throwsException()).thenReturn(true);
+		when(superTypeMethod.getName()).thenReturn("foo");
+		when(typeMethod.getParameterList()).thenReturn(parameters);
+		when(superTypeMethod.getParameterList()).thenReturn(parameters);
+		when(methodMetrics.getNumOfLines()).thenReturn(1);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectRebeliousHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testRebeliousHierarchyWhenHappyPathIsOverridenWithOneLineThrowable() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method superTypeMethod = mock(SM_Method.class);
+		List<SM_Method> typeMethods = new ArrayList<>();
+		typeMethods.add(typeMethod);
+		List<SM_Method> superTypeMethods = new ArrayList<>();
+		superTypeMethods.add(superTypeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(typeMethods);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(superType.getMethodList()).thenReturn(superTypeMethods);
+		when(typeMethod.getName()).thenReturn("foo");
+		when(typeMethod.throwsException()).thenReturn(false);
+		when(superTypeMethod.getName()).thenReturn("foo");
+		when(typeMethod.getParameterList()).thenReturn(parameters);
+		when(superTypeMethod.getParameterList()).thenReturn(parameters);
+		when(methodMetrics.getNumOfLines()).thenReturn(1);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectRebeliousHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testRebeliousHierarchyWhenHappyPathIsOverridenWithMoreLines() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method superTypeMethod = mock(SM_Method.class);
+		List<SM_Method> typeMethods = new ArrayList<>();
+		typeMethods.add(typeMethod);
+		List<SM_Method> superTypeMethods = new ArrayList<>();
+		superTypeMethods.add(superTypeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(typeMethods);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(superType.getMethodList()).thenReturn(superTypeMethods);
+		when(typeMethod.getName()).thenReturn("foo");
+		when(typeMethod.throwsException()).thenReturn(false);
+		when(superTypeMethod.getName()).thenReturn("foo");
+		when(typeMethod.getParameterList()).thenReturn(parameters);
+		when(superTypeMethod.getParameterList()).thenReturn(parameters);
+		when(methodMetrics.getNumOfLines()).thenReturn(2);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectRebeliousHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testRebeliousHierarchyWhenHappyPathIsNotOverriden() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method superTypeMethod = mock(SM_Method.class);
+		List<SM_Method> typeMethods = new ArrayList<>();
+		typeMethods.add(typeMethod);
+		List<SM_Method> superTypeMethods = new ArrayList<>();
+		superTypeMethods.add(superTypeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(typeMethods);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(type.getMetricsFromMethod(typeMethod)).thenReturn(methodMetrics);
+		when(superType.getMethodList()).thenReturn(superTypeMethods);
+		when(typeMethod.getName()).thenReturn("foo");
+		when(typeMethod.throwsException()).thenReturn(false);
+		when(superTypeMethod.getName()).thenReturn("bar");
+		when(typeMethod.getParameterList()).thenReturn(parameters);
+		when(superTypeMethod.getParameterList()).thenReturn(parameters);
+		when(methodMetrics.getNumOfLines()).thenReturn(0);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectRebeliousHierarchy().size();
 		
 		assertEquals(expected, actual);
 	}
