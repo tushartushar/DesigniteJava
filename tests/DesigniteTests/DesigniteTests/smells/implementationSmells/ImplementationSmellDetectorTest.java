@@ -17,13 +17,37 @@ public class ImplementationSmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
+	public void testComplexMethodWhenHappyPath() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getCyclomaticComplexity()).thenReturn(thresholds.getComplexMethod() - 1);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectComplexMethod().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testComplexMethodWhenSmellIsDetected() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getCyclomaticComplexity()).thenReturn(thresholds.getComplexMethod() + 1);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectComplexMethod().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testLongMethodWhenHappyPath() {
 		MethodMetrics methodMetrics = mock(MethodMetrics.class);
 		when(methodMetrics.getNumOfLines()).thenReturn(thresholds.getLongMethod() - 1);
 		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
 		
 		int expected = 0;
-		int actual = detector.detectLongMethods().size();
+		int actual = detector.detectLongMethod().size();
 		
 		assertEquals(expected, actual);
 	}
@@ -35,7 +59,7 @@ public class ImplementationSmellDetectorTest {
 		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
 		
 		int expected = 1;
-		int actual = detector.detectLongMethods().size();
+		int actual = detector.detectLongMethod().size();
 		
 		assertEquals(expected, actual);
 	}

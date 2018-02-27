@@ -18,7 +18,8 @@ public class ImplementationSmellDetector {
 	private SourceItemInfo info;
 	private ThresholdsDTO thresholdsDTO;
 	
-	private static final String LONG_METHOD = "Long method";
+	private static final String COMPLEX_METHOD = "Complex Method";
+	private static final String LONG_METHOD = "Long Method";
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -29,11 +30,23 @@ public class ImplementationSmellDetector {
 	}
 	
 	public List<ImplementationCodeSmell> detectCodeSmells() {
-		detectLongMethods();
+		detectComplexMethod();
+		detectLongMethod();
 		return smells;
 	}
 	
-	public List<ImplementationCodeSmell> detectLongMethods() {
+	public List<ImplementationCodeSmell> detectComplexMethod() {
+		if (hasComplexMethod()) {
+			addToSmells(initializeCodeSmell(COMPLEX_METHOD));
+		}
+		return smells;
+	}
+	
+	private boolean hasComplexMethod() {
+		return methodMetrics.getCyclomaticComplexity() >= thresholdsDTO.getComplexMethod();
+	}
+	
+	public List<ImplementationCodeSmell> detectLongMethod() {
 		if (hasLongMethod()) {
 			addToSmells(initializeCodeSmell(LONG_METHOD));
 		}

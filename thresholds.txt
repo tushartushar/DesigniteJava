@@ -1,3 +1,4 @@
+complexMethod = 8
 longMethod = 100
 
 imperativeAbstractionLargeNumOfLines = 100
