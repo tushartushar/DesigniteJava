@@ -19,6 +19,7 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 		super(typeMetrics, info);
 	}
 
+	@Override
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectImperativeAbstraction();
 		detectMultifacetedAbstraction();

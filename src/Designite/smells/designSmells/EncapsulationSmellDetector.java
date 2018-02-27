@@ -20,6 +20,7 @@ public class EncapsulationSmellDetector extends DesignSmellDetector {
 		super(typeMetrics, info);
 	}
 	
+	@Override
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectDeficientEncapsulation();
 		detectUnexploitedEncapsulation();

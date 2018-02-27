@@ -22,7 +22,7 @@ import Designite.utils.models.Edge;
 import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 
-public class SM_Project extends SM_SourceItem implements CodeSmellExtractable {
+public class SM_Project extends SM_SourceItem {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;
@@ -227,7 +227,6 @@ public class SM_Project extends SM_SourceItem implements CodeSmellExtractable {
 		}
 	}
 
-	@Override
 	public void extractCodeSmells() {
 		Logger.log("Extracting code smells...");
 		for (SM_Package pkg : packageList) {

@@ -24,7 +24,9 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.designSmells.DesignSmellFacade;
+import Designite.smells.implementationSmells.ImplementationSmellDetector;
 import Designite.smells.models.DesignCodeSmell;
+import Designite.smells.models.ImplementationCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
@@ -57,6 +59,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private List<Name> staticFieldAccesses = new ArrayList<>();
 	private List<SM_Type> staticFieldAccessList = new ArrayList<>();
 	private Map<SM_Method, MethodMetrics> metricsMapping = new HashMap<>();
+	private Map<SM_Method, List<ImplementationCodeSmell>> smellMapping = new HashMap<>();
 
 	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
 		parentPkg = pkg;
@@ -354,6 +357,26 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 				+ "," + metrics.getCyclomaticComplexity()
 				+ "," + metrics.getNumOfParameters()
 				+ "\n";
+	}
+	
+	public void extractCodeSmells() {
+		for (SM_Method method : methodList) {
+			ImplementationSmellDetector detector = new ImplementationSmellDetector(metricsMapping.get(method)
+					, new SourceItemInfo(getParentPkg().getParentProject().getName()
+							, getParentPkg().getName()
+							, getName()
+							, method.getName()));
+			smellMapping.put(method, detector.detectCodeSmells());
+			exportDesignSmellsToCSV(method);
+			
+		}
+	}
+	
+	private void exportDesignSmellsToCSV(SM_Method method) {
+		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
+				+ File.separator + getParentPkg().getParentProject().getName()
+				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
+				, smellMapping.get(method));
 	}
 
 }

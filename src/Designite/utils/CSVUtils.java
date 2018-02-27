@@ -38,6 +38,7 @@ public class CSVUtils {
 		createCSVFile(dir.getPath() + File.separator + Constants.TYPE_METRICS_PATH_SUFFIX, Constants.TYPE_METRICS_HEADER);
 		createCSVFile(dir.getPath() + File.separator + Constants.METHOD_METRICS_PATH_SUFFIX, Constants.METHOD_METRICS_HEADER);
 		createCSVFile(dir.getPath() + File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX, Constants.DESIGN_CODE_SMELLS_HEADER);
+		createCSVFile(dir.getPath() + File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX, Constants.IMPLEMENTATION_CODE_SMELLS_HEADER);
 	}
 	
 	private static void createCSVFile(String path, String header) {

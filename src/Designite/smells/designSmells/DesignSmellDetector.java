@@ -8,7 +8,7 @@ import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.models.DesignCodeSmell;
 
-public class DesignSmellDetector {
+public abstract class DesignSmellDetector {
 	
 	private List<DesignCodeSmell> smells;
 	
@@ -23,6 +23,8 @@ public class DesignSmellDetector {
 		thresholdsDTO = new ThresholdsDTO();
 		smells = new ArrayList<>();
 	}
+	
+	abstract public List<DesignCodeSmell> detectCodeSmells();
 	
 	public List<DesignCodeSmell> getSmells() {
 		return smells;

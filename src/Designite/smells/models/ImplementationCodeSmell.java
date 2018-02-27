@@ -1,21 +1,28 @@
 package Designite.smells.models;
 
-public class DesignCodeSmell extends CodeSmell {
+public class ImplementationCodeSmell extends CodeSmell {
 	
 	private String typeName;
+	private String methodName;
 	private String smellName;
 	
-	public DesignCodeSmell(String projectName
+	public ImplementationCodeSmell(String projectName
 			, String packageName
 			, String typeName
+			, String methodName
 			, String smellName) {
 		super(projectName, packageName);
 		this.typeName = typeName;
+		this.methodName = methodName;
 		this.smellName = smellName;
 	}
 
 	public String getTypeName() {
 		return typeName;
+	}
+
+	public String getMethodName() {
+		return methodName;
 	}
 
 	public String getSmellName() {
@@ -27,8 +34,9 @@ public class DesignCodeSmell extends CodeSmell {
 		return getProjectName()
 				+ "," + getPackageName()
 				+ "," + typeName
+				+ "," + methodName
 				+ "," + smellName
 				+ "\n";
 	}
-
+	
 }

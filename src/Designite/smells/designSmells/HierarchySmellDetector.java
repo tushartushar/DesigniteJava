@@ -28,6 +28,7 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 		super(typeMetrics, info);
 	}
 	
+	@Override
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectCyclicHierarchy();
 		detectDeepHierarchy();

@@ -15,7 +15,7 @@ public class SM_ProjectTest extends DesigniteTests {
 		SM_Project project = new SM_Project(new InputArgs(IN_BATCH_FILE_PATH));
 		project.parse();
 
-		assertEquals(20, project.getPackageCounter());
+		assertEquals(22, project.getPackageCounter());
 
 	}
 	

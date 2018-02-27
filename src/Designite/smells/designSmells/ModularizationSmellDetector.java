@@ -18,6 +18,7 @@ public class ModularizationSmellDetector extends DesignSmellDetector {
 		super(typeMetrics, info);
 	}
 	
+	@Override
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectBrokenModularization();
 		detectCyclicDependentModularization();

@@ -2,7 +2,9 @@ package Designite.smells;
 
 public class ThresholdsDTO {
 	
-	private int imperativeAbstractionLargeNumOfLines = 100;
+	private int longMethod = 100;
+	
+	private int imperativeAbstractionLargeNumOfLines = 1;
 	private double multifacetedAbstractionLargeLCOM = 0.8;
 	private int multifacetedAbstractionManyFields = 7;
 	private int multifacetedAbstractionManyMethods = 7;
@@ -18,7 +20,14 @@ public class ThresholdsDTO {
 	private int insufficientModularizationLargeNumOfMethods = 30;
 	private int insufficientModularizationHighComplexity = 100;
 	
-	
+	public int getLongMethod() {
+		return longMethod;
+	}
+
+	public void setLongMethod(int longMethod) {
+		this.longMethod = longMethod;
+	}
+
 	public int getImperativeAbstractionLargeNumOfLines() {
 		return imperativeAbstractionLargeNumOfLines;
 	}
