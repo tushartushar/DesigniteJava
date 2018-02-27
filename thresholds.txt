@@ -1,5 +1,6 @@
 complexMethod = 8
 longMethod = 100
+longParameterList = 5
 
 imperativeAbstractionLargeNumOfLines = 100
 multifacetedAbstractionLargeLCOM = 0.8

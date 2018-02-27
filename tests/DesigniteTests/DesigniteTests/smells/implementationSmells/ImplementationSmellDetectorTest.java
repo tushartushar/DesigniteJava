@@ -64,5 +64,28 @@ public class ImplementationSmellDetectorTest {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void testLongParameterListWhenHappyPath() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getNumOfParameters()).thenReturn(thresholds.getLongParameterList() - 1);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectLongParameterList().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongParameterListWhenSmellIsDetected() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getNumOfParameters()).thenReturn(thresholds.getComplexMethod() + 1);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectLongParameterList().size();
+		
+		assertEquals(expected, actual);
+	}
 
 }

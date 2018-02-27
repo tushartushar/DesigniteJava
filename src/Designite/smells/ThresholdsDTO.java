@@ -4,6 +4,7 @@ public class ThresholdsDTO {
 	
 	private int complexMethod = 8;
 	private int longMethod = 100;
+	private int longParameterList = 5;
 	
 	private int imperativeAbstractionLargeNumOfLines = 1;
 	private double multifacetedAbstractionLargeLCOM = 0.8;
@@ -26,12 +27,24 @@ public class ThresholdsDTO {
 		return complexMethod;
 	}
 
+	public void setComplexMethod(int complexMethod) {
+		this.complexMethod = complexMethod;
+	}
+
 	public int getLongMethod() {
 		return longMethod;
 	}
 
 	public void setLongMethod(int longMethod) {
 		this.longMethod = longMethod;
+	}
+	
+	public int getLongParameterList() {
+		return longParameterList;
+	}
+
+	public void setLongParameterList(int longParameterList) {
+		this.longParameterList = longParameterList;
 	}
 
 	public int getImperativeAbstractionLargeNumOfLines() {

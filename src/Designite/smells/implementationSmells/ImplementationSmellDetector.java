@@ -20,6 +20,7 @@ public class ImplementationSmellDetector {
 	
 	private static final String COMPLEX_METHOD = "Complex Method";
 	private static final String LONG_METHOD = "Long Method";
+	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -32,6 +33,7 @@ public class ImplementationSmellDetector {
 	public List<ImplementationCodeSmell> detectCodeSmells() {
 		detectComplexMethod();
 		detectLongMethod();
+		detectLongParameterList();
 		return smells;
 	}
 	
@@ -55,6 +57,17 @@ public class ImplementationSmellDetector {
 	
 	private boolean hasLongMethod() {
 		return methodMetrics.getNumOfLines() >= thresholdsDTO.getLongMethod();
+	}
+	
+	public List<ImplementationCodeSmell> detectLongParameterList() {
+		if (hasLongParameterList()) {
+			addToSmells(initializeCodeSmell(LONG_PARAMETER_LIST));
+		}
+		return smells;
+	}
+	
+	private boolean hasLongParameterList() {
+		return methodMetrics.getNumOfParameters() >= thresholdsDTO.getLongParameterList();
 	}
 	
 	public List<ImplementationCodeSmell> getSmells() {
