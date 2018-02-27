@@ -47,7 +47,7 @@ public class ThresholdsParser {
 		while ((line = bufferedReader.readLine()) != null) {
 			if (isNotEmpty(line)) {
 				if (!isWellFormatted(line)) {
-					String message = "Line: " + line + "\nis not of the form 'foo' = 'someNumber'";
+					String message = "Line: " + line + "\nis not of the form 'someDescription' = 'someNumber'";
 					Logger.log(message);
 					throw new IllegalArgumentException(message);
 				}

@@ -1,5 +1,6 @@
 package Designite.smells.designSmells;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Designite.SourceModel.SM_Method;
@@ -14,12 +15,14 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	
 	private static final String CYCLIC_HIERARCHY = "Cyclic Hierarchy";
 	private static final String DEEP_HIERARCHY = "Deep Hierarchy";
+	private static final String MISSING_HIERARCHY = "Missing Hierarchy";
 	private static final String MULTIPATH_HIERARCHY = "Multipath Hierarchy";
 	private static final String REBELIOUS_HIERARCHY = "Rebelious Hierarchy";
 	private static final String WIDE_HIERARCHY = "Wide Hierarchy";
 	
 	private static final int EMPTY_BODY = 0;
 	private static final int ONLY_ONE_STATEMENT = 1;
+	private static final int INSTANCE_OF_TYPES_NOT_IN_HIERARCHY_THRESHOLD = 2;
 	
 	public HierarchySmellDetector(TypeMetrics typeMetrics, SourceItemInfo info) {
 		super(typeMetrics, info);
@@ -28,6 +31,7 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	public List<DesignCodeSmell> detectCodeSmells() {
 		detectCyclicHierarchy();
 		detectDeepHierarchy();
+		detectMissingHierarchy();
 		detectMultipathHierarchy();
 		detectRebeliousHierarchy();
 		detectWideHierarchy();
@@ -72,6 +76,46 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	private boolean hasDeepHierarchy() {
 		return getTypeMetrics().getInheritanceDepth()
 				> getThresholdsDTO().getDeepHierarchy();
+	}
+	
+	public List<DesignCodeSmell> detectMissingHierarchy() {
+		if (hasMissingHierarchy()) {
+			addToSmells(initializeCodeSmell(MISSING_HIERARCHY));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasMissingHierarchy() {
+		SM_Type type = getTypeMetrics().getType();
+		for (SM_Method method : type.getMethodList()) {
+			List<SM_Type> listOfInstanceOfTypes = method.getSMTypesInInstanceOf();
+			List<SM_Type> allAncestors = getAllAncestors(type, new ArrayList<>());
+			if (setDifference(listOfInstanceOfTypes, allAncestors).size() 
+					>= INSTANCE_OF_TYPES_NOT_IN_HIERARCHY_THRESHOLD) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private List<SM_Type> getAllAncestors(SM_Type type, List<SM_Type> ancestors) {
+		for (SM_Type superType : type.getSuperTypes()) {
+			if (!ancestors.contains(superType)) {
+				ancestors.add(superType);
+			}
+			getAllAncestors(superType, ancestors);
+		}
+		return ancestors;
+	}
+	
+	private List<SM_Type> setDifference(List<SM_Type> oneList, List<SM_Type> otherList) {
+		List<SM_Type> outcome = new ArrayList<>();
+		for (SM_Type type : oneList) {
+			if (!otherList.contains(type)) {
+				outcome.add(type);
+			}
+		}
+		return outcome;
 	}
 	
 	public List<DesignCodeSmell> detectMultipathHierarchy() {

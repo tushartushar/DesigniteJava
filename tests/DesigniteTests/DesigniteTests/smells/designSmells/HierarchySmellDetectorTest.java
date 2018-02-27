@@ -99,6 +99,53 @@ public class HierarchySmellDetectorTest {
 	}
 	
 	@Test
+	public void testMissingHierarchyWhenHappyPath() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Type superType = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		List<SM_Method> methods = new ArrayList<>();
+		methods.add(typeMethod);
+		List<SM_Type> superTypes = new ArrayList<>();
+		superTypes.add(superType);
+		List<SM_Type> instanceOfTypes = new ArrayList<>();
+		instanceOfTypes.add(superType);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(methods);
+		when(type.getSuperTypes()).thenReturn(superTypes);
+		when(typeMethod.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectMissingHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testMissingHierarchyWhenSmellIsDetected() {
+		TypeMetrics metrics = mock(TypeMetrics.class);
+		SM_Type type = mock(SM_Type.class);
+		SM_Type otherType = mock(SM_Type.class);
+		SM_Type otherType2 = mock(SM_Type.class);
+		SM_Method typeMethod = mock(SM_Method.class);
+		List<SM_Method> methods = new ArrayList<>();
+		methods.add(typeMethod);
+		List<SM_Type> instanceOfTypes = new ArrayList<>();
+		instanceOfTypes.add(otherType);
+		instanceOfTypes.add(otherType2);
+		when(metrics.getType()).thenReturn(type);
+		when(type.getMethodList()).thenReturn(methods);
+		when(typeMethod.getSMTypesInInstanceOf()).thenReturn(instanceOfTypes);
+		HierarchySmellDetector detector = new HierarchySmellDetector(metrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectMissingHierarchy().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testMultipathHierachyWhenHappyPathNoParent() {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		SM_Type type = mock(SM_Type.class);
