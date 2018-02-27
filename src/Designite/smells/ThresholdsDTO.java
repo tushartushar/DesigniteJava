@@ -3,6 +3,7 @@ package Designite.smells;
 public class ThresholdsDTO {
 	
 	private int complexMethod = 8;
+	private int longIdentifier = 30;
 	private int longMethod = 100;
 	private int longParameterList = 5;
 	
@@ -29,6 +30,14 @@ public class ThresholdsDTO {
 
 	public void setComplexMethod(int complexMethod) {
 		this.complexMethod = complexMethod;
+	}
+
+	public int getLongIdentifier() {
+		return longIdentifier;
+	}
+
+	public void setLongIdentifier(int longIdentifier) {
+		this.longIdentifier = longIdentifier;
 	}
 
 	public int getLongMethod() {

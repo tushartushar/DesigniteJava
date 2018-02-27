@@ -3,11 +3,12 @@ package Designite.smells.implementationSmells;
 import java.util.ArrayList;
 import java.util.List;
 
+import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_LocalVar;
+import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
-import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
-import Designite.smells.models.DesignCodeSmell;
 import Designite.smells.models.ImplementationCodeSmell;
 
 public class ImplementationSmellDetector {
@@ -19,6 +20,7 @@ public class ImplementationSmellDetector {
 	private ThresholdsDTO thresholdsDTO;
 	
 	private static final String COMPLEX_METHOD = "Complex Method";
+	private static final String LONG_IDENTIFIER = "Long Identifier";
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
 	
@@ -32,6 +34,7 @@ public class ImplementationSmellDetector {
 	
 	public List<ImplementationCodeSmell> detectCodeSmells() {
 		detectComplexMethod();
+		detectLongIdentifier();
 		detectLongMethod();
 		detectLongParameterList();
 		return smells;
@@ -46,6 +49,44 @@ public class ImplementationSmellDetector {
 	
 	private boolean hasComplexMethod() {
 		return methodMetrics.getCyclomaticComplexity() >= thresholdsDTO.getComplexMethod();
+	}
+	
+	public List<ImplementationCodeSmell> detectLongIdentifier() {
+		if (hasLongIdentifier()) {
+			addToSmells(initializeCodeSmell(LONG_IDENTIFIER));
+		}
+		return smells;
+	}
+	
+	private boolean hasLongIdentifier() {
+		return hasLongParameter() || hasLongLocalVar() || hasLongFieldAccess();
+	}
+	
+	private boolean hasLongParameter() {
+		for (SM_Parameter parameter : methodMetrics.getMethod().getParameterList()) {
+			if (parameter.getName().length() >= thresholdsDTO.getLongIdentifier()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean hasLongLocalVar() {
+		for (SM_LocalVar var : methodMetrics.getMethod().getLocalVarList()) {
+			if (var.getName().length() >= thresholdsDTO.getLongIdentifier()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean hasLongFieldAccess() {
+		for (SM_Field field : methodMetrics.getMethod().getDirectFieldAccesses()) {
+			if (field.getName().length() >= thresholdsDTO.getLongIdentifier()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public List<ImplementationCodeSmell> detectLongMethod() {

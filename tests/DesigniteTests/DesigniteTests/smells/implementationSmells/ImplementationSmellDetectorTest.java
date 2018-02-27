@@ -4,8 +4,15 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
+import Designite.SourceModel.SM_Field;
+import Designite.SourceModel.SM_LocalVar;
+import Designite.SourceModel.SM_Method;
+import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
@@ -30,6 +37,150 @@ public class ImplementationSmellDetectorTest {
 	
 	@Test
 	public void testComplexMethodWhenSmellIsDetected() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getCyclomaticComplexity()).thenReturn(thresholds.getComplexMethod() + 1);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectComplexMethod().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongIdentifierWhenHappyPath() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Parameter parameter = mock(SM_Parameter.class);
+		SM_LocalVar localVar = mock(SM_LocalVar.class);
+		SM_Field field = mock(SM_Field.class);
+		String name1 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name2 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name3 = initializeName(thresholds.getLongIdentifier() - 1);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		parameters.add(parameter);
+		List<SM_LocalVar> localVars = new ArrayList<>();
+		localVars.add(localVar);
+		List<SM_Field> fields = new ArrayList<>();
+		fields.add(field);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.getParameterList()).thenReturn(parameters);
+		when(method.getLocalVarList()).thenReturn(localVars);
+		when(method.getDirectFieldAccesses()).thenReturn(fields);
+		when(parameter.getName()).thenReturn(name1);
+		when(localVar.getName()).thenReturn(name2);
+		when(field.getName()).thenReturn(name3);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectLongIdentifier().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongIdentifierWhenLongParameter() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Parameter parameter = mock(SM_Parameter.class);
+		SM_LocalVar localVar = mock(SM_LocalVar.class);
+		SM_Field field = mock(SM_Field.class);
+		String name1 = initializeName(thresholds.getLongIdentifier() + 1);
+		String name2 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name3 = initializeName(thresholds.getLongIdentifier() - 1);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		parameters.add(parameter);
+		List<SM_LocalVar> localVars = new ArrayList<>();
+		localVars.add(localVar);
+		List<SM_Field> fields = new ArrayList<>();
+		fields.add(field);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.getParameterList()).thenReturn(parameters);
+		when(method.getLocalVarList()).thenReturn(localVars);
+		when(method.getDirectFieldAccesses()).thenReturn(fields);
+		when(parameter.getName()).thenReturn(name1);
+		when(localVar.getName()).thenReturn(name2);
+		when(field.getName()).thenReturn(name3);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectLongIdentifier().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongIdentifierWhenLongLocalVar() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Parameter parameter = mock(SM_Parameter.class);
+		SM_LocalVar localVar = mock(SM_LocalVar.class);
+		SM_Field field = mock(SM_Field.class);
+		String name1 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name2 = initializeName(thresholds.getLongIdentifier() + 1);
+		String name3 = initializeName(thresholds.getLongIdentifier() - 1);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		parameters.add(parameter);
+		List<SM_LocalVar> localVars = new ArrayList<>();
+		localVars.add(localVar);
+		List<SM_Field> fields = new ArrayList<>();
+		fields.add(field);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.getParameterList()).thenReturn(parameters);
+		when(method.getLocalVarList()).thenReturn(localVars);
+		when(method.getDirectFieldAccesses()).thenReturn(fields);
+		when(parameter.getName()).thenReturn(name1);
+		when(localVar.getName()).thenReturn(name2);
+		when(field.getName()).thenReturn(name3);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectLongIdentifier().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongIdentifierWhenLongField() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Parameter parameter = mock(SM_Parameter.class);
+		SM_LocalVar localVar = mock(SM_LocalVar.class);
+		SM_Field field = mock(SM_Field.class);
+		String name1 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name2 = initializeName(thresholds.getLongIdentifier() - 1);
+		String name3 = initializeName(thresholds.getLongIdentifier() + 1);
+		List<SM_Parameter> parameters = new ArrayList<>();
+		parameters.add(parameter);
+		List<SM_LocalVar> localVars = new ArrayList<>();
+		localVars.add(localVar);
+		List<SM_Field> fields = new ArrayList<>();
+		fields.add(field);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.getParameterList()).thenReturn(parameters);
+		when(method.getLocalVarList()).thenReturn(localVars);
+		when(method.getDirectFieldAccesses()).thenReturn(fields);
+		when(parameter.getName()).thenReturn(name1);
+		when(localVar.getName()).thenReturn(name2);
+		when(field.getName()).thenReturn(name3);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectLongIdentifier().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	private String initializeName(int iterations) {
+		String outcome = "";
+		for (int i = 0; i < iterations; i++) {
+			outcome += "a";
+		}
+		return outcome;
+	}
+	
+	@Test
+	public void testComplexMethoWhenSmellIsDetected() {
 		MethodMetrics methodMetrics = mock(MethodMetrics.class);
 		when(methodMetrics.getCyclomaticComplexity()).thenReturn(thresholds.getComplexMethod() + 1);
 		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);

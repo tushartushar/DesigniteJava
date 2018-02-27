@@ -1,4 +1,5 @@
 complexMethod = 8
+longIdentifier = 30
 longMethod = 100
 longParameterList = 5
 

@@ -80,5 +80,9 @@ public class MethodMetrics implements MetricExtractor {
 	public List<SM_Type> getSMTypesInInstanceOf() {
 		return method.getSMTypesInInstanceOf();
 	}
+	
+	public SM_Method getMethod() {
+		return method;
+	}
 
 }
