@@ -1,5 +1,8 @@
 package Designite.visitors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.DoStatement;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
@@ -10,67 +13,69 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 
 public class MethodControlFlowVisitor extends ASTVisitor {
 
-	private int numOfIfStatements;
-	private int numOfSwitchCaseStatements;
-	private int numOfForStatements;
-	private int numOfWhileStatements;
-	private int numOfDoStatements;
-	private int numOfForeachStatements;
+	private List<IfStatement> ifStatements = new ArrayList<>();
+	private List<SwitchCase> switchCaseStatements = new ArrayList<>();
+	private List<SwitchCase> switchCaseStatementsWitoutDefaults = new ArrayList<>();
+	private List<ForStatement> forStatements = new ArrayList<>();
+	private List<WhileStatement> whileStatements = new ArrayList<>();
+	private List<DoStatement> doStatements = new ArrayList<>();
+	private List<EnhancedForStatement> foreachStatements = new ArrayList<>();
 	
 	public boolean visit(IfStatement node) {
-		numOfIfStatements++;
+		ifStatements.add(node);
 		return true;
 	}
 	
 	public boolean visit(SwitchCase node) {
+		switchCaseStatements.add(node);
 		if (!node.isDefault()) {
-			numOfSwitchCaseStatements++;
+			switchCaseStatementsWitoutDefaults.add(node);
 		}
 		return true;
 	}
 	
 	public boolean visit(ForStatement node) {
-		numOfForStatements++;
+		forStatements.add(node);
 		return true;
 	}
 	
 	public boolean visit(WhileStatement node) {
-		numOfWhileStatements++;
+		whileStatements.add(node);
 		return true;
 	}
 	
 	public boolean visit(DoStatement node) {
-		numOfDoStatements++;
+		doStatements.add(node);
 		return true;
 	}
 	
 	public boolean visit(EnhancedForStatement node) {
-		numOfForeachStatements++;
+		foreachStatements.add(node);
 		return true;
 	}
 	
 	public int getNumOfIfStatements() {
-		return numOfIfStatements;
+		return ifStatements.size();
 	}
 
-	public int getNumOfSwitchCaseStatements() {
-		return numOfSwitchCaseStatements;
+	public int getNumOfSwitchCaseStatementsWitoutDefault() {
+		return switchCaseStatementsWitoutDefaults.size();
 	}
 
 	public int getNumOfForStatements() {
-		return numOfForStatements;
+		return forStatements.size();
 	}
 
 	public int getNumOfWhileStatements() {
-		return numOfWhileStatements;
+		return whileStatements.size();
 	}
 
 	public int getNumOfDoStatements() {
-		return numOfDoStatements;
+		return doStatements.size();
 	}
 
 	public int getNumOfForeachStatements() {
-		return numOfForeachStatements;
+		return foreachStatements.size();
 	}
 	
 }

@@ -42,7 +42,7 @@ public class MethodMetrics implements MetricExtractor {
 		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
 		method.getMethodDeclaration().accept(visitor);
 		return visitor.getNumOfIfStatements()
-			 + visitor.getNumOfSwitchCaseStatements()
+			 + visitor.getNumOfSwitchCaseStatementsWitoutDefault()
 			 + visitor.getNumOfForStatements()
 			 + visitor.getNumOfWhileStatements()
 		     + visitor.getNumOfDoStatements()
