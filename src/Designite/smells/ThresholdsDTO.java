@@ -2,6 +2,7 @@ package Designite.smells;
 
 public class ThresholdsDTO {
 	
+	private int complexCondition = 3;
 	private int complexMethod = 8;
 	private int longIdentifier = 30;
 	private int longMethod = 100;
@@ -23,7 +24,14 @@ public class ThresholdsDTO {
 	private int insufficientModularizationLargeNumOfMethods = 30;
 	private int insufficientModularizationHighComplexity = 100;
 	
-	
+	public int getComplexCondition() {
+		return complexCondition;
+	}
+
+	public void setComplexCondition(int complexCondition) {
+		this.complexCondition = complexCondition;
+	}
+
 	public int getComplexMethod() {
 		return complexMethod;
 	}

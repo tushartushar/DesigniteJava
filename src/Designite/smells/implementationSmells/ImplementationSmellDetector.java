@@ -3,6 +3,8 @@ package Designite.smells.implementationSmells;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.IfStatement;
+
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
 import Designite.SourceModel.SM_Parameter;
@@ -10,6 +12,7 @@ import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.models.ImplementationCodeSmell;
+import Designite.visitors.MethodControlFlowVisitor;
 
 public class ImplementationSmellDetector {
 	
@@ -19,10 +22,16 @@ public class ImplementationSmellDetector {
 	private SourceItemInfo info;
 	private ThresholdsDTO thresholdsDTO;
 	
+	private static final String COMPLEX_CONDITIONAL = "Complex Cnditional";
 	private static final String COMPLEX_METHOD = "Complex Method";
 	private static final String LONG_IDENTIFIER = "Long Identifier";
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
+	
+	private static final String EQUALS_OPERATOR_REGEX = "==";
+	private static final String NOT_EQUALS_OPERATOR_REGEX = "!=";
+	private static final String AND_OPERATOR_REGEX = "\\&\\&";
+	private static final String OR_OPERATOR_REGEX = "\\|\\|";
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -33,11 +42,48 @@ public class ImplementationSmellDetector {
 	}
 	
 	public List<ImplementationCodeSmell> detectCodeSmells() {
+		detectComplexConditional();
 		detectComplexMethod();
 		detectLongIdentifier();
 		detectLongMethod();
 		detectLongParameterList();
 		return smells;
+	}
+	
+	public List<ImplementationCodeSmell> detectComplexConditional() {
+		if (hasComplexConditional()) {
+			addToSmells(initializeCodeSmell(COMPLEX_CONDITIONAL));
+		}
+		return smells;
+	}
+	
+	private boolean hasComplexConditional() {
+		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		if (hasComplexIfCondition(visitor)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean hasComplexIfCondition(MethodControlFlowVisitor visitor) {
+		for (IfStatement ifStatement : visitor.getIfStatements()) {
+			if (numOfBooleanSubExpressions(ifStatement) >=  thresholdsDTO.getComplexCondition()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private String getBooleaRegex() {
+		return EQUALS_OPERATOR_REGEX 
+				+ "|" + NOT_EQUALS_OPERATOR_REGEX
+				+ "|" + AND_OPERATOR_REGEX
+				+ "|" + OR_OPERATOR_REGEX;
+	}
+	
+	private int numOfBooleanSubExpressions(IfStatement ifStatement) {
+		return ifStatement.getExpression().toString().split(getBooleaRegex()).length;
 	}
 	
 	public List<ImplementationCodeSmell> detectComplexMethod() {

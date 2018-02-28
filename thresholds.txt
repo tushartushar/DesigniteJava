@@ -1,3 +1,4 @@
+complexCondition = 3
 complexMethod = 8
 longIdentifier = 30
 longMethod = 100
