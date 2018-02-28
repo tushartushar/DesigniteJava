@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 public class MethodControlFlowVisitor extends ASTVisitor {
 
 	private List<IfStatement> ifStatements = new ArrayList<>();
-	private List<SwitchCase> switchCaseStatements = new ArrayList<>();
-	private List<SwitchCase> switchCaseStatementsWitoutDefaults = new ArrayList<>();
+	private List<SwitchCase> switchCases = new ArrayList<>();
+	private List<SwitchCase> switchCasesWitoutDefaults = new ArrayList<>();
 	private List<ForStatement> forStatements = new ArrayList<>();
 	private List<WhileStatement> whileStatements = new ArrayList<>();
 	private List<DoStatement> doStatements = new ArrayList<>();
@@ -27,9 +27,9 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 	}
 	
 	public boolean visit(SwitchCase node) {
-		switchCaseStatements.add(node);
+		switchCases.add(node);
 		if (!node.isDefault()) {
-			switchCaseStatementsWitoutDefaults.add(node);
+			switchCasesWitoutDefaults.add(node);
 		}
 		return true;
 	}
@@ -75,7 +75,7 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 	}
 
 	public int getNumOfSwitchCaseStatementsWitoutDefault() {
-		return switchCaseStatementsWitoutDefaults.size();
+		return switchCasesWitoutDefaults.size();
 	}
 
 	public int getNumOfForStatements() {

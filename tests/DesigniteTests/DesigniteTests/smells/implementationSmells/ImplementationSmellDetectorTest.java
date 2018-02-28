@@ -24,6 +24,44 @@ public class ImplementationSmellDetectorTest {
 	private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
+	public void testAbstractFunctionCallFromConstructorWhenHappyPath() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Method calledMethod = mock(SM_Method.class);
+		List<SM_Method> calledMethods = new ArrayList<>();
+		calledMethods.add(calledMethod);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.isConstructor()).thenReturn(true);
+		when(method.getCalledMethods()).thenReturn(calledMethods);
+		when(calledMethod.isAbstract()).thenReturn(false);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 0;
+		int actual = detector.detectAbstractFunctionCallFromConstructor().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testAbstractFunctionCallFromConstructorWhenSmellIsDetected() {
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		SM_Method method = mock(SM_Method.class);
+		SM_Method calledMethod = mock(SM_Method.class);
+		List<SM_Method> calledMethods = new ArrayList<>();
+		calledMethods.add(calledMethod);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		when(method.isConstructor()).thenReturn(true);
+		when(method.getCalledMethods()).thenReturn(calledMethods);
+		when(calledMethod.isAbstract()).thenReturn(true);
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		
+		int expected = 1;
+		int actual = detector.detectAbstractFunctionCallFromConstructor().size();
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testComplexMethodWhenHappyPath() {
 		MethodMetrics methodMetrics = mock(MethodMetrics.class);
 		when(methodMetrics.getCyclomaticComplexity()).thenReturn(thresholds.getComplexMethod() - 1);

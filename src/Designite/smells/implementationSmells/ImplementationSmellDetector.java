@@ -7,7 +7,9 @@ import org.eclipse.jdt.core.dom.IfStatement;
 
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
+import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
@@ -22,14 +24,13 @@ public class ImplementationSmellDetector {
 	private SourceItemInfo info;
 	private ThresholdsDTO thresholdsDTO;
 	
+	private static final String ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR = "Abstract Function Call From Constructor";
 	private static final String COMPLEX_CONDITIONAL = "Complex Cnditional";
 	private static final String COMPLEX_METHOD = "Complex Method";
 	private static final String LONG_IDENTIFIER = "Long Identifier";
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
 	
-	private static final String EQUALS_OPERATOR_REGEX = "==";
-	private static final String NOT_EQUALS_OPERATOR_REGEX = "!=";
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
 	
@@ -42,12 +43,32 @@ public class ImplementationSmellDetector {
 	}
 	
 	public List<ImplementationCodeSmell> detectCodeSmells() {
+		detectAbstractFunctionCallFromConstructor();
 		detectComplexConditional();
 		detectComplexMethod();
 		detectLongIdentifier();
 		detectLongMethod();
 		detectLongParameterList();
 		return smells;
+	}
+	
+	public List<ImplementationCodeSmell> detectAbstractFunctionCallFromConstructor() {
+		if (hasAbstractFunctionCallFromConstructor()) {
+			addToSmells(initializeCodeSmell(ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR));
+		}
+		return smells;
+	}
+	
+	private boolean hasAbstractFunctionCallFromConstructor() {
+		SM_Method method = methodMetrics.getMethod();
+		if (method.isConstructor()) {
+			for (SM_Method calledMethod : method.getCalledMethods()) {
+				if (calledMethod.isAbstract()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public List<ImplementationCodeSmell> detectComplexConditional() {
@@ -76,10 +97,7 @@ public class ImplementationSmellDetector {
 	}
 	
 	private String getBooleaRegex() {
-		return EQUALS_OPERATOR_REGEX 
-				+ "|" + NOT_EQUALS_OPERATOR_REGEX
-				+ "|" + AND_OPERATOR_REGEX
-				+ "|" + OR_OPERATOR_REGEX;
+		return AND_OPERATOR_REGEX + "|" + OR_OPERATOR_REGEX;
 	}
 	
 	private int numOfBooleanSubExpressions(IfStatement ifStatement) {
