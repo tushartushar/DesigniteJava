@@ -24,8 +24,10 @@ public class MethodMetricsTest extends DesigniteTests {
 		project.parse();
 		project.resolve();
 		project.extractMetrics();
-		SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
-		SM_Method method = type.getMethodList().get(0);
+		//SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
+		//SM_Method method = type.getMethodList().get(0);
+		SM_Type type = getSpecificType("TestMetricsClass");
+		SM_Method method = getSpecificMethod(type, "publicMethod");
 		methodMetrics = type.getMetricsFromMethod(method);
 	}
 	
@@ -55,12 +57,28 @@ public class MethodMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testNumberOfDirectFieldsUsed() {
-		SM_Type child1 = project.getPackageList().get(0).getTypeList().get(2);
-		SM_Method method = child1.getMethodList().get(0);
+		SM_Type type = getSpecificType("TestMetricsClass");
+		SM_Method method = getSpecificMethod(type, "publicMethod");
+		//SM_Type child1 = project.getPackageList().get(0).getTypeList().get(2);
+		//SM_Method method = child1.getMethodList().get(0);
 		
-		int expected = 4;
-		int actual = child1.getMetricsFromMethod(method).getDirectFieldAccesses().size();
+		int expected = 2;
+		int actual = type.getMetricsFromMethod(method).getDirectFieldAccesses().size();
 		
 		assertEquals(expected, actual);
+	}
+
+	private SM_Method getSpecificMethod(SM_Type type, String methodName) {
+		for(SM_Method method:type.getMethodList())
+			if(method.getName().equals(methodName))
+				return method;
+		return null;
+	}
+
+	private SM_Type getSpecificType(String name) {
+		for(SM_Type type:project.getPackageList().get(0).getTypeList())
+			if(type.getName().equals(name))
+				return type;
+		return null;
 	}
 }

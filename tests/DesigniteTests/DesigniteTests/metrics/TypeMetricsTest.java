@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
@@ -25,8 +26,16 @@ public class TypeMetricsTest extends DesigniteTests {
 		project.resolve();
 		project.extractMetrics();
 		SM_Package pkg = project.getPackageList().get(0);
-		SM_Type type = pkg.getTypeList().get(7);
+		//SM_Type type = pkg.getTypeList().get(7);
+		SM_Type type = getSpecificType("TestMetricsClass");
 		typeMetrics = pkg.getMetricsFromType(type);
+	}
+	
+	private SM_Type getSpecificType(String name) {
+		for(SM_Type type:project.getPackageList().get(0).getTypeList())
+			if(type.getName().equals(name))
+				return type;
+		return null;
 	}
 	
 	@Test
@@ -137,7 +146,8 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testLCOMWhenNoMethods() {
 		SM_Package pkg = project.getPackageList().get(0);
-		SM_Type foreignClass1 = pkg.getTypeList().get(9);
+		//SM_Type foreignClass1 = pkg.getTypeList().get(9);
+		SM_Type foreignClass1 = getSpecificType("ForeignClass1");
 		double delta = 0.01;
 		
 		double expected = -1.0;
@@ -159,7 +169,8 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testLCOMWhenHasOneComponent() {
 		SM_Package pkg = project.getPackageList().get(0);
-		SM_Type child2 = pkg.getTypeList().get(5);
+		//SM_Type child2 = pkg.getTypeList().get(5);
+		SM_Type child2 = getSpecificType("Child2");
 		double delta = 0.01;
 		
 		double expected = 0.0;
