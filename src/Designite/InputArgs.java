@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import Designite.utils.Constants;
+
 public class InputArgs {
 
 	private static final String SOURCE = "[SOURCE FOLDER]";
@@ -88,6 +90,24 @@ public class InputArgs {
 		} catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	/***
+	 * Analyzes the provided <b>sourceFolder</b> variable and 
+	 * extracts the name of the project. 
+	 * @return A String with the name of the project. 
+	 * When the given sourceFolder has a value of <i>src</i> 
+	 * or <i>source</i> then the method returns 
+	 * the name of the direct parent directory
+	 */
+	public String getProjectName() {
+		File temp = new File(sourceFolder);
+		if (temp.getName().equals("src") || temp.getName().equals("source")) {
+			return new File(temp.getParent()).getName();
+		} else {
+			return new File(sourceFolder).getName();
+		}
+		
 	}
 	
 	private enum InputStates{

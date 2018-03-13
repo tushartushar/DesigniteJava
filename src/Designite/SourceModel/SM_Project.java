@@ -32,7 +32,6 @@ public class SM_Project extends SM_SourceItem {
 	private Graph dependencyGraph;
 	private String unitName;
 
-	// TODO set project name
 	public SM_Project(InputArgs argsObj) {
 		this.inputArgs = argsObj;
 		sourceFileList = new ArrayList<String>();
@@ -40,7 +39,8 @@ public class SM_Project extends SM_SourceItem {
 		packageList = new ArrayList<SM_Package>();
 		hierarchyGraph = new Graph();
 		dependencyGraph = new Graph();
-		setName("Project");
+		System.out.println("source folder = " + this.inputArgs.getSourceFolder());
+		setName(this.inputArgs.getProjectName());
 	}
 
 	public void setName(String name) {

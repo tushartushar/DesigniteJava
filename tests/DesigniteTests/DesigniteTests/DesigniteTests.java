@@ -24,6 +24,16 @@ public abstract class DesigniteTests {
 			+ System.getProperty("user.dir") + "\n\n"
 			+ "[Output folder]\n"
 			+ System.getProperty("user.dir") + File.separator + "temp";
+	protected static final String IN_BATCH_FILE_CONTENT_SRC = "[Source folder]\n"
+			+ System.getProperty("user.dir") 
+			+ File.separator + "src" + "\n\n"
+			+ "[Output folder]\n"
+			+ System.getProperty("user.dir") + File.separator + "temp";
+	protected static final String IN_BATCH_FILE_CONTENT_SOURCE = "[Source folder]\n"
+			+ System.getProperty("user.dir") 
+			+ File.separator + "source" + "\n\n"
+			+ "[Output folder]\n"
+			+ System.getProperty("user.dir") + File.separator + "temp";
 	protected static final String METRICS_FILE_CONTENT = "[Source folder]\n"
 			+ getTestingPath() + File.separator + "metrics";
 	protected static final String CODE_SMELLS_FILE_CONTENT = "[Source folder]\n"
