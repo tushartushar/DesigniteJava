@@ -21,6 +21,7 @@ public class InputArgs {
 		outputFolder = "";
 		readInputArgs();
 		checkEssentialInputs();
+		setCsvDirectoryPath();
 	}
 	
 	public String getSourceFolder() {
@@ -90,6 +91,18 @@ public class InputArgs {
 		} catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	/***
+	 * Sets the value of the directory name 
+	 * where the output CSVs will be stored.
+	 */
+	private void setCsvDirectoryPath() {
+		Constants.CSV_DIRECTORY_PATH = 
+				getOutputFolder() + 
+				File.separator + this.getProjectName() + 
+				"_csv";
+		
 	}
 	
 	/***

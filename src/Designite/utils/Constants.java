@@ -8,8 +8,7 @@ public class Constants {
 			+ File.separator
 			+ "thresholds.txt";
 	
-	public static String CSV_DIRECTORY_PATH = System.getProperty("user.dir") 
-			+ File.separator + "csv";
+	public static String CSV_DIRECTORY_PATH;
 	
 	public static final String TYPE_METRICS_PATH_SUFFIX = "typeMetrics.csv";
 	public static final String METHOD_METRICS_PATH_SUFFIX = "methodMetrics.csv";

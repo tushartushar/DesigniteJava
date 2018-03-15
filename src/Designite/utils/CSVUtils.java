@@ -8,11 +8,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class CSVUtils {
-	
+	//TODO create an integration test for checking the exporting feature
 	public static void initializeCSVDirectory(String projectName) {
-		File dir = new File(Constants.CSV_DIRECTORY_PATH 
-				+ File.separator
-				+ projectName);
+		File dir = new File(Constants.CSV_DIRECTORY_PATH);
 		createDirIfNotExists(dir);
 		cleanup(dir);
 		initializeNeededFiles(dir);

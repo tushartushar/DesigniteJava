@@ -39,7 +39,6 @@ public class SM_Project extends SM_SourceItem {
 		packageList = new ArrayList<SM_Package>();
 		hierarchyGraph = new Graph();
 		dependencyGraph = new Graph();
-		System.out.println("source folder = " + this.inputArgs.getSourceFolder());
 		setName(this.inputArgs.getProjectName());
 	}
 
