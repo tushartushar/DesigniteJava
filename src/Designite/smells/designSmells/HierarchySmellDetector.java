@@ -3,15 +3,18 @@ package Designite.smells.designSmells;
 import java.util.ArrayList;
 import java.util.List;
 
+import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
+import net.bytebuddy.jar.asm.Type;
 
 public class HierarchySmellDetector extends DesignSmellDetector {
 	
+	private static final String BROKEN_HIERARCHY = "Broken Hierarchy";
 	private static final String CYCLIC_HIERARCHY = "Cyclic Hierarchy";
 	private static final String DEEP_HIERARCHY = "Deep Hierarchy";
 	private static final String MISSING_HIERARCHY = "Missing Hierarchy";
@@ -29,6 +32,7 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	
 	@Override
 	public List<DesignCodeSmell> detectCodeSmells() {
+		detectBrokenHierarchy();
 		detectCyclicHierarchy();
 		detectDeepHierarchy();
 		detectMissingHierarchy();
@@ -36,6 +40,51 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 		detectRebeliousHierarchy();
 		detectWideHierarchy();
 		return getSmells();
+	}
+	
+	public List<DesignCodeSmell> detectBrokenHierarchy() {
+		if (hasBrokenHierarchy()) {
+			addToSmells(initializeCodeSmell(BROKEN_HIERARCHY));
+		}
+		return getSmells();
+	}
+	
+	private boolean hasBrokenHierarchy() {
+		SM_Type type = getTypeMetrics().getType();
+		if (hasSuperTypes(type) && hasPublicMethods()) {
+			for (SM_Type superType : type.getSuperTypes()) {
+				if (!methodIsOverriden(type, superType)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean hasSuperTypes(SM_Type type) {
+		return !type.getSuperTypes().isEmpty();
+	}
+	
+	private boolean hasPublicMethods() {
+		return getTypeMetrics().getNumOfPublicMethods() > 0;
+	}
+	
+	private boolean methodIsOverriden(SM_Type type, SM_Type superType) {
+		boolean overrides = false;
+		for (SM_Method superMethod : superType.getMethodList()) {
+			if (superMethod.getAccessModifier() == AccessStates.PUBLIC || superMethod.isAbstract() || superType.isInterface()) {
+				for (SM_Method method : type.getMethodList()) {
+					if (method.getAccessModifier() == AccessStates.PUBLIC && shareTheSameName(method, superMethod)) {
+						overrides = true;
+					}
+				}
+			}
+		}
+		return overrides;
+	}
+	
+	private boolean shareTheSameName(SM_Method method, SM_Method superMethod) {
+		return method.getName().equals(superMethod.getName());
 	}
 	
 	public List<DesignCodeSmell> detectCyclicHierarchy() {
