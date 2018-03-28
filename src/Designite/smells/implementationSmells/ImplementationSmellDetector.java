@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
+import org.eclipse.jdt.core.dom.SwitchCase;
+import org.eclipse.jdt.core.dom.SwitchStatement;
 
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
@@ -42,6 +44,7 @@ public class ImplementationSmellDetector {
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
 	private static final String LONG_STATEMENT = "Long Statement";
+	private static final String MISSING_DEFAULT = "Missing default";
 	
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
@@ -62,7 +65,35 @@ public class ImplementationSmellDetector {
 		detectLongMethod();
 		detectLongParameterList();
 		detectLongStatement();
+		detectMissingDefault();
 		return smells;
+	}
+	
+	public List<ImplementationCodeSmell> detectMissingDefault() {
+		//TODO: Unit test this functionality
+		hasMissingDefaults();
+		return smells;
+	}
+	
+	private void hasMissingDefaults() {
+		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		List<SwitchStatement> switchStatements = visitor.getSwitchStatements();
+		for(SwitchStatement singleSwitchStatement : switchStatements) {
+			if(switchIsMissingDefault(singleSwitchStatement)) {
+				addToSmells(initializeCodeSmell(MISSING_DEFAULT));
+			}
+		}
+	}
+	
+	private boolean switchIsMissingDefault(SwitchStatement switchStatement) {
+		List<Statement> statetmentsOfSwitch = switchStatement.statements();
+		for(Statement stm : statetmentsOfSwitch) {
+			if ((stm instanceof SwitchCase) && ((SwitchCase)stm).isDefault()) {
+				return true;
+			}
+		}
+		return false;			
 	}
 	
 	public List<ImplementationCodeSmell> detectLongStatement() {
