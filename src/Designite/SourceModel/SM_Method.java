@@ -82,6 +82,10 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	public boolean throwsException() {
 		return throwsException;
 	}
+	
+	public boolean hasBody() {
+		return this.methodDeclaration.getBody() != null;
+	}
 
 	public List<SM_Parameter> getParameterList() {
 		return parameterList;
@@ -109,6 +113,13 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		for (SM_LocalVar var : localVarList) {
 			var.parse();
 		}
+	}
+	
+	public String getMethodBody() {
+		if (this.hasBody())
+			return this.getMethodDeclaration().getBody().toString();
+		else 
+			return "";
 	}
 	
 	@Override

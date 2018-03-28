@@ -7,6 +7,7 @@ public class ThresholdsDTO {
 	private int longIdentifier = 30;
 	private int longMethod = 100;
 	private int longParameterList = 5;
+	private int longStatement = 120;
 	
 	private int imperativeAbstractionLargeNumOfLines = 1;
 	private double multifacetedAbstractionLargeLCOM = 0.8;
@@ -62,6 +63,14 @@ public class ThresholdsDTO {
 
 	public void setLongParameterList(int longParameterList) {
 		this.longParameterList = longParameterList;
+	}
+	
+	public void setLongStatement(int longStatement) {
+		this.longStatement = longStatement;
+	}
+	
+	public int getLongStatement() {
+		return this.longStatement;
 	}
 
 	public int getImperativeAbstractionLargeNumOfLines() {

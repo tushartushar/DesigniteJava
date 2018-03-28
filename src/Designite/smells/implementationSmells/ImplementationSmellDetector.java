@@ -1,9 +1,20 @@
 package Designite.smells.implementationSmells;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
 
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
@@ -30,6 +41,7 @@ public class ImplementationSmellDetector {
 	private static final String LONG_IDENTIFIER = "Long Identifier";
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
+	private static final String LONG_STATEMENT = "Long Statement";
 	
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
@@ -49,9 +61,39 @@ public class ImplementationSmellDetector {
 		detectLongIdentifier();
 		detectLongMethod();
 		detectLongParameterList();
+		detectLongStatement();
 		return smells;
 	}
 	
+	public List<ImplementationCodeSmell> detectLongStatement() {
+		SM_Method currentMethod = methodMetrics.getMethod();
+		//Exit the method when the body is empty
+		if(!currentMethod.hasBody()) {
+			return smells; 
+		}
+		
+		String methodBody = currentMethod.getMethodBody();
+		//FIXME is there another non-hard-coded to replace the "\n"
+		String[] methodStatements = methodBody.split("\n");
+		
+		Arrays.stream(methodStatements).
+			map(s -> s.trim()). //trim leading and trailing white spaces
+			map(s -> s.replaceAll("\\s+", " ")). //replace multiple white spaces with a single one
+			toArray(unused -> methodStatements);
+		
+		for(String singleMethodStatement : methodStatements) {
+			if(isLongStatement(singleMethodStatement)) {
+				addToSmells(initializeCodeSmell(LONG_STATEMENT));
+			}
+		}
+		
+		return smells;
+	}
+	
+	private boolean isLongStatement(String statement) {
+		return statement.length() > this.thresholdsDTO.getLongStatement();
+	}
+
 	public List<ImplementationCodeSmell> detectAbstractFunctionCallFromConstructor() {
 		if (hasAbstractFunctionCallFromConstructor()) {
 			addToSmells(initializeCodeSmell(ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR));

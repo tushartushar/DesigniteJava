@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.junit.Test;
 
 import Designite.SourceModel.SM_Field;
@@ -206,6 +208,25 @@ public class ImplementationSmellDetectorTest {
 		int expected = 1;
 		int actual = detector.detectLongIdentifier().size();
 		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLongParameter() {
+		System.out.println("Testing long parameter");
+		String myDummyMethod = "public void foo() {\n" 
+				+ "\tCSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH + File.separator + getParentPkg().getParentProject().getName()+ File.separator+ Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX,smellMapping.get(method));\n"
+				+ "\treturn new ImplementationCodeSmell(info.getProjectName(),info.getPackageName(),info.getTypeName(),info.getMethodName(),smellName);"
+				+ "}";
+		SM_Method method = mock(SM_Method.class);
+		when(method.hasBody()).thenReturn(true);
+		when(method.getMethodBody()).thenReturn(myDummyMethod);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getMethod()).thenReturn(method);
+		
+		ImplementationSmellDetector detector = new ImplementationSmellDetector(methodMetrics, info);
+		int expected = 2;
+		int actual = detector.detectLongStatement().size();
 		assertEquals(expected, actual);
 	}
 	
