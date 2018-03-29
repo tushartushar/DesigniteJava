@@ -7,7 +7,8 @@
 */*/*.csv
 csv/
 
-DesigniteLog*.txt
+tempDesigniteDebugLog*.txt
+tempDesigniteLog*.txt
 designCodeSmells.txt
 
 # Mobile Tools for Java (J2ME)
@@ -20,3 +21,5 @@ designCodeSmells.txt
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
+/target/
+target/
