@@ -9,11 +9,13 @@ import org.eclipse.jdt.core.dom.EnhancedForStatement;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.SwitchCase;
+import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
 public class MethodControlFlowVisitor extends ASTVisitor {
 
 	private List<IfStatement> ifStatements = new ArrayList<>();
+	private List<SwitchStatement> switchStatements = new ArrayList<>();
 	private List<SwitchCase> switchCases = new ArrayList<>();
 	private List<SwitchCase> switchCasesWitoutDefaults = new ArrayList<>();
 	private List<ForStatement> forStatements = new ArrayList<>();
@@ -31,6 +33,11 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 		if (!node.isDefault()) {
 			switchCasesWitoutDefaults.add(node);
 		}
+		return true;
+	}
+	
+	public boolean visit(SwitchStatement node) {
+		switchStatements.add(node);
 		return true;
 	}
 	
@@ -74,6 +81,10 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 		return ifStatements.size();
 	}
 
+	public List<SwitchStatement> getSwitchStatements() {
+		return switchStatements;
+	}
+	
 	public int getNumOfSwitchCaseStatementsWitoutDefault() {
 		return switchCasesWitoutDefaults.size();
 	}

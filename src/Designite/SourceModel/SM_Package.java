@@ -135,7 +135,6 @@ public class SM_Package extends SM_SourceItem {
 	
 	private void exportMetricsToCSV(TypeMetrics metrics, String typeName) {
 		String path = Constants.CSV_DIRECTORY_PATH
-				+ File.separator + getParentProject().getName()
 				+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX;
 		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, typeName));
 	}
@@ -173,7 +172,6 @@ public class SM_Package extends SM_SourceItem {
 
 	private void exportDesignSmellsToCSV(SM_Type type) {
 		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
-				+ File.separator + getParentProject().getName()
 				+ File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(type));
 	}

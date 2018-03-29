@@ -102,7 +102,6 @@ public class InputArgs {
 				getOutputFolder() + 
 				File.separator + this.getProjectName() + 
 				"_csv";
-		
 	}
 	
 	/***
