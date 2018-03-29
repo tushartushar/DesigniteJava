@@ -3,9 +3,12 @@ package DesigniteTests;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 import Designite.InputArgs;
+import Designite.utils.Constants;
 
 public class InputArgsTest extends DesigniteTests {
 
@@ -67,4 +70,26 @@ public class InputArgsTest extends DesigniteTests {
 		String currentProjectDir = new File(System.getProperty("user.dir")).getName();
 		assertEquals(currentProjectDir, args.getProjectName());
 	}
+	
+	@Test
+	public void testInputArgs_setCsvDirectoryPath() {
+		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT);
+		InputArgs args = new InputArgs(IN_BATCH_FILE_PATH);
+		String outputFolder = args.getOutputFolder() +
+				File.separator + args.getProjectName() +
+				"_csv";
+		/*
+		 * Testing the private method <b>setCsvDirectoryPath</b> 
+		 * using the reflection feature
+		 */
+		try {
+			Method method = InputArgs.class.getDeclaredMethod("setCsvDirectoryPath");
+			method.setAccessible(true);
+			method.invoke(args);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
+		assertEquals(outputFolder, Constants.CSV_DIRECTORY_PATH);
+	}
+	
 }

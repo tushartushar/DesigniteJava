@@ -28,7 +28,7 @@ public class MethodInvVisitor extends ASTVisitor {
 		return super.visit(method);
 	}
 	
-	public boolean visit(SuperMethodInvocation method){
+	public boolean visit(SuperMethodInvocation method) {
 		return super.visit(method);
 	}
 

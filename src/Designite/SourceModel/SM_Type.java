@@ -343,7 +343,6 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	public void exportMethodMetricsToCSV(MethodMetrics metrics, String methodName) {
 		String path = Constants.CSV_DIRECTORY_PATH
-				+ File.separator + getParentPkg().getParentProject().getName()
 				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
 		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, methodName));
 	}
@@ -374,7 +373,6 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	private void exportDesignSmellsToCSV(SM_Method method) {
 		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
-				+ File.separator + getParentPkg().getParentProject().getName()
 				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(method));
 	}
