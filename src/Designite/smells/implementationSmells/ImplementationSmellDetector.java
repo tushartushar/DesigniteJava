@@ -6,15 +6,18 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Pattern;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.CatchClause;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
+import org.eclipse.jdt.core.dom.TryStatement;
 import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 
@@ -40,6 +43,7 @@ public class ImplementationSmellDetector {
 	private static final String ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR = "Abstract Function Call From Constructor";
 	private static final String COMPLEX_CONDITIONAL = "Complex Cnditional";
 	private static final String COMPLEX_METHOD = "Complex Method";
+	private static final String EMPTY_CATCH_CLAUSE = "Empty catch clause";
 	private static final String LONG_IDENTIFIER = "Long Identifier";
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
@@ -48,6 +52,7 @@ public class ImplementationSmellDetector {
 	
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
+	private static final Pattern EMPTY_BODY_PATTERN = Pattern.compile("^\\{\\s*\\}\\s*$");
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -61,6 +66,7 @@ public class ImplementationSmellDetector {
 		detectAbstractFunctionCallFromConstructor();
 		detectComplexConditional();
 		detectComplexMethod();
+		detectEmptyCatchBlock();
 		detectLongIdentifier();
 		detectLongMethod();
 		detectLongParameterList();
@@ -186,6 +192,24 @@ public class ImplementationSmellDetector {
 	
 	private boolean hasComplexMethod() {
 		return methodMetrics.getCyclomaticComplexity() >= thresholdsDTO.getComplexMethod();
+	}
+	
+	public List<ImplementationCodeSmell> detectEmptyCatchBlock() {
+		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		for (TryStatement tryStatement : visitor.getTryStatements()) {
+			for (Object catchClause : tryStatement.catchClauses()) {
+				if (!hasBody((CatchClause) catchClause)) {
+					addToSmells(initializeCodeSmell(EMPTY_CATCH_CLAUSE));
+				}
+			}
+		}
+		return smells;
+	}
+	
+	public boolean hasBody(CatchClause catchClause) {
+		String body = catchClause.getBody().toString();
+		return !EMPTY_BODY_PATTERN.matcher(body).matches();
 	}
 	
 	public List<ImplementationCodeSmell> detectLongIdentifier() {

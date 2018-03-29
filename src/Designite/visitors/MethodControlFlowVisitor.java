@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.EnhancedForStatement;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.SwitchCase;
+import org.eclipse.jdt.core.dom.TryStatement;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
@@ -22,6 +23,7 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 	private List<WhileStatement> whileStatements = new ArrayList<>();
 	private List<DoStatement> doStatements = new ArrayList<>();
 	private List<EnhancedForStatement> foreachStatements = new ArrayList<>();
+	private List<TryStatement> tryStatements = new ArrayList<>();
 	
 	public boolean visit(IfStatement node) {
 		ifStatements.add(node);
@@ -61,6 +63,11 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 		return true;
 	}
 	
+	public boolean visit(TryStatement node) {
+		tryStatements.add(node);
+		return true;
+	}
+	
 	public List<IfStatement> getIfStatements() {
 		return ifStatements;
 	}
@@ -75,6 +82,10 @@ public class MethodControlFlowVisitor extends ASTVisitor {
 	
 	public List<DoStatement> getDoStatements() {
 		return doStatements;
+	}
+	
+	public List<TryStatement> getTryStatements() {
+		return tryStatements;
 	}
 	
 	public int getNumOfIfStatements() {
