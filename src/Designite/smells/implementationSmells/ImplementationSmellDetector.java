@@ -6,18 +6,26 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CatchClause;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.TryStatement;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.internal.eval.VariablesInfo;
 import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 
@@ -31,6 +39,7 @@ import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.models.ImplementationCodeSmell;
 import Designite.visitors.MethodControlFlowVisitor;
+import Designite.visitors.NumberLiteralVisitor;
 
 public class ImplementationSmellDetector {
 	
@@ -48,11 +57,13 @@ public class ImplementationSmellDetector {
 	private static final String LONG_METHOD = "Long Method";
 	private static final String LONG_PARAMETER_LIST = "Long Parameter List";
 	private static final String LONG_STATEMENT = "Long Statement";
+	private static final String MAGIC_NUMBER = "Magic Number";
 	private static final String MISSING_DEFAULT = "Missing default";
 	
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
 	private static final Pattern EMPTY_BODY_PATTERN = Pattern.compile("^\\{\\s*\\}\\s*$");
+	private static final Pattern LITERALS_IN_IF_EXPRESSION_REGEX = Pattern.compile("(==|!=|>|>=|<|<=)\\ {1,}(\\d+)");
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -71,8 +82,48 @@ public class ImplementationSmellDetector {
 		detectLongMethod();
 		detectLongParameterList();
 		detectLongStatement();
+		detectMagicNumber();
 		detectMissingDefault();
 		return smells;
+	}
+	
+	public List<ImplementationCodeSmell> detectMagicNumber() {
+		//TODO: Unit test this functionality
+		hasMagicNumbers();
+		return smells;
+	}
+	
+	private void hasMagicNumbers() {
+		NumberLiteralVisitor visitor = new NumberLiteralVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		List<NumberLiteral> literals = visitor.getNumberLiteralsExpressions();
+		
+		if( literals.size() > 0 ) {
+			for(NumberLiteral singleNumberLiteral : literals) {
+				if( isLiteralValid(singleNumberLiteral) ) {
+					addToSmells(initializeCodeSmell(MAGIC_NUMBER));
+				}
+			}
+		}
+	}
+	
+	private boolean isLiteralValid(NumberLiteral singleNumberLiteral) {
+		boolean isValid = isNotZeroOrOne(singleNumberLiteral) && isNotArrayInitialization(singleNumberLiteral);
+		if(!isValid) {
+			System.out.println("literal ==> " + singleNumberLiteral + " is ignored.");
+		}
+		return isValid;
+	}
+	
+	// 0s and 1s are not considered as Magic Numbers
+	private boolean isNotZeroOrOne(NumberLiteral singleNumberLiteral) {
+		double literalValue = Double.parseDouble(singleNumberLiteral.toString());
+		return literalValue != 0.0 && literalValue != 1.0;
+	}
+	
+	// Literals in array initializations (such as int[] arr = {0,1};) are not considered as Magic Numbers
+	private boolean isNotArrayInitialization(NumberLiteral singleNumberLiteral) {
+		return singleNumberLiteral.getParent().getNodeType() != ASTNode.ARRAY_INITIALIZER;
 	}
 	
 	public List<ImplementationCodeSmell> detectMissingDefault() {
