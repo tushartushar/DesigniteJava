@@ -35,6 +35,26 @@ public class TestMethods {
 		System.out.println("Name: " + name);
 		System.out.println("Id: " + id);
 	}
+	
+	public void magicNumberDemo() {
+		int[] arr = {0,1};
+		int x = 1;
+		int z = Integer.valueOf(2);
+		int y = "aes".length();
+		int k = arr[1];
+		
+		if ( x == 10 && x > 5);
+		if ( x != 10 ); 
+		if ( x > 10 );
+		if ( x < 10 );
+		if ( x >= 10 );
+		if ( x <= 10 );
+		if ( z > arr[0] );
+		if ("test".charAt(Integer.valueOf(0)));
+
+		List<Integer> list = new ArrayList<>(new int[] {0,1});
+		int l = list.get(0);
+	}
 }
 
 class Logger{

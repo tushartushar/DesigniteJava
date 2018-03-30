@@ -1,31 +1,15 @@
 package Designite.smells.implementationSmells;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CatchClause;
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
-import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.TryStatement;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-import org.eclipse.jdt.internal.eval.VariablesInfo;
 import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 
@@ -33,7 +17,6 @@ import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_LocalVar;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
-import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
@@ -63,7 +46,6 @@ public class ImplementationSmellDetector {
 	private static final String AND_OPERATOR_REGEX = "\\&\\&";
 	private static final String OR_OPERATOR_REGEX = "\\|\\|";
 	private static final Pattern EMPTY_BODY_PATTERN = Pattern.compile("^\\{\\s*\\}\\s*$");
-	private static final Pattern LITERALS_IN_IF_EXPRESSION_REGEX = Pattern.compile("(==|!=|>|>=|<|<=)\\ {1,}(\\d+)");
 	
 	public ImplementationSmellDetector(MethodMetrics methodMetrics, SourceItemInfo info) {
 		this.methodMetrics = methodMetrics;
@@ -87,101 +69,6 @@ public class ImplementationSmellDetector {
 		return smells;
 	}
 	
-	public List<ImplementationCodeSmell> detectMagicNumber() {
-		//TODO: Unit test this functionality
-		hasMagicNumbers();
-		return smells;
-	}
-	
-	private void hasMagicNumbers() {
-		NumberLiteralVisitor visitor = new NumberLiteralVisitor();
-		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
-		List<NumberLiteral> literals = visitor.getNumberLiteralsExpressions();
-		
-		if( literals.size() > 0 ) {
-			for(NumberLiteral singleNumberLiteral : literals) {
-				if( isLiteralValid(singleNumberLiteral) ) {
-					addToSmells(initializeCodeSmell(MAGIC_NUMBER));
-				}
-			}
-		}
-	}
-	
-	private boolean isLiteralValid(NumberLiteral singleNumberLiteral) {
-		boolean isValid = isNotZeroOrOne(singleNumberLiteral) && isNotArrayInitialization(singleNumberLiteral);
-		if(!isValid) {
-			System.out.println("literal ==> " + singleNumberLiteral + " is ignored.");
-		}
-		return isValid;
-	}
-	
-	// 0s and 1s are not considered as Magic Numbers
-	private boolean isNotZeroOrOne(NumberLiteral singleNumberLiteral) {
-		double literalValue = Double.parseDouble(singleNumberLiteral.toString());
-		return literalValue != 0.0 && literalValue != 1.0;
-	}
-	
-	// Literals in array initializations (such as int[] arr = {0,1};) are not considered as Magic Numbers
-	private boolean isNotArrayInitialization(NumberLiteral singleNumberLiteral) {
-		return singleNumberLiteral.getParent().getNodeType() != ASTNode.ARRAY_INITIALIZER;
-	}
-	
-	public List<ImplementationCodeSmell> detectMissingDefault() {
-		//TODO: Unit test this functionality
-		hasMissingDefaults();
-		return smells;
-	}
-	
-	private void hasMissingDefaults() {
-		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
-		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
-		List<SwitchStatement> switchStatements = visitor.getSwitchStatements();
-		for(SwitchStatement singleSwitchStatement : switchStatements) {
-			if(switchIsMissingDefault(singleSwitchStatement)) {
-				addToSmells(initializeCodeSmell(MISSING_DEFAULT));
-			}
-		}
-	}
-	
-	private boolean switchIsMissingDefault(SwitchStatement switchStatement) {
-		List<Statement> statetmentsOfSwitch = switchStatement.statements();
-		for(Statement stm : statetmentsOfSwitch) {
-			if ((stm instanceof SwitchCase) && ((SwitchCase)stm).isDefault()) {
-				return true;
-			}
-		}
-		return false;			
-	}
-	
-	public List<ImplementationCodeSmell> detectLongStatement() {
-		SM_Method currentMethod = methodMetrics.getMethod();
-		//Exit the method when the body is empty
-		if(!currentMethod.hasBody()) {
-			return smells; 
-		}
-		
-		String methodBody = currentMethod.getMethodBody();
-		//FIXME is there another non-hard-coded to replace the "\n"
-		String[] methodStatements = methodBody.split("\n");
-		
-		Arrays.stream(methodStatements).
-			map(s -> s.trim()). //trim leading and trailing white spaces
-			map(s -> s.replaceAll("\\s+", " ")). //replace multiple white spaces with a single one
-			toArray(unused -> methodStatements);
-		
-		for(String singleMethodStatement : methodStatements) {
-			if(isLongStatement(singleMethodStatement)) {
-				addToSmells(initializeCodeSmell(LONG_STATEMENT));
-			}
-		}
-		
-		return smells;
-	}
-	
-	private boolean isLongStatement(String statement) {
-		return statement.length() > this.thresholdsDTO.getLongStatement();
-	}
-
 	public List<ImplementationCodeSmell> detectAbstractFunctionCallFromConstructor() {
 		if (hasAbstractFunctionCallFromConstructor()) {
 			addToSmells(initializeCodeSmell(ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR));
@@ -321,6 +208,95 @@ public class ImplementationSmellDetector {
 	
 	private boolean hasLongParameterList() {
 		return methodMetrics.getNumOfParameters() >= thresholdsDTO.getLongParameterList();
+	}
+	
+	public List<ImplementationCodeSmell> detectLongStatement() {
+		SM_Method currentMethod = methodMetrics.getMethod();
+		if(currentMethod.hasBody()) {
+			String methodBody = currentMethod.getMethodBody();
+			hasLongStatement(methodBody);
+		}
+		
+		return smells;
+	}
+	
+	private void hasLongStatement(String methodBody) {
+		//FIXME is there another non-hard-coded to replace the "\n"
+		String[] methodStatements = methodBody.split("\n");
+		
+		for(String singleMethodStatement : methodStatements) {
+			singleMethodStatement = singleMethodStatement.trim().replaceAll("\\s+", " ");
+			if(isLongStatement(singleMethodStatement)) {
+				addToSmells(initializeCodeSmell(LONG_STATEMENT));
+			}
+		}
+	}
+	
+	private boolean isLongStatement(String statement) {
+		return statement.length() > this.thresholdsDTO.getLongStatement();
+	}
+	
+	public List<ImplementationCodeSmell> detectMagicNumber() {
+		hasMagicNumbers();
+		return smells;
+	}
+	
+	private void hasMagicNumbers() {
+		NumberLiteralVisitor visitor = new NumberLiteralVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		List<NumberLiteral> literals = visitor.getNumberLiteralsExpressions();
+		
+		if( literals.size() < 1 ) {
+			return;
+		}
+		
+		for(NumberLiteral singleNumberLiteral : literals) {
+			if( isLiteralValid(singleNumberLiteral) ) {
+				addToSmells(initializeCodeSmell(MAGIC_NUMBER));
+			}
+		}
+	}
+	
+	private boolean isLiteralValid(NumberLiteral singleNumberLiteral) {
+		boolean isValid = isNotZeroOrOne(singleNumberLiteral) && isNotArrayInitialization(singleNumberLiteral);
+		return isValid;
+	}
+	
+	// 0s and 1s are not considered as Magic Numbers
+	private boolean isNotZeroOrOne(NumberLiteral singleNumberLiteral) {
+		double literalValue = Double.parseDouble(singleNumberLiteral.toString());
+		return literalValue != 0.0 && literalValue != 1.0;
+	}
+	
+	// Literals in array initializations (such as int[] arr = {0,1};) are not considered as Magic Numbers
+	private boolean isNotArrayInitialization(NumberLiteral singleNumberLiteral) {
+		return singleNumberLiteral.getParent().getNodeType() != ASTNode.ARRAY_INITIALIZER;
+	}
+	
+	public List<ImplementationCodeSmell> detectMissingDefault() {
+		hasMissingDefaults();
+		return smells;
+	}
+	
+	private void hasMissingDefaults() {
+		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
+		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
+		List<SwitchStatement> switchStatements = visitor.getSwitchStatements();
+		for(SwitchStatement singleSwitchStatement : switchStatements) {
+			if(switchIsMissingDefault(singleSwitchStatement)) {
+				addToSmells(initializeCodeSmell(MISSING_DEFAULT));
+			}
+		}
+	}
+	
+	private boolean switchIsMissingDefault(SwitchStatement switchStatement) {
+		List<Statement> statetmentsOfSwitch = switchStatement.statements();
+		for(Statement stm : statetmentsOfSwitch) {
+			if ((stm instanceof SwitchCase) && ((SwitchCase)stm).isDefault()) {
+				return true;
+			}
+		}
+		return false;			
 	}
 	
 	public List<ImplementationCodeSmell> getSmells() {
