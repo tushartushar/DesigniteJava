@@ -11,6 +11,7 @@ import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.metrics.TypeMetrics;
+import Designite.utils.Constants;
 import DesigniteTests.DesigniteTests;
 
 public class TypeMetricsTest extends DesigniteTests {
@@ -29,6 +30,7 @@ public class TypeMetricsTest extends DesigniteTests {
 		//SM_Type type = pkg.getTypeList().get(7);
 		SM_Type type = getSpecificType("TestMetricsClass");
 		typeMetrics = pkg.getMetricsFromType(type);
+		System.out.println(pkg.getTypeList());
 	}
 	
 	private SM_Type getSpecificType(String name) {

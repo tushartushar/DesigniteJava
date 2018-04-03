@@ -10,7 +10,6 @@ import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
-import net.bytebuddy.jar.asm.Type;
 
 public class HierarchySmellDetector extends DesignSmellDetector {
 	

@@ -9,6 +9,10 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 	public boolean isPrimitiveType() {
 		return typeInfo.isPrimitiveType();
 	}
+	
+	public boolean isTypeVariable() {
+		return typeInfo.isTypeVariable();
+	}
 
 	public SM_Type getType() {
 		return typeInfo.getTypeObj();
@@ -25,13 +29,16 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 	public List<SM_Type> getNonPrimitiveTypeParameters() {
 		return typeInfo.getNonPrimitiveTypeParameters();
 	}
-	
+
 	public String getTypeOverallToString() {
-		if (isPrimitiveType()) {
-			return getPrimitiveType();
-		} else {
-			return getType().getName();
-		}
+		if (typeInfo != null) {
+			if (isPrimitiveType()) {
+				return getPrimitiveType();
+			} else {
+				return getType().getName();
+			}
+		} else
+			return "generic";
 	}
 	
 	@Override

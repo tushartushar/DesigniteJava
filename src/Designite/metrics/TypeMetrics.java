@@ -104,6 +104,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void extractNumOfFanOutTypes() {
+		System.out.println("Extracting Fan out ==> " + type.getReferencedTypeList());
 		numOfFanOutTypes += type.getReferencedTypeList().size();
 	}
 	

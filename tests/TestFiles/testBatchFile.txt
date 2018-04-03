@@ -1,2 +1,2 @@
 [Source folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/TestFiles/test_package
+/home/agkortzis/git_repos/DesigniteJava/tests/TestFiles/test_package

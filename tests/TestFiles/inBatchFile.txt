@@ -1,5 +1,5 @@
 [Source folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava
+/home/agkortzis/git_repos/DesigniteJava
 
 [Output folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/temp
+/home/agkortzis/git_repos/DesigniteJava/temp

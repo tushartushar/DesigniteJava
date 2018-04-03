@@ -257,6 +257,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 
 	@Override
 	public void resolve() {
+		System.out.println("Resolving Type :: " + name);
 		for (SM_Method method : methodList) 
 			method.resolve();
 		for (SM_Field field : fieldList)
@@ -375,6 +376,11 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
 				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(method));
+	}
+	
+	@Override
+	public String toString() {
+		return "Type="+name;
 	}
 
 }

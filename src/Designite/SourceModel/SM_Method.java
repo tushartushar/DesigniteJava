@@ -146,6 +146,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	//TODO: Modularize parser with private functions
 	@Override
 	public void parse() {
+		System.out.println("Method :: " + name);
 		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
 		methodDeclaration.accept(invVisitor);
 		List<MethodInvocation> invList = invVisitor.getCalledMethods();
@@ -154,20 +155,24 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		}
 
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
+		System.out.println("variableList ==> " + variableList);
 		for (SingleVariableDeclaration var : variableList) {
 			VariableVisitor parameterVisitor = new VariableVisitor(this);
 			// methodDeclaration.accept(parameterVisitor);
 			var.accept(parameterVisitor);
 			List<SM_Parameter> pList = parameterVisitor.getParameterList();
+			System.out.println("Parameters ==> " + pList);
 			if (pList.size() > 0) {
 				parameterList.addAll(pList);
 			}
 			parseParameters();
 		}
+		System.out.println("Parsed parameters ==> " + parameterList);
 
 		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
 		methodDeclaration.accept(localVarVisitor);
 		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
+		System.out.println("Local variable List ==> " + lList);
 		if (lList.size() > 0) {
 			localVarList.addAll(lList);
 		}
@@ -187,6 +192,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
 		methodDeclaration.accept(instanceOfVisitor);
 		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
+		System.out.println("Instance of types ==> " + instanceOfTypes);
 		if (instanceOfTypes.size() > 0) {
 			typesInInstanceOf.addAll(instanceOfTypes);
 		}
@@ -198,10 +204,13 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 
 	@Override
 	public void resolve() {
+		System.out.println("Resolving method :: " + name);
 		for (SM_Parameter param : parameterList) {
-			param.resolve();
+			if(param.typeInfo != null && !param.typeInfo.isTypeVariable())
+				param.resolve();
 		}
 		for (SM_LocalVar localVar : localVarList) {
+			System.out.println("Local var :: " + localVar.name);
 			localVar.resolve();
 		}
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
@@ -212,7 +221,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	
 	private void setReferencedTypes() {
 		for (SM_Parameter param : parameterList) {
-			if (!param.isPrimitiveType()) {
+			if (param.typeInfo != null && !param.isPrimitiveType()) {
 				addunique(param.getType());
 			}
 		}

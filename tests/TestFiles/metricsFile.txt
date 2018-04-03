@@ -1,2 +1,5 @@
 [Source folder]
-/home/thodoras/Documents/workspace-sts-3.8.4.RELEASE/DesigniteJava/tests/TestFiles/metrics
+/home/agkortzis/git_repos/DesigniteJava/tests/TestFiles/metrics
+
+[Output folder]
+/home/agkortzis/git_repos/DesigniteJava/temp

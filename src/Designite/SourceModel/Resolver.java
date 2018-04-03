@@ -116,16 +116,24 @@ class Resolver {
 	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject) {
 		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
-
+		System.out.print("Type :: " + typeNode); //angor debug
+//		System.out.print("ResolvedBinding :: " + typeNode.resolveBinding()); //angor debug
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
 				inferTypeInfo(parentProject, typeInfo, typeOfVar);
 			}
 		} else if (isArray) {
 			inferTypeInfo(parentProject, typeInfo, getArrayType());
+		// angor start
+		} else if(typeNode.resolveBinding() != null && typeNode.resolveBinding().isTypeVariable()) {
+			System.out.println(" :: is TypeVariable=true");
+			typeInfo.setTypeVariable(true);
+		//angor end
 		} else {
+			System.out.println(" :: typeNode :: " + typeNode.toString()); //angor debug
 			inferTypeInfo(parentProject, typeInfo, typeNode);
 		}
+		System.out.println("");
 		return typeInfo;
 	}
 
@@ -136,7 +144,16 @@ class Resolver {
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
-		if (iType.isFromSource()) {
+//		System.out.println(typeInfo);
+		if (iType != null && iType.isFromSource()) {
+			// angor start
+			if(iType == null || typeInfo == null || iType.getPackage() == null) {
+				System.out.println("WARNING on :: \niType.getName :: " + iType.getName() 
+				+ "\niType.getQualifiedName :: " + iType.getQualifiedName()
+				+ "\niType.toString :: " + iType.toString()
+				+ "\ntypeInfo :: " + typeInfo.toString());
+			}
+			// angor end
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null) {
 				typeInfo.setTypeObj(inferredType); 
@@ -145,14 +162,18 @@ class Resolver {
 				typeInfo.setObjPrimitiveType(iType.getName());
 				typeInfo.setPrimitiveType(true);
 			}
-		} else {
+		} 
+		else if(iType == null) {
+			typeInfo.setObjPrimitiveType("generic");
+		}
+		else {
 			typeInfo.setObjPrimitiveType(iType.getName());
 			typeInfo.setPrimitiveType(true);
 		}
 	}
 	
 	private void infereParametrized(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
-		if (iType.isParameterizedType()) {
+		if (/*angor start*/iType != null && /*angor end*/iType.isParameterizedType()) {
 			typeInfo.setParametrizedType(true);
 			addNonPrimitiveParameters(parentProject, typeInfo, iType);
 			if (hasNonPrimitivePArameters(typeInfo)) {
@@ -170,7 +191,9 @@ class Resolver {
 			if (typeParameter.isParameterizedType()) {
 				addNonPrimitiveParameters(parentProject, typeInfo, typeParameter);
 			} else {
-				if (typeParameter.isFromSource()) {
+				if (typeParameter.isFromSource() && /*angor start*/ !typeParameter.isTypeVariable()/*angor end*/) {
+//					if(typeParameter.isTypeVariable()) //angor debug
+//						System.out.println("typeParamter :: " + typeParameter.getName() + " :: is Type Variable=true" );
 					SM_Type inferredType = findType(typeParameter.getName(), typeParameter.getPackage().getName(), parentProject);
 					if(inferredType!=null) { 
 						addParameterIfNotAlreadyExists(typeInfo, inferredType);
