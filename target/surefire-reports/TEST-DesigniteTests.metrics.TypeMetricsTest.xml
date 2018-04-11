@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="15" failures="11" name="DesigniteTests.metrics.TypeMetricsTest" time="5.241" errors="0" skipped="0">
+<testsuite tests="15" failures="0" name="DesigniteTests.metrics.TypeMetricsTest" time="5.219" errors="15" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib"/>
@@ -27,25 +27,24 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/Tushar/Documents/Workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf1172469404055238469.tmp"/>
+    <property name="classworlds.conf" value="/usr/local/Cellar/maven/3.3.9/libexec/bin/m2.conf"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/Users/Tushar/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="10.13.3"/>
-    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="os.version" value="10.13.4"/>
     <property name="user.home" value="/Users/Tushar"/>
     <property name="user.timezone" value="Europe/Athens"/>
     <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
     <property name="java.specification.version" value="1.8"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="user.name" value="Tushar"/>
-    <property name="java.class.path" value="/Users/Tushar/eclipse/rcp-neon/Eclipse.app/Contents/Eclipse/../../../../../.p2/pool/plugins/org.eclipse.m2e.maven.runtime_1.7.0.20160603-1931/jars/plexus-classworlds-2.5.2.jar"/>
+    <property name="java.class.path" value="/usr/local/Cellar/maven/3.3.9/libexec/boot/plexus-classworlds-2.5.2.jar"/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -54,23 +53,19 @@
     <property name="java.ext.dirs" value="/Users/Tushar/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
     <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_65.jdk/Contents/Home/jre/classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="/Users/Tushar/Documents/Workspace/DesigniteJava/EMBEDDED"/>
+    <property name="maven.home" value="/usr/local/Cellar/maven/3.3.9/libexec"/>
     <property name="file.separator" value="/"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
-    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testWeightedMethodsPerClass" time="0.438">
-    <failure message="expected:&lt;10&gt; but was:&lt;1&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;10&gt; but was:&lt;1&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testWeightedMethodsPerClass(TypeMetricsTest.java:94)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testWeightedMethodsPerClass" time="0.45">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -78,8 +73,7 @@
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -101,20 +95,18 @@
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfFieldsProperlyReturned" time="0.36">
-    <failure message="expected:&lt;3&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testNumOfFieldsProperlyReturned(TypeMetricsTest.java:37)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfFieldsProperlyReturned" time="0.378">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -122,8 +114,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -145,21 +136,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenInterface" time="0.299"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfChildren" time="0.379">
-    <failure message="expected:&lt;2&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;2&gt; but was:&lt;0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testNumOfChildren(TypeMetricsTest.java:85)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenInterface" time="0.272">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -167,8 +155,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -190,20 +177,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfLines" time="0.498">
-    <failure message="expected:&lt;33&gt; but was:&lt;6&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;33&gt; but was:&lt;6&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testNumOfLines(TypeMetricsTest.java:77)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfChildren" time="0.358">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -211,8 +196,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -234,21 +218,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanInTypes" time="0.334"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testInheritanceDepth" time="0.289">
-    <failure message="expected:&lt;3&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;3&gt; but was:&lt;0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testInheritanceDepth(TypeMetricsTest.java:69)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfLines" time="0.533">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -256,8 +237,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -279,19 +259,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoMethods" time="0.283">
-    <failure message="expected:&lt;-1.0&gt; but was:&lt;1.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;-1.0&gt; but was:&lt;1.0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:494)
-	at org.junit.Assert.assertEquals(Assert.java:592)
-	at DesigniteTests.metrics.TypeMetricsTest.testLCOMWhenNoMethods(TypeMetricsTest.java:146)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanInTypes" time="0.345">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -299,8 +278,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -322,20 +300,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicFieldsProperlyReturned" time="0.301">
-    <failure message="expected:&lt;1&gt; but was:&lt;0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testNumOfPublicFieldsProperlyReturned(TypeMetricsTest.java:45)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testInheritanceDepth" time="0.307">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -343,8 +319,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -366,20 +341,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfMethodsProperlyReturned" time="0.306">
-    <failure message="expected:&lt;2&gt; but was:&lt;1&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;2&gt; but was:&lt;1&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testNumOfMethodsProperlyReturned(TypeMetricsTest.java:53)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoMethods" time="0.295">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -387,8 +360,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -410,20 +382,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoFields" time="0.298"/>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasTwoComponents" time="0.371">
-    <failure message="expected:&lt;1.0&gt; but was:&lt;-1.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1.0&gt; but was:&lt;-1.0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:494)
-	at org.junit.Assert.assertEquals(Assert.java:592)
-	at DesigniteTests.metrics.TypeMetricsTest.testLCOMWhenHasTwoComponents(TypeMetricsTest.java:156)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicFieldsProperlyReturned" time="0.31">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -431,8 +401,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -454,19 +423,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasOneComponent" time="0.506">
-    <failure message="expected:&lt;0.0&gt; but was:&lt;-1.0&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;0.0&gt; but was:&lt;-1.0&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:494)
-	at org.junit.Assert.assertEquals(Assert.java:592)
-	at DesigniteTests.metrics.TypeMetricsTest.testLCOMWhenHasOneComponent(TypeMetricsTest.java:168)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfMethodsProperlyReturned" time="0.32">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -474,8 +442,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -497,20 +464,18 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanOutTypes" time="0.292">
-    <failure message="expected:&lt;5&gt; but was:&lt;1&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;5&gt; but was:&lt;1&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:555)
-	at org.junit.Assert.assertEquals(Assert.java:542)
-	at DesigniteTests.metrics.TypeMetricsTest.testFanOutTypes(TypeMetricsTest.java:102)
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenNoFields" time="0.286">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -518,8 +483,7 @@ Log file path has been not set. Logging not support.
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
 	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
@@ -541,11 +505,174 @@ Log file path has been not set. Logging not support.
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-</failure>
+</error>
     <system-out>Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 Log file path has been not set. Logging not support.
 </system-out>
   </testcase>
-  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicMethodsProperlyReturned" time="0.287"/>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasTwoComponents" time="0.358">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</error>
+    <system-out>Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+</system-out>
+  </testcase>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testLCOMWhenHasOneComponent" time="0.441">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</error>
+    <system-out>Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+</system-out>
+  </testcase>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testFanOutTypes" time="0.28">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</error>
+    <system-out>Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+</system-out>
+  </testcase>
+  <testcase classname="DesigniteTests.metrics.TypeMetricsTest" name="testNumOfPublicMethodsProperlyReturned" time="0.286">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Designite.utils.CSVUtils.cleanup(CSVUtils.java:30)
+	at Designite.utils.CSVUtils.initializeCSVDirectory(CSVUtils.java:15)
+	at Designite.SourceModel.SM_Project.extractMetrics(SM_Project.java:223)
+	at DesigniteTests.metrics.TypeMetricsTest.setUp(TypeMetricsTest.java:27)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</error>
+    <system-out>Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+Log file path has been not set. Logging not support.
+</system-out>
+  </testcase>
 </testsuite>

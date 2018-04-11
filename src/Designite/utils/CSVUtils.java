@@ -19,7 +19,12 @@ public class CSVUtils {
 	private static void createDirIfNotExists(File dir) {
 		if (!dir.exists()) {
 			try {
-				dir.mkdirs();
+				//The program is failing here. It couldn't create the directory.
+				//I see we are providing relative path; that could be the reason
+				//We may prepare the absolute path (by combining it with the output path)
+				//and try again.
+				if(dir.mkdirs()==false)
+					System.out.print("oops, couldn't create the directory " + dir);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

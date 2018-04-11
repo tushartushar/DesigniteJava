@@ -1,11 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: DesigniteTests.SM_PackageTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.174 sec <<< FAILURE!
-SM_Package_positive_case(DesigniteTests.SM_PackageTest)  Time elapsed: 0.058 sec  <<< ERROR!
+Tests run: 5, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.155 sec <<< FAILURE!
+SM_Package_positive_case(DesigniteTests.SM_PackageTest)  Time elapsed: 0.075 sec  <<< ERROR!
 java.lang.IllegalArgumentException
-	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:43)
-	at Designite.InputArgs.<init>(InputArgs.java:21)
+	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:46)
+	at Designite.InputArgs.<init>(InputArgs.java:23)
 	at DesigniteTests.SM_PackageTest.SM_Package_positive_case(SM_PackageTest.java:25)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -38,10 +38,10 @@ java.lang.IllegalArgumentException
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-SM_Package_getParent(DesigniteTests.SM_PackageTest)  Time elapsed: 0.047 sec  <<< ERROR!
+SM_Package_getParent(DesigniteTests.SM_PackageTest)  Time elapsed: 0.025 sec  <<< ERROR!
 java.lang.IllegalArgumentException
-	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:43)
-	at Designite.InputArgs.<init>(InputArgs.java:21)
+	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:46)
+	at Designite.InputArgs.<init>(InputArgs.java:23)
 	at DesigniteTests.SM_PackageTest.SM_Package_getParent(SM_PackageTest.java:78)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -74,10 +74,10 @@ java.lang.IllegalArgumentException
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-SM_Package_cuList(DesigniteTests.SM_PackageTest)  Time elapsed: 0.035 sec  <<< ERROR!
+SM_Package_cuList(DesigniteTests.SM_PackageTest)  Time elapsed: 0.028 sec  <<< ERROR!
 java.lang.IllegalArgumentException
-	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:43)
-	at Designite.InputArgs.<init>(InputArgs.java:21)
+	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:46)
+	at Designite.InputArgs.<init>(InputArgs.java:23)
 	at DesigniteTests.SM_PackageTest.SM_Package_cuList(SM_PackageTest.java:40)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -110,10 +110,10 @@ java.lang.IllegalArgumentException
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-SM_Package_countTypes(DesigniteTests.SM_PackageTest)  Time elapsed: 0.031 sec  <<< ERROR!
+SM_Package_countTypes(DesigniteTests.SM_PackageTest)  Time elapsed: 0.024 sec  <<< ERROR!
 java.lang.IllegalArgumentException
-	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:43)
-	at Designite.InputArgs.<init>(InputArgs.java:21)
+	at Designite.InputArgs.checkEssentialInputs(InputArgs.java:46)
+	at Designite.InputArgs.<init>(InputArgs.java:23)
 	at DesigniteTests.SM_PackageTest.SM_Package_countTypes(SM_PackageTest.java:61)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
