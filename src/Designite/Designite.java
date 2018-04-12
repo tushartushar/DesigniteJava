@@ -62,6 +62,6 @@ public class Designite {
 	private static void usage() {
 		System.err.println("First argument needs to be the path to a batch input file.");
 		System.out.println("Usage instructions:");
-		System.out.println("java Designite <Path to a batch input file>");
+		System.out.println("java -jar DesigniteJava<version>.jar <Path to a batch input file>\n");
 	}
 }
