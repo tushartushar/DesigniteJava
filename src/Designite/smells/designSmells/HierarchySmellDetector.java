@@ -18,7 +18,7 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	private static final String DEEP_HIERARCHY = "Deep Hierarchy";
 	private static final String MISSING_HIERARCHY = "Missing Hierarchy";
 	private static final String MULTIPATH_HIERARCHY = "Multipath Hierarchy";
-	private static final String REBELIOUS_HIERARCHY = "Rebelious Hierarchy";
+	private static final String REBELIOUS_HIERARCHY = "Rebellious Hierarchy";
 	private static final String WIDE_HIERARCHY = "Wide Hierarchy";
 	
 	private static final int EMPTY_BODY = 0;
