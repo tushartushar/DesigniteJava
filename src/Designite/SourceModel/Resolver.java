@@ -116,8 +116,7 @@ class Resolver {
 	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject) {
 		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
-		System.out.print("Type :: " + typeNode); //angor debug
-//		System.out.print("ResolvedBinding :: " + typeNode.resolveBinding()); //angor debug
+//		System.out.print("Type :: " + typeNode); //angor debug
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
 				inferTypeInfo(parentProject, typeInfo, typeOfVar);
@@ -126,14 +125,14 @@ class Resolver {
 			inferTypeInfo(parentProject, typeInfo, getArrayType());
 		// angor start
 		} else if(typeNode.resolveBinding() != null && typeNode.resolveBinding().isTypeVariable()) {
-			System.out.println(" :: is TypeVariable=true");
+//			System.out.println(" :: is TypeVariable=true");
 			typeInfo.setTypeVariable(true);
 		//angor end
 		} else {
-			System.out.println(" :: typeNode :: " + typeNode.toString()); //angor debug
+//			System.out.println(" :: typeNode :: " + typeNode.toString()); //angor debug
 			inferTypeInfo(parentProject, typeInfo, typeNode);
 		}
-		System.out.println("");
+//		System.out.println("");
 		return typeInfo;
 	}
 
@@ -148,10 +147,10 @@ class Resolver {
 		if (iType != null && iType.isFromSource()) {
 			// angor start
 			if(iType == null || typeInfo == null || iType.getPackage() == null) {
-				System.out.println("WARNING on :: \niType.getName :: " + iType.getName() 
-				+ "\niType.getQualifiedName :: " + iType.getQualifiedName()
-				+ "\niType.toString :: " + iType.toString()
-				+ "\ntypeInfo :: " + typeInfo.toString());
+//				System.out.println("WARNING on :: \niType.getName :: " + iType.getName() 
+//				+ "\niType.getQualifiedName :: " + iType.getQualifiedName()
+//				+ "\niType.toString :: " + iType.toString()
+//				+ "\ntypeInfo :: " + typeInfo.toString());
 			}
 			// angor end
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);

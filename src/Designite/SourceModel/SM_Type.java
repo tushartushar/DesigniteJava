@@ -257,7 +257,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 
 	@Override
 	public void resolve() {
-		System.out.println("Resolving Type :: " + name);
+//		System.out.println("Resolving Type :: " + name); //angor DEBUG
 		for (SM_Method method : methodList) 
 			method.resolve();
 		for (SM_Field field : fieldList)

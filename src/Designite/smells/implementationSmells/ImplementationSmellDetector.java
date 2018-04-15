@@ -265,7 +265,7 @@ public class ImplementationSmellDetector {
 	// 0s and 1s are not considered as Magic Numbers
 	private boolean isNotZeroOrOne(NumberLiteral singleNumberLiteral) {
 		String numberToString = singleNumberLiteral.toString();
-		System.out.println("Checking number :: " + numberToString);
+//		System.out.println("Checking number :: " + numberToString); //angor DEBUG
 		double literalValue = 0.0;
 		// hex case
 		if(numberToString.startsWith("0x")) {

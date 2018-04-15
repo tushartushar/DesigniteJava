@@ -146,7 +146,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	//TODO: Modularize parser with private functions
 	@Override
 	public void parse() {
-		System.out.println("Method :: " + name);
+//		System.out.println("Method :: " + name); //angor DEBUG
 		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
 		methodDeclaration.accept(invVisitor);
 		List<MethodInvocation> invList = invVisitor.getCalledMethods();
@@ -155,24 +155,24 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		}
 
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
-		System.out.println("variableList ==> " + variableList);
+//		System.out.println("variableList ==> " + variableList); //angor DEBUG
 		for (SingleVariableDeclaration var : variableList) {
 			VariableVisitor parameterVisitor = new VariableVisitor(this);
 			// methodDeclaration.accept(parameterVisitor);
 			var.accept(parameterVisitor);
 			List<SM_Parameter> pList = parameterVisitor.getParameterList();
-			System.out.println("Parameters ==> " + pList);
+//			System.out.println("Parameters ==> " + pList); //angor DEBUG
 			if (pList.size() > 0) {
 				parameterList.addAll(pList);
 			}
 			parseParameters();
 		}
-		System.out.println("Parsed parameters ==> " + parameterList);
+//		System.out.println("Parsed parameters ==> " + parameterList); //angor DEBUG
 
 		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
 		methodDeclaration.accept(localVarVisitor);
 		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
-		System.out.println("Local variable List ==> " + lList);
+//		System.out.println("Local variable List ==> " + lList); //angor DEBUG
 		if (lList.size() > 0) {
 			localVarList.addAll(lList);
 		}
@@ -192,7 +192,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
 		methodDeclaration.accept(instanceOfVisitor);
 		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
-		System.out.println("Instance of types ==> " + instanceOfTypes);
+//		System.out.println("Instance of types ==> " + instanceOfTypes); //angor DEBUG
 		if (instanceOfTypes.size() > 0) {
 			typesInInstanceOf.addAll(instanceOfTypes);
 		}
@@ -204,13 +204,13 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 
 	@Override
 	public void resolve() {
-		System.out.println("Resolving method :: " + name);
+//		System.out.println("Resolving method :: " + name);  //angor DEBUG
 		for (SM_Parameter param : parameterList) {
 			if(param.typeInfo != null && !param.typeInfo.isTypeVariable())
 				param.resolve();
 		}
 		for (SM_LocalVar localVar : localVarList) {
-			System.out.println("Local var :: " + localVar.name);
+//			System.out.println("Local var :: " + localVar.name); //angor DEBUG
 			localVar.resolve();
 		}
 		calledMethodsList = (new Resolver()).inferCalledMethods(calledMethods, parentType);
