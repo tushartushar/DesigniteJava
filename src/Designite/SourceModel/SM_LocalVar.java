@@ -35,7 +35,7 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 				print(writer, "\t\t\tVariable type: " + getType()/*.getName()*/);
 			}
 		} else if (isTypeVariable()) {
-			System.out.println("Type Variable :: " + getName());
+			print(writer, "\t\t\tType Variable :: " + getName());
 		}
 		else
 			print(writer, "\t\t\tPrimitive variable type: " + getPrimitiveType());

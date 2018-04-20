@@ -21,6 +21,7 @@ import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.models.ImplementationCodeSmell;
+import Designite.utils.Logger;
 import Designite.visitors.MethodControlFlowVisitor;
 import Designite.visitors.NumberLiteralVisitor;
 
@@ -264,22 +265,31 @@ public class ImplementationSmellDetector {
 	
 	// 0s and 1s are not considered as Magic Numbers
 	private boolean isNotZeroOrOne(NumberLiteral singleNumberLiteral) {
-		String numberToString = singleNumberLiteral.toString();
-//		System.out.println("Checking number :: " + numberToString); //angor DEBUG
+		String numberToString = singleNumberLiteral.toString().toLowerCase().replaceAll("_", "");
 		double literalValue = 0.0;
-		// hex case
-		if(numberToString.startsWith("0x")) {
-			literalValue = (double)(Long.parseLong(numberToString.replace("0x", ""),16));
-		// long case
-		} else if(numberToString.endsWith("L")) {
-			literalValue = (double)(Long.parseLong(numberToString.replace("L", "").replaceAll("l", "")));
-		}
-		// double case
-		else {
-			literalValue = Double.parseDouble(numberToString);
+		try {
+			// hex case
+			if(numberToString.startsWith("0x")) {
+				literalValue = (double)(Long.parseLong(numberToString.replaceAll("0x", "").replaceAll("l", ""),16));
+			// long case
+			} else if(numberToString.endsWith("l")) {
+				literalValue = (double)(Long.parseLong(numberToString.replaceAll("l", "")));
+			// float case
+			} else if(numberToString.endsWith("f")) {
+				literalValue = Float.parseFloat(numberToString.replaceAll("f", ""));
+			}
+			// double case
+			else {
+					literalValue = Double.parseDouble(numberToString);
+			}
+		} catch (NumberFormatException ex) {
+			String logMessage = "Exception while parsing literal number (during Magic Number detection). " + ex.getMessage();
+			Logger.log(logMessage);
+			literalValue = 0.0;
 		}
 		return literalValue != 0.0 && literalValue != 1.0;
 	}
+	
 	
 	// Literals in array initializations (such as int[] arr = {0,1};) are not considered as Magic Numbers
 	private boolean isNotArrayInitialization(NumberLiteral singleNumberLiteral) {
