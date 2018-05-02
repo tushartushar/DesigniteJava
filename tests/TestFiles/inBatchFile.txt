@@ -1,5 +1,5 @@
 [Source folder]
-/home/agkortzis/git_repos/DesigniteJava
+/Users/Tushar/Documents/Workspace/DesigniteJava
 
 [Output folder]
-/home/agkortzis/git_repos/DesigniteJava/temp
+/Users/Tushar/Documents/Workspace/DesigniteJava/temp

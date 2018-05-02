@@ -17,6 +17,7 @@
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/utils/Logger.java
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/SourceModel/SourceItemInfo.java
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/smells/designSmells/HierarchySmellDetector.java
+/Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/visitors/NumberLiteralVisitor.java
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/SourceModel/SM_Type.java
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/smells/designSmells/DesignSmellDetector.java
 /Users/Tushar/Documents/Workspace/DesigniteJava/src/Designite/SourceModel/MethodVisitor.java

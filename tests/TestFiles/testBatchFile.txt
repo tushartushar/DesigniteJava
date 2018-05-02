@@ -1,2 +1,2 @@
 [Source folder]
-/home/agkortzis/git_repos/DesigniteJava/tests/TestFiles/test_package
+/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles/test_package

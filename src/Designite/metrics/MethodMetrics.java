@@ -1,13 +1,9 @@
 package Designite.metrics;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Method;
-import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.visitors.MethodControlFlowVisitor;
 

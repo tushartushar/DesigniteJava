@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>DesigniteJava</groupId>
   <artifactId>DesigniteJava</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-Beta</version>
   <packaging>jar</packaging>
   
   <dependencies>

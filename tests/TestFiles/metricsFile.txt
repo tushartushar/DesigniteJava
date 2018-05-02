@@ -1,5 +1,3 @@
 [Source folder]
-/home/agkortzis/git_repos/DesigniteJava/tests/TestFiles/metrics
+/Users/Tushar/Documents/Workspace/DesigniteJava/tests/TestFiles/metrics
 
-[Output folder]
-/home/agkortzis/git_repos/DesigniteJava/temp

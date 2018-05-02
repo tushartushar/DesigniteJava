@@ -34,7 +34,7 @@ public class ImplementationSmellDetector {
 	private ThresholdsDTO thresholdsDTO;
 	
 	private static final String ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR = "Abstract Function Call From Constructor";
-	private static final String COMPLEX_CONDITIONAL = "Complex Cnditional";
+	private static final String COMPLEX_CONDITIONAL = "Complex Conditional";
 	private static final String COMPLEX_METHOD = "Complex Method";
 	private static final String EMPTY_CATCH_CLAUSE = "Empty catch clause";
 	private static final String LONG_IDENTIFIER = "Long Identifier";
