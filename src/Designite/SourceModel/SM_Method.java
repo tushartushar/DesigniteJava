@@ -135,7 +135,6 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		print(writer, "\t\tCalled methods: ");
 		for(SM_Method method:getCalledMethods())
 			print(writer, "\t\t\t" + method.getName());
-		//print(writer, "	Binding: " + methodBinding.getMethodDeclaration());
 		for (SM_Parameter param : parameterList)
 			param.printDebugLog(writer);
 		for (SM_LocalVar var : localVarList)
@@ -199,7 +198,8 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	@Override
 	public void resolve() {
 		for (SM_Parameter param : parameterList) {
-			param.resolve();
+			if(param.typeInfo != null && !param.typeInfo.isTypeVariable())
+				param.resolve();
 		}
 		for (SM_LocalVar localVar : localVarList) {
 			localVar.resolve();
@@ -212,7 +212,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	
 	private void setReferencedTypes() {
 		for (SM_Parameter param : parameterList) {
-			if (!param.isPrimitiveType()) {
+			if (param.typeInfo != null && !param.isPrimitiveType()) {
 				addunique(param.getType());
 			}
 		}

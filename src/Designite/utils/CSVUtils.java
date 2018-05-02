@@ -32,8 +32,10 @@ public class CSVUtils {
 	}
 	
 	private static void cleanup(File dir) {
-		for (File file : dir.listFiles()) {
-			file.delete();
+		if (dir.listFiles() != null) {
+			for (File file : dir.listFiles()) {
+				file.delete();
+			}
 		}
 	}
 	

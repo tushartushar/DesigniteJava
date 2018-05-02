@@ -11,6 +11,7 @@ public class Logger {
 	public static String logFile = null;
 
 	public static void log(String str) {
+		System.out.println("Adding :: " + str);
 		if (logFile == null) {
 			System.out.println("Log file path has been not set. Logging not support.");
 			return;
@@ -18,7 +19,6 @@ public class Logger {
 		try (Writer writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
 			writer.write(str + "\n");
-			System.out.println(str);
 			writer.close();
 		} catch (IOException ex) {
 			System.out.println("Exception during logging. " + ex.getMessage());

@@ -17,6 +17,7 @@ public class InputArgs {
 	private String outputFolder;
 	
 	public InputArgs(String batchFilePath) {
+		System.out.println(batchFilePath);
 		this.batchFilePath = batchFilePath;
 		outputFolder = "";
 		readInputArgs();

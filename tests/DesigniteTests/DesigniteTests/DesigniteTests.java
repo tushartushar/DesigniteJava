@@ -35,7 +35,9 @@ public abstract class DesigniteTests {
 			+ "[Output folder]\n"
 			+ System.getProperty("user.dir") + File.separator + "temp";
 	protected static final String METRICS_FILE_CONTENT = "[Source folder]\n"
-			+ getTestingPath() + File.separator + "metrics";
+			+ getTestingPath() + File.separator + "metrics" + "\n\n"
+			+ "[Output folder]\n"
+			+ System.getProperty("user.dir") + File.separator + "temp";
 	protected static final String CODE_SMELLS_FILE_CONTENT = "[Source folder]\n"
 			+ getTestingPath() + File.separator + "codeSmells";
 	

@@ -25,16 +25,18 @@ public class SM_Parameter extends SM_EntitiesWithType {
 		return parentMethod;
 	}
 	
-	
 	@Override
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "\t\t\tParameter: " + name);
 		print(writer, "\t\t\tParent Method: " + getParent().getName());
-		if (!isPrimitiveType() && getType() != null)
+		if (typeInfo == null) {
+		} else if (!isPrimitiveType() && getType() != null) {
 			print(writer, "\t\t\tParameter type: " + getType().getName());
-		else
-			if (isPrimitiveType())
+		} else {
+			if (isPrimitiveType()) {
 				print(writer, "\t\t\tPrimitive parameter type: " + getPrimitiveType());
+			}
+		}
 		print(writer, "\t\t\t----");
 	}
 
@@ -46,6 +48,19 @@ public class SM_Parameter extends SM_EntitiesWithType {
 
 	public Type getTypeBinding() {
 		return variableDecl.getType();
+	}
+	
+	@Override
+	public String toString() {
+		return "Parameter=" + name
+				+ ", type=" + getTypeBinding()
+				+ ", is=" + getTypeBinding().getNodeType();
+//				+ ", isTypeVariable=" + getTypeBinding().resolveBinding().isTypeVariable();
+	}
+	
+	@Override
+	public void parse() {
+		
 	}
 	
 }

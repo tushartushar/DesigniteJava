@@ -376,5 +376,10 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(method));
 	}
+	
+	@Override
+	public String toString() {
+		return "Type="+name;
+	}
 
 }
