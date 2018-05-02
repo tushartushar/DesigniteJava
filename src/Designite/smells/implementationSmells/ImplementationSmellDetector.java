@@ -90,28 +90,18 @@ public class ImplementationSmellDetector {
 	}
 	
 	public List<ImplementationCodeSmell> detectComplexConditional() {
-		if (hasComplexConditional()) {
-			addToSmells(initializeCodeSmell(COMPLEX_CONDITIONAL));
-		}
+		hasComplexConditional();
 		return smells;
 	}
 	
-	private boolean hasComplexConditional() {
+	private void hasComplexConditional() {
 		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
 		methodMetrics.getMethod().getMethodDeclaration().accept(visitor);
-		if (hasComplexIfCondition(visitor)) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean hasComplexIfCondition(MethodControlFlowVisitor visitor) {
 		for (IfStatement ifStatement : visitor.getIfStatements()) {
 			if (numOfBooleanSubExpressions(ifStatement) >=  thresholdsDTO.getComplexCondition()) {
-				return true;
+				addToSmells(initializeCodeSmell(COMPLEX_CONDITIONAL));
 			}
 		}
-		return false;
 	}
 	
 	private String getBooleaRegex() {
