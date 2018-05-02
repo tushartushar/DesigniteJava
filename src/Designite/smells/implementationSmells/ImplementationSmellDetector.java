@@ -270,7 +270,7 @@ public class ImplementationSmellDetector {
 			}
 			// double case
 			else {
-					literalValue = Double.parseDouble(numberToString);
+				literalValue = Double.parseDouble(numberToString);
 			}
 		} catch (NumberFormatException ex) {
 			String logMessage = "Exception while parsing literal number (during Magic Number detection). " + ex.getMessage();

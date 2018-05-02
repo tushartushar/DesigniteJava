@@ -30,7 +30,6 @@ public class SM_Parameter extends SM_EntitiesWithType {
 		print(writer, "\t\t\tParameter: " + name);
 		print(writer, "\t\t\tParent Method: " + getParent().getName());
 		if (typeInfo == null) {
-//			System.out.println("## CHECK ME ##"); //angor DEBUG
 		} else if (!isPrimitiveType() && getType() != null) {
 			print(writer, "\t\t\tParameter type: " + getType().getName());
 		} else {

@@ -104,7 +104,6 @@ public class SM_Package extends SM_SourceItem {
 
 	@Override
 	public void resolve() {
-//		System.out.println("Resolving Package :: " + name); //angor DEBUG
 		for (SM_Type type : typeList) { 
 			type.resolve();
 		}
