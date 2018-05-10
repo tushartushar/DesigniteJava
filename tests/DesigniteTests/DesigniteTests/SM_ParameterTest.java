@@ -11,6 +11,7 @@ import Designite.InputArgs;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Project;
+import Designite.SourceModel.SM_Type;
 
 public class SM_ParameterTest extends DesigniteTests {
 	
@@ -31,14 +32,14 @@ public class SM_ParameterTest extends DesigniteTests {
 
 	@Test
 	public void SM_Parameter_check_getName() {
-		parameters = methods.get(0).getParameterList();
+		parameters = getSpecificMethod("TestMethods").getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.getName(), "name");
 	}
 
 	@Test
 	public void SM_Parameter_getType() {
-		parameters = methods.get(0).getParameterList();
+		parameters = getSpecificMethod("TestMethods").getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.isPrimitiveType(), true);
 		assertEquals(newParameter.getPrimitiveType(), "String");
@@ -46,15 +47,21 @@ public class SM_ParameterTest extends DesigniteTests {
 
 	@Test
 	public void SM_Parameter_getType_from_source() {
-		parameters = methods.get(1).getParameterList();
+		parameters = getSpecificMethod("publicMethod").getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.isPrimitiveType(), false);
 		assertEquals(newParameter.getType().getName(), "TestMethods");
 	}
 	@Test // is a List considered as SingleVariableDeclaration?
 	public void SM_Parameter_check_listParameter() {
-		parameters = methods.get(3).getParameterList();
+		parameters = getSpecificMethod("getList").getParameterList();
 		newParameter = parameters.get(0);
 		assertEquals(newParameter.getPrimitiveType(), "List<String>");
+	}
+	private SM_Method getSpecificMethod(String methodName) {
+		for(SM_Method method:methods)
+			if(method.getName().equals(methodName))
+				return method;
+		return null;
 	}
 }
