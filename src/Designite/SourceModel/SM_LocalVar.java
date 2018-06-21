@@ -27,16 +27,17 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 		print(writer, "\t\t\tLocalVar: " + getName());
 		print(writer, "\t\t\tParent method: " + this.parentMethod.getName());
 
-		if (!isPrimitiveType() && !isTypeVariable()) {
+		if (!isPrimitiveType()) {
+//		if (!isPrimitiveType() && !isTypeVariable()) {
 			if (typeInfo.isParametrizedType()) {
 				print(writer, "\t\t\tParameter types: " + typeInfo.getStringOfNonPrimitiveParameters());
 			}
 			else {
-				print(writer, "\t\t\tVariable type: " + getType()/*.getName()*/);
+				print(writer, "\t\t\tVariable type: " + getType().getName());
 			}
-		} else if (isTypeVariable()) {
+		} /*else if (isTypeVariable()) {
 			print(writer, "\t\t\tType Variable :: " + getName());
-		}
+		}*/
 		else
 			print(writer, "\t\t\tPrimitive variable type: " + getPrimitiveType());
 		print(writer, "\t\t\t----");

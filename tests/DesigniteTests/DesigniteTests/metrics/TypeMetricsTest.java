@@ -30,7 +30,7 @@ public class TypeMetricsTest extends DesigniteTests {
 		//SM_Type type = pkg.getTypeList().get(7);
 		SM_Type type = getSpecificType("TestMetricsClass");
 		typeMetrics = pkg.getMetricsFromType(type);
-		System.out.println(pkg.getTypeList());
+//		System.out.println(pkg.getTypeList());
 	}
 	
 	private SM_Type getSpecificType(String name) {
@@ -109,6 +109,9 @@ public class TypeMetricsTest extends DesigniteTests {
 	public void testFanOutTypes() {
 		int expected = 5;
 		int actual = typeMetrics.getNumOfFanOutTypes();
+		
+		SM_Type type = getSpecificType("TestMetricsClass");
+		System.out.println(type.getReferencedTypeList().toString());
 		
 		assertEquals(expected, actual);
 	}

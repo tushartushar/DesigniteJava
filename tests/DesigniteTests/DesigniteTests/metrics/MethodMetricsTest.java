@@ -33,7 +33,7 @@ public class MethodMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testNumOfParameters() {
-		int expected = 3;
+		int expected = 5;
 		int actual = methodMetrics.getNumOfParameters();
 		
 		assertEquals(expected, actual);

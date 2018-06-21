@@ -198,7 +198,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	@Override
 	public void resolve() {
 		for (SM_Parameter param : parameterList) {
-			if(param.typeInfo != null && !param.typeInfo.isTypeVariable())
+//			if(param.typeInfo != null && !param.typeInfo.isTypeVariable())
 				param.resolve();
 		}
 		for (SM_LocalVar localVar : localVarList) {
@@ -212,7 +212,7 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	
 	private void setReferencedTypes() {
 		for (SM_Parameter param : parameterList) {
-			if (param.typeInfo != null && !param.isPrimitiveType()) {
+			if (/*param.typeInfo != null && */!param.isPrimitiveType()) {
 				addunique(param.getType());
 			}
 		}
