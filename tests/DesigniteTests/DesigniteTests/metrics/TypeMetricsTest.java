@@ -82,7 +82,7 @@ public class TypeMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testNumOfLines() {
-		int expected = 33;
+		int expected = 34;
 		int actual = typeMetrics.getNumOfLines();
 		
 		assertEquals(expected, actual);

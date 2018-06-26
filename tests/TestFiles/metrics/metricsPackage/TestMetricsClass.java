@@ -10,6 +10,7 @@ public class TestMetricsClass extends AnotherClass implements InterfaceGrandChil
         
     	ForeignClass3 fc3 = new ForeignClass3();
     	int num = ForeignClass4.func();
+    	String[] s = new String[1];
     	
         // To test cyclomatic complexity
         if (true) {

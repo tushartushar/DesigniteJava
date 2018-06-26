@@ -104,7 +104,7 @@ class Resolver {
 
 	public SM_Type resolveType(Type type, SM_Project project) {
 		ITypeBinding binding = type.resolveBinding();
-		if (binding == null)
+		if (binding == null || binding.getPackage() == null) // instanceof String[] returns null package
 			return null;
 		SM_Package pkg = findPackage(binding.getPackage().getName(), project);
 		if (pkg !=null) {
@@ -117,15 +117,12 @@ class Resolver {
 		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
 		
-		System.out.print("Type :: " + typeNode); //angor debug
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
 				inferTypeInfo(parentProject, typeInfo, typeOfVar);
 			}
 		} else if (isArray) {
 			inferTypeInfo(parentProject, typeInfo, getArrayType());
-/*		} else if(typeNode.resolveBinding() != null && typeNode.resolveBinding().isTypeVariable()) {
-			typeInfo.setTypeVariable(true);*/
 		} else {
 			inferTypeInfo(parentProject, typeInfo, typeNode);
 		}
@@ -134,23 +131,12 @@ class Resolver {
 
 	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
 		ITypeBinding iType = typeOfVar.resolveBinding();
-//		System.out.println("# problematic type is :: " + iType.getName());
-//		System.out.println("# package : " + iType.getPackage());
-//		System.out.println("# binary name : " + iType.getBinaryName());
 		inferPrimitiveType(parentProject, typeInfo, iType);
 		infereParametrized(parentProject, typeInfo, iType);
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType != null && iType.isFromSource() && iType.getModifiers() != 0 && !iType.isWildcardType()) {
-			System.out.println("## iType modifiers : " + iType.getModifiers());
-//		if (iType != null && iType.isFromSource()) {
-//			if(iType == null || typeInfo == null || iType.getPackage() == null) {
-////				System.out.println("WARNING on :: \niType.getName :: " + iType.getName() 
-////				+ "\niType.getQualifiedName :: " + iType.getQualifiedName()
-////				+ "\niType.toString :: " + iType.toString()
-////				+ "\ntypeInfo :: " + typeInfo.toString());
-//			}
 			SM_Type inferredType = findType(iType.getName(), iType.getPackage().getName(), parentProject);
 			if(inferredType!=null) {
 				typeInfo.setTypeObj(inferredType); 
@@ -160,10 +146,6 @@ class Resolver {
 				typeInfo.setPrimitiveType(true);
 			}
 		} else {
-//		else if(iType == null) {
-//			typeInfo.setObjPrimitiveType("generic");
-//		}
-//		else {
 			if(iType == null)
 				typeInfo.setObjPrimitiveType("wildcard");
 			else
@@ -189,12 +171,9 @@ class Resolver {
 		}
 		for (ITypeBinding typeParameter : iType.getTypeArguments()) {
 			if (typeParameter.isParameterizedType()) {
-				System.out.println("@ Is generic : " + typeParameter.isGenericType());
-				System.out.println("@ Name : " + typeParameter.getName());
 				addNonPrimitiveParameters(parentProject, typeInfo, typeParameter);
 			} else {
 				if (typeParameter.isFromSource() && typeParameter.getModifiers() != 0) {
-//				if (typeParameter.isFromSource() &&  !typeParameter.isTypeVariable()) {
 					SM_Type inferredType = findType(typeParameter.getName(), typeParameter.getPackage().getName(), parentProject);
 					if(inferredType!=null) { 
 						addParameterIfNotAlreadyExists(typeInfo, inferredType);

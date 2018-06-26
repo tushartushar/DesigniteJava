@@ -49,7 +49,7 @@ public class MethodMetricsTest extends DesigniteTests {
 	
 	@Test
 	public void testNumOfLines() {
-		int expected = 26;
+		int expected = 27;
 		int actual = methodMetrics.getNumOfLines();
 		
 		assertEquals(expected, actual);
