@@ -38,13 +38,13 @@ public class InputArgs {
 		if (sourceFolder==null)
 		{
 			System.out.println("Input source folder is not specified.");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Input source folder is not specified.");
 		}
 		File file = new File(sourceFolder);
 		if (!(file.exists() && file.isDirectory()))
 		{
 			System.out.println("Input source folder path is not valid.");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Input source folder path is not valid.");
 		}
 	}
 

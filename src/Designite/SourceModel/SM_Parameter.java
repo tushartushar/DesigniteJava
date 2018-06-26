@@ -29,13 +29,10 @@ public class SM_Parameter extends SM_EntitiesWithType {
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "\t\t\tParameter: " + name);
 		print(writer, "\t\t\tParent Method: " + getParent().getName());
-		if (typeInfo == null) {
-		} else if (!isPrimitiveType() && getType() != null) {
+		if (!isPrimitiveType() && getType() != null)
 			print(writer, "\t\t\tParameter type: " + getType().getName());
-		} else {
-			if (isPrimitiveType()) {
+		else {
 				print(writer, "\t\t\tPrimitive parameter type: " + getPrimitiveType());
-			}
 		}
 		print(writer, "\t\t\t----");
 	}
@@ -55,7 +52,6 @@ public class SM_Parameter extends SM_EntitiesWithType {
 		return "Parameter=" + name
 				+ ", type=" + getTypeBinding()
 				+ ", is=" + getTypeBinding().getNodeType();
-//				+ ", isTypeVariable=" + getTypeBinding().resolveBinding().isTypeVariable();
 	}
 	
 	@Override

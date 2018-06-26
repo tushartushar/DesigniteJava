@@ -42,9 +42,12 @@ public abstract class DesigniteTests {
 			+ getTestingPath() + File.separator + "codeSmells";
 	
 	protected static String getTestingPath() {
-		return System.getProperty("user.dir") + 
+		String path = System.getProperty("user.dir") + 
 				File.separator + "tests" + 
 				File.separator + "TestFiles";
+		
+//		System.out.println("@@ Requested testing path :: "+ path);
+		return path;
 	}
 	
 	protected void createFileForArguments(String path, String content) {

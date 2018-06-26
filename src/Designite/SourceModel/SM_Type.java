@@ -257,7 +257,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 
 	@Override
 	public void resolve() {
-		for (SM_Method method : methodList) 
+		for (SM_Method method : methodList)
 			method.resolve();
 		for (SM_Field field : fieldList)
 			field.resolve();

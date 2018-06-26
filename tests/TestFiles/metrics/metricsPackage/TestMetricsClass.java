@@ -6,10 +6,11 @@ public class TestMetricsClass extends AnotherClass implements InterfaceGrandChil
     public String[] bar;
     private ForeignClass1 fc1; 
 
-    public void publicMethod(String parameter1, int parameter2, ForeignClass2 parameter3) {
+    public void <A extends Object> publicMethod(String parameter1, int parameter2, ForeignClass2 parameter3, A e, List<? extends A> myList) {
         
     	ForeignClass3 fc3 = new ForeignClass3();
     	int num = ForeignClass4.func();
+    	String[] s = new String[1];
     	
         // To test cyclomatic complexity
         if (true) {
