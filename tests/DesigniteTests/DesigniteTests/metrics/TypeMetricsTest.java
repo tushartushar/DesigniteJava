@@ -111,7 +111,7 @@ public class TypeMetricsTest extends DesigniteTests {
 		int actual = typeMetrics.getNumOfFanOutTypes();
 		
 		SM_Type type = getSpecificType("TestMetricsClass");
-		System.out.println(type.getReferencedTypeList().toString());
+		//System.out.println(type.getReferencedTypeList().toString());
 		
 		assertEquals(expected, actual);
 	}
