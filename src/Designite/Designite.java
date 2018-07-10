@@ -18,7 +18,9 @@ public class Designite {
 		// args[0]: filePath
 		if (args.length != 1) {
 			usage();
-			throw new IllegalArgumentException();
+			System.out.println("Quitting...");
+			System.exit(1);
+			//throw new IllegalArgumentException();
 		}
 		InputArgs argsObj = new InputArgs(args[0]);
 		SM_Project project = new SM_Project(argsObj);
