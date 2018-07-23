@@ -10,16 +10,7 @@ public class TypeInfo {
 	private String objPrimitiveType;
 	private boolean parametrizedType;
 	private List<SM_Type> nonPrimitiveTypeParameters = new ArrayList<>();
-	/*private boolean typeVariable;
-	
-	public boolean isTypeVariable() {
-		return typeVariable;
-	}
-	
-	public void setTypeVariable(boolean flag) {
-		typeVariable = flag; 
-	}
-	*/
+
 	public SM_Type getTypeObj() {
 		return typeObj;
 	}
@@ -81,12 +72,6 @@ public class TypeInfo {
 		return "TypeInfo [typeObj=" + typeObj + ", primitiveType=" + primitiveType + ", objPrimitiveType=" + objPrimitiveType
 						+ ", parametrizedType=" + parametrizedType + ", nonPrimitiveTypeParameters="
 						+ getStringOfNonPrimitiveParameters() + "]";
-//		return "TypeInfo [typeObj=" + typeObj 
-//				+ ", primitiveType=" + primitiveType 
-//				+ ", objPrimitiveType=" + objPrimitiveType
-//				+ ", parametrizedType=" + parametrizedType
-//				+ ", typeVariable=" + typeVariable
-//				+ ", nonPrimitiveTypeParameters=" + getStringOfNonPrimitiveParameters() + "]";
 	}
 
 }

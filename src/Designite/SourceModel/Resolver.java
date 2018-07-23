@@ -12,6 +12,8 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.internal.compiler.lookup.MissingTypeBinding;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 
 class Resolver {
 	private List<Type> typeList = new ArrayList<>();
@@ -113,23 +115,23 @@ class Resolver {
 		return null;
 	}
 	
-	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject) {
+	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject, SM_Type callerType) {
 		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
 		
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
-				inferTypeInfo(parentProject, typeInfo, typeOfVar);
+				inferTypeInfo(parentProject, typeInfo, typeOfVar, callerType);
 			}
 		} else if (isArray) {
-			inferTypeInfo(parentProject, typeInfo, getArrayType());
+			inferTypeInfo(parentProject, typeInfo, getArrayType(), callerType);
 		} else {
-			inferTypeInfo(parentProject, typeInfo, typeNode);
+			inferTypeInfo(parentProject, typeInfo, typeNode, callerType);
 		}
 		return typeInfo;
 	}
 
-	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
+	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar, SM_Type callerType) {
 		ITypeBinding iType = typeOfVar.resolveBinding();
 		/* In some cases, the above statement doesnt resolve the binding even if the type
 		 * is present in the same project (and we dont know the reason).
@@ -137,16 +139,50 @@ class Resolver {
 		 * if it is of type MissingTypeBinding, we need to search the type in the present project.
 		 * We may have to use import statements to identify the package in which this (to be resolved) type exists.
 		 */
-		if(iType is TypeBinding)
+		
+		// The case that the iType is RecoveredTypeBinding which leads to ProblemReferenceBinding and consequently to MissingTypeBinding
+		if(iType.isRecovered())
 		{
 			//Search in the ast explicitly and assign
-			
+			manualInferUnresolvedType(parentProject, typeInfo, typeOfVar, callerType);
 		}
 		else
 		{
-		inferPrimitiveType(parentProject, typeInfo, iType);
-		infereParametrized(parentProject, typeInfo, iType);
+			inferPrimitiveType(parentProject, typeInfo, iType);
+			infereParametrized(parentProject, typeInfo, iType);
 		}
+	}
+	
+	private void manualInferUnresolvedType(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar, SM_Type callerType) {
+		String unresolvedClassName = typeOfVar.toString().replace("[]", ""); //cover the Array case
+		SM_Type matchedType = null;
+		if( (matchedType = findType(unresolvedClassName, callerType.getParentPkg())) != null ) {
+			manualInferPrimitiveType(typeInfo, matchedType);
+		} else {
+			List<ImportDeclaration> importList = callerType.getImportList();
+			for (ImportDeclaration importEntry : importList) {
+				matchedType = findType(unresolvedClassName, getImportPackageName(importEntry), parentProject);
+				if(matchedType != null) {
+//					System.out.println("Found match at import " + matchedType.getParentPkg().name
+//							+ "." + matchedType.name
+//							+ "\n\tIn type :: " + callerType.name);
+					manualInferPrimitiveType(typeInfo, matchedType);
+					return;
+				}
+			}
+		}	
+	}
+	
+	private String getImportPackageName(ImportDeclaration importEntry) {
+		String importName = importEntry.getName().toString();
+		String packageName = importName.substring(0, importName.lastIndexOf('.'));
+		
+		return packageName;
+	}
+	
+	private void manualInferPrimitiveType(TypeInfo typeInfo, SM_Type type) {
+		typeInfo.setTypeObj(type);
+		typeInfo.setPrimitiveType(false);		
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {

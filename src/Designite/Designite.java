@@ -6,7 +6,6 @@ import Designite.SourceModel.*;
 import Designite.utils.Logger;
 
 import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -19,9 +18,7 @@ public class Designite {
 		// args[0]: filePath
 		if (args.length != 1) {
 			usage();
-			System.out.println("Quitting...");
-			System.exit(1);
-			//throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 		}
 		InputArgs argsObj = new InputArgs(args[0]);
 		SM_Project project = new SM_Project(argsObj);
@@ -40,8 +37,10 @@ public class Designite {
 
 	private static String getlogFileName(InputArgs argsObj) {
 		String file = null;
+		//DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HHmm");
+		//Date date = new Date(0);
 		String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(Calendar.getInstance().getTime());
-		file = Paths.get(argsObj.getOutputFolder(), "DesigniteLog" + timeStamp + ".txt").toString();
+		file = argsObj.getOutputFolder() + "DesigniteLog" + timeStamp + ".txt";
 		
 		return file;
 	}

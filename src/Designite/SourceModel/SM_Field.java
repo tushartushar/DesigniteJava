@@ -47,7 +47,7 @@ public class SM_Field extends SM_EntitiesWithType implements Vertex {
 		return staticField;
 	}
 	
-	
+	@Override
 	public SM_Type getParentType() {
 		return parentType;
 	}
@@ -79,7 +79,7 @@ public class SM_Field extends SM_EntitiesWithType implements Vertex {
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeInfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(fieldDeclaration.getType(), getParentType().getParentPkg().getParentProject(), getParentType());
 	}
 	
 }

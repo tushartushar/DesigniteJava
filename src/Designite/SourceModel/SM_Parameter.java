@@ -26,6 +26,11 @@ public class SM_Parameter extends SM_EntitiesWithType {
 	}
 	
 	@Override
+	public SM_Type getParentType() {
+		return this.parentMethod.getParentType();
+	}
+	
+	@Override
 	public void printDebugLog(PrintWriter writer) {
 		print(writer, "\t\t\tParameter: " + name);
 		print(writer, "\t\t\tParent Method: " + getParent().getName());
@@ -40,7 +45,7 @@ public class SM_Parameter extends SM_EntitiesWithType {
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeInfo = resolver.resolveVariableType(variableDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(variableDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject(), getParentType());
 	}
 
 	public Type getTypeBinding() {
