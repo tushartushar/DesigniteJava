@@ -11,7 +11,7 @@ public class Logger {
 	public static String logFile = null;
 
 	public static void log(String str) {
-		System.out.println("Adding :: " + str);
+		System.out.println(str);
 		if (logFile == null) {
 			//Commented the following line just to make the execution non-verbose
 			//System.out.println("Log file path has been not set. Logging not support.");

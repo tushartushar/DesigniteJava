@@ -131,8 +131,22 @@ class Resolver {
 
 	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
 		ITypeBinding iType = typeOfVar.resolveBinding();
+		/* In some cases, the above statement doesnt resolve the binding even if the type
+		 * is present in the same project (and we dont know the reason).
+		 * We need to handle this situation explicitly by checking the 'binding' property of iType.
+		 * if it is of type MissingTypeBinding, we need to search the type in the present project.
+		 * We may have to use import statements to identify the package in which this (to be resolved) type exists.
+		 */
+		if(iType is TypeBinding)
+		{
+			//Search in the ast explicitly and assign
+			
+		}
+		else
+		{
 		inferPrimitiveType(parentProject, typeInfo, iType);
 		infereParametrized(parentProject, typeInfo, iType);
+		}
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {

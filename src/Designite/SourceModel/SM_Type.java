@@ -1,9 +1,6 @@
 package Designite.SourceModel;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,26 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.MethodMetrics;
-import Designite.metrics.TypeMetrics;
-import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.implementationSmells.ImplementationSmellDetector;
-import Designite.smells.models.DesignCodeSmell;
 import Designite.smells.models.ImplementationCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
-import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 

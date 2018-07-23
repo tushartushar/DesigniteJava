@@ -1,5 +1,5 @@
 [Source folder]
-/Users/Tushar/Documents/Workspace/DesigniteJava
+/Users/Tushar/Documents/Workspace/odo/proxyserver
 
 [Output folder]
-/Users/Tushar/Documents/Workspace/DesigniteJava/temp
+/Users/Tushar/Documents/Workspace/odo/temp
