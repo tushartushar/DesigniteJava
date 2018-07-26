@@ -1,9 +1,15 @@
 package Designite.SourceModel;
 
+import java.io.LineNumberInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.ArrayType;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
@@ -12,6 +18,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.internal.compiler.ast.Argument;
 import org.eclipse.jdt.internal.compiler.lookup.MissingTypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
@@ -47,7 +54,6 @@ class Resolver {
 					SM_Type matchedType = manualLookupForUnresolvedType(type.getParentPkg().getParentProject(), unresolvedTypeName, type);
 					if (matchedType != null) {
 						if (!typesOfStaticAccesses.contains(matchedType)) {
-//							System.out.println("\t!! Added :: " + matchedType.name + " with package ::" + matchedType.getParentPkg().name);
 							typesOfStaticAccesses.add(matchedType);
 						}
 					}
@@ -58,6 +64,7 @@ class Resolver {
 	}
 	
 	public List<SM_Method> inferCalledMethods(List<MethodInvocation> calledMethods, SM_Type parentType) {
+		System.out.println("Type :: " + parentType.name);
 		List<SM_Method> calledMethodsList = new ArrayList<>();
 		for (MethodInvocation method : calledMethods) {
 			IMethodBinding imethod = method.resolveMethodBinding();
@@ -70,10 +77,73 @@ class Resolver {
 					SM_Type sm_type = findType(imethod.getDeclaringClass().getName().toString(), sm_pkg);
 					if (sm_type != null) {
 						SM_Method sm_method = findMethod(imethod, sm_type);
+//						System.out.println("\tResolved :: " + method.toString());
+//						System.out.println("\t\tArgs :: " + method.typeArguments());
 						if (sm_method != null)
 							calledMethodsList.add(sm_method);
 					}
 				}
+			}
+			/*
+			 * Unresolved methods. We can manually cover only cases where the invocation 
+			 * is performed by the Class name (static calls)
+			 */
+			else {
+				Expression exp = method.getExpression();				
+				System.out.println("\tUresolved method :: " + method.toString());
+				System.out.println("\tExpression :: " + exp);
+				if (exp != null) {
+					String typeName = exp.toString();
+//					if(!typeName.contains(".")) {
+						SM_Type matchedType = manualLookupForUnresolvedType(parentType.getParentPkg().getParentProject(), typeName, parentType);
+						if (matchedType != null) {
+							parentType.addStaticMethodInvocation(matchedType);
+						}
+//					}
+				}
+				// scan (only the simple cases) the method parameters. 
+				System.out.println("Args :: " + method.arguments());
+				List<Expression> arguments = new ArrayList(method.arguments());
+				ListIterator<Expression> itr = arguments.listIterator();
+				
+				while(itr.hasNext()) {
+					Expression temp = null;
+					exp = itr.next();
+					String typeName = exp.toString();
+					SM_Type matchedType = manualLookupForUnresolvedType(parentType.getParentPkg().getParentProject(), typeName, parentType);
+					System.out.println("\t\tArgument :: " + exp.toString());
+					if(exp instanceof MethodInvocation) {
+						System.out.println("$ Is method invocation");
+						temp = ((MethodInvocation) exp).getExpression();
+						if(temp != null) {
+							System.out.println("$ Checking :: " + temp.toString());
+							matchedType = manualLookupForUnresolvedType(parentType.getParentPkg().getParentProject(), typeName, parentType);
+							itr.add(temp);//FIXME::Add to list
+						}
+						if(matchedType != null) {
+							System.out.println("$$ Found a method invocation :: " + matchedType);
+							parentType.addStaticMethodInvocation(matchedType);
+						}
+						
+					} else if(exp instanceof FieldAccess) {
+						//TODO complete here
+						System.out.println("\t\t\tIs field access");
+						temp = ((FieldAccess)exp).getExpression();
+						System.out.println("\t\t\t\tCaller ::" + temp.toString());
+//						itr.add(temp);//FIXME::Add to list
+					}
+				}
+				
+				/*for(Expression argument : arguments) {
+					System.out.println("\t\tArgument :: " + argument.toString());
+					if(argument instanceof MethodInvocation) {
+						System.out.println("\t\t\tIs method invocation");
+					} else if(argument instanceof FieldAccess) {
+						System.out.println("\t\t\tIs field access");
+						Expression caller = ((FieldAccess)argument).getExpression();
+						System.out.println("\t\t\t\tCaller ::" + caller.toString());
+					}
+				}*/
 			}
 		}
 		return calledMethodsList;
@@ -173,6 +243,20 @@ class Resolver {
 	
 	private SM_Type manualLookupForUnresolvedType(SM_Project parentProject, String unresolvedTypeName, SM_Type callerType) {
 		SM_Type matchedType = null;
+		//TODO Search for cases that are called by full paths
+		if(unresolvedTypeName.contains(".")) {
+			System.out.println("Resolving static call :: " + unresolvedTypeName);
+			String packageName = getPackageName(unresolvedTypeName);
+			String typeName = getTypeName(unresolvedTypeName);
+			matchedType = findType(typeName, packageName, parentProject);
+			if (matchedType != null) {
+				System.out.println("\t#### Found :: " + matchedType);
+				return matchedType;
+			} else {
+				System.out.println("\tNot found.");
+			}
+		}
+		
 		if( (matchedType = findType(unresolvedTypeName, callerType.getParentPkg())) != null ) {
 			return matchedType;
 		} 
@@ -180,18 +264,21 @@ class Resolver {
 		else {
 			List<ImportDeclaration> importList = callerType.getImportList();
 			for (ImportDeclaration importEntry : importList) {
-				matchedType = findType(unresolvedTypeName, getImportPackageName(importEntry), parentProject);	
-					return matchedType;
+				matchedType = findType(unresolvedTypeName, getPackageName(importEntry.getName().toString()), parentProject);	
+				if(matchedType !=null)
+					System.out.println("@@ Found :: " + matchedType);
+				return matchedType;
 			}
 		}
 		return null;
 	}
 		
-	private String getImportPackageName(ImportDeclaration importEntry) {
-		String importName = importEntry.getName().toString();
-		String packageName = importName.substring(0, importName.lastIndexOf('.'));
-		
-		return packageName;
+	private String getTypeName(String fullTypePath) {
+		return fullTypePath.substring(fullTypePath.lastIndexOf(".")+1);
+	}
+	
+	private String getPackageName(String fullTypePath) {
+		return fullTypePath.substring(0, fullTypePath.lastIndexOf('.'));
 	}
 	
 	private void manualInferUnresolvedTypeType(TypeInfo typeInfo, SM_Type type) {

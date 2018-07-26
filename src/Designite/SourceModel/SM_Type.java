@@ -48,6 +48,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private List<SM_Field> fieldList = new ArrayList<>();
 	private List<Name> staticFieldAccesses = new ArrayList<>();
 	private List<SM_Type> staticFieldAccessList = new ArrayList<>();
+	private List<SM_Type> staticMethodInvocations = new ArrayList<>();
 	private Map<SM_Method, MethodMetrics> metricsMapping = new HashMap<>();
 	private Map<SM_Method, List<ImplementationCodeSmell>> smellMapping = new HashMap<>();
 
@@ -86,6 +87,13 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	public void addReferencedTypeList(SM_Type type) {
 		referencedTypeList.add(type);
+	}
+	
+	public void addStaticMethodInvocation(SM_Type type) {
+		if (!this.staticMethodInvocations.contains(type)){
+			System.out.println("Adding static method invocation dependency");
+			this.staticMethodInvocations.add(type);
+		}
 	}
 	
 	public boolean containsTypeInReferencedTypeList(SM_Type type) {
@@ -276,6 +284,10 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		for (SM_Type staticAccessType : staticFieldAccessList) {
 			addUniqueReference(this, staticAccessType, false);
 		}
+		for (SM_Type methodInvocation : staticMethodInvocations){
+			addUniqueReference(this, methodInvocation, false);
+			
+		}
 	}
 	
 	private void setTypesThatReferenceThis() {
@@ -309,11 +321,11 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 			return;
 		if (invardReference) {
 			if (!type.containsTypeInTypesThatReferenceThisList(typeToAdd)) {
-				type.addTypesThatReferenceThisList(typeToAdd);
+				type.addTypesThatReferenceThisList(typeToAdd);//FAN-IN?
 			}
 		} else {
 			if (!type.containsTypeInReferencedTypeList(typeToAdd)) {
-				type.addReferencedTypeList(typeToAdd);
+				type.addReferencedTypeList(typeToAdd);//FAN-OUT?
 			}
 		}
 	}
