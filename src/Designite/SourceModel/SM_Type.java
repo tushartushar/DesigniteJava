@@ -43,6 +43,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private List<SM_Type> subTypes = new ArrayList<>();
 	private List<SM_Type> referencedTypeList = new ArrayList<>();
 	private List<SM_Type> typesThatReferenceThisList = new ArrayList<>();
+	private List<SM_Type> nestedTypesList = new ArrayList<>();
 	private List<ImportDeclaration> importList = new ArrayList<>();
 	private List<SM_Method> methodList = new ArrayList<>();
 	private List<SM_Field> fieldList = new ArrayList<>();
@@ -91,11 +92,27 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	public void addStaticMethodInvocation(SM_Type type) {
 		if (!this.staticMethodInvocations.contains(type)){
-			System.out.println("\tAdding static method invocation dependency :: " + type);
 			this.staticMethodInvocations.add(type);
-		} else {
-			System.out.println("\tAlready existing. not added :: " + type);
+		} 
+	}
+	
+	public void addNestedClass(SM_Type type) {
+		if (!this.nestedTypesList.contains(type)) {
+			this.nestedTypesList.add(type);
 		}
+	}
+	
+	public SM_Type getNestedTypeFromName(String typeName) {
+		for(SM_Type nestedType : this.nestedTypesList) {
+			if(nestedType.name.equals(typeName)) {
+				return nestedType;
+			}
+		}
+		return null;
+	}
+	
+	public List<SM_Type> getNestedTypes() {
+		return this.nestedTypesList;
 	}
 	
 	public boolean containsTypeInReferencedTypeList(SM_Type type) {
