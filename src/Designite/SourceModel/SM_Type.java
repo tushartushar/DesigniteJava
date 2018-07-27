@@ -91,8 +91,10 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	public void addStaticMethodInvocation(SM_Type type) {
 		if (!this.staticMethodInvocations.contains(type)){
-			System.out.println("Adding static method invocation dependency");
+			System.out.println("\tAdding static method invocation dependency :: " + type);
 			this.staticMethodInvocations.add(type);
+		} else {
+			System.out.println("\tAlready existing. not added :: " + type);
 		}
 	}
 	
