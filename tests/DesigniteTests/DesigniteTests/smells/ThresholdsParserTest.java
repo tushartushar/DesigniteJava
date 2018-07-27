@@ -61,7 +61,7 @@ public class ThresholdsParserTest extends DesigniteTests {
 			String expected = "Line: insufficientModularizationLargePublicInterface = abc"
 					+ "\nis not of the form 'someDescription' = 'someNumber'";
 			String actual = e.getMessage();
-			System.out.println(actual);
+			//System.out.println(actual);
 			assertEquals(expected, actual);
 		} catch(Exception e) {
 			fail();	
@@ -79,7 +79,7 @@ public class ThresholdsParserTest extends DesigniteTests {
 			String expected = "Line: insufficientModularizationLargePublicInterface  20"
 					+ "\nis not of the form 'someDescription' = 'someNumber'";
 			String actual = e.getMessage();
-			System.out.println(actual);
+			//System.out.println(actual);
 			assertEquals(expected, actual);
 		} catch(Exception e) {
 			fail();	
@@ -97,7 +97,7 @@ public class ThresholdsParserTest extends DesigniteTests {
 			String expected = "Line: insufficientModularizationLargePublicInterface  20"
 					+ "\nis not of the form 'someDescription' = 'someNumber'";
 			String actual = e.getMessage();
-			System.out.println(actual);
+			//System.out.println(actual);
 			assertEquals(expected, actual);
 		} catch(Exception e) {
 			fail();	
@@ -115,7 +115,7 @@ public class ThresholdsParserTest extends DesigniteTests {
 		} catch(IllegalArgumentException e) {
 			String expected = "No such threshold: myTheshold";
 			String actual = e.getMessage();
-			System.out.println(actual);
+			//System.out.println(actual);
 			assertEquals(expected, actual);
 		} catch(Exception e) {
 			fail();	

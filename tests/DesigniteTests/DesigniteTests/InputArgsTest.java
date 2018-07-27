@@ -69,7 +69,7 @@ public class InputArgsTest extends DesigniteTests {
 		createFileForArguments(IN_BATCH_FILE_PATH, IN_BATCH_FILE_CONTENT_SOURCE);
 		InputArgs args = new InputArgs(IN_BATCH_FILE_PATH);
 		String currentProjectDir = new File(System.getProperty("user.dir")).getName();
-		System.out.println(currentProjectDir + " | " + args.getProjectName());
+		//System.out.println(currentProjectDir + " | " + args.getProjectName());
 		assertEquals(currentProjectDir, args.getProjectName());
 	}
 	

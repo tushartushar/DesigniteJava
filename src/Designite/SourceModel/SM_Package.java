@@ -53,7 +53,10 @@ public class SM_Package extends SM_SourceItem {
 	private void addNestedClass(List<SM_Type> list) {
 		if (list.size() > 1) {
 			for (int i = 1; i < list.size(); i++) {
+				SM_Type nested = list.get(i);
+				SM_Type outer = list.get(0);
 				typeList.add(list.get(i));
+				list.get(0).addNestedClass(list.get(i));
 				list.get(i).setNestedClass(list.get(0).getTypeDeclaration());
 			}
 		}
@@ -62,6 +65,7 @@ public class SM_Package extends SM_SourceItem {
 	private void parseTypes(SM_Package parentPkg) {
 		for (SM_Type type : typeList) {
 			type.parse();
+//			System.out.println("Type : " + type.name + ", nested:: " + type.getNestedTypes());
 		}
 	}
 
@@ -95,6 +99,7 @@ public class SM_Package extends SM_SourceItem {
 											// there is no nested classes
 				} else {
 					typeList.add(list.get(0));
+//					System.out.println("TypeList :: " + list);
 					addNestedClass(list);
 				}
 			}

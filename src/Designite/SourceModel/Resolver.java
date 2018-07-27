@@ -2,16 +2,19 @@ package Designite.SourceModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.StringTokenizer;
 
 import org.eclipse.jdt.core.dom.ArrayType;
-import org.eclipse.jdt.core.dom.FieldAccess;
-import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 
 class Resolver {
 	private List<Type> typeList = new ArrayList<>();
@@ -19,6 +22,7 @@ class Resolver {
 	private boolean isArray = false;
 	private Type arrayType;
 	
+	//FIXME : Duplicated code in the method
 	public List<SM_Type> inferStaticAccess(List<Name> staticFieldAccesses, SM_Type type) {
 		List<SM_Type> typesOfStaticAccesses = new ArrayList<>();
 		for (Name typeName : staticFieldAccesses) {
@@ -35,9 +39,18 @@ class Resolver {
 							}
 						}
 					}
+				} 
+			} else {
+					String unresolvedTypeName = typeName.toString().replace("[]", ""); //cover the Array case
+					SM_Type matchedType = manualLookupForUnresolvedType(type.getParentPkg().getParentProject(), unresolvedTypeName, type);
+					if (matchedType != null) {
+						if (!typesOfStaticAccesses.contains(matchedType)) {
+							typesOfStaticAccesses.add(matchedType);
+						}
+					}
 				}
-			}
-		}
+			} 
+		
 		return typesOfStaticAccesses;
 	}
 	
@@ -59,8 +72,55 @@ class Resolver {
 					}
 				}
 			}
+			/*
+			 * Manual resolving of methods that failed to automatically resolve
+			 */
+			else {
+				Expression exp = method.getExpression();				
+//				System.out.println("## Uresolved method :: " + method.toString());
+				if (exp != null) {
+					String typeName = exp.toString();
+						SM_Type matchedType = manualLookupForUnresolvedType(parentType.getParentPkg().getParentProject(), typeName, parentType);
+						if (matchedType != null) {
+							parentType.addStaticMethodInvocation(matchedType);
+						}
+//					}
+				}
+				// scan (only the simple cases) the method parameters. 
+				List<Expression> arguments = new ArrayList(method.arguments());
+				ListIterator<Expression> itr = arguments.listIterator();
+				
+				while(itr.hasNext()) {
+					Expression temp = null;
+					exp = itr.next();
+					String typeName = exp.toString();
+					SM_Type matchedType = manualLookupForUnresolvedType(parentType.getParentPkg().getParentProject(), typeName, parentType);
+					if(matchedType != null) {
+						parentType.addStaticMethodInvocation(matchedType);
+					}	
+					if(exp instanceof MethodInvocation) {
+						temp = ((MethodInvocation) exp).getExpression();
+						// add all arguments to the list
+						addExpressionArguments(((MethodInvocation)exp).arguments(), itr);
+						if(temp != null) {
+							itr.add(temp);
+						}
+					} else if (exp instanceof ClassInstanceCreation) {
+						Type type = ((ClassInstanceCreation)exp).getType();
+						// add all arguments to the list
+						addExpressionArguments(((ClassInstanceCreation)exp).arguments(), itr);
+					}
+					//FIXME : Cover more cases in the future
+				}
+
+			}
 		}
 		return calledMethodsList;
+	}
+	
+	public void addExpressionArguments(List<Expression> newArgumentList, ListIterator<Expression> existingArgumentList) {
+		for(Expression newArgument : newArgumentList)
+			existingArgumentList.add(newArgument);
 	}
 
 	private SM_Package findPackage(String packageName, SM_Project project) {
@@ -113,26 +173,94 @@ class Resolver {
 		return null;
 	}
 	
-	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject) {
+	public TypeInfo resolveVariableType(Type typeNode, SM_Project parentProject, SM_Type callerType) {
 		TypeInfo typeInfo = new TypeInfo();
 		specifyTypes(typeNode);
 		
 		if (isParameterized) {
 			for (Type typeOfVar : getTypeList()) {
-				inferTypeInfo(parentProject, typeInfo, typeOfVar);
+				inferTypeInfo(parentProject, typeInfo, typeOfVar, callerType);
 			}
 		} else if (isArray) {
-			inferTypeInfo(parentProject, typeInfo, getArrayType());
+			inferTypeInfo(parentProject, typeInfo, getArrayType(), callerType);
 		} else {
-			inferTypeInfo(parentProject, typeInfo, typeNode);
+			inferTypeInfo(parentProject, typeInfo, typeNode, callerType);
 		}
 		return typeInfo;
 	}
 
-	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar) {
+	private void inferTypeInfo(SM_Project parentProject, TypeInfo typeInfo, Type typeOfVar, SM_Type callerType) {
 		ITypeBinding iType = typeOfVar.resolveBinding();
-		inferPrimitiveType(parentProject, typeInfo, iType);
-		infereParametrized(parentProject, typeInfo, iType);
+		/* In some cases, the above statement doesnt resolve the binding even if the type
+		 * is present in the same project (and we dont know the reason).
+		 * We need to handle this situation explicitly by checking the 'binding' property of iType.
+		 * if it is of type MissingTypeBinding, we need to search the type in the present project.
+		 * We may have to use import statements to identify the package in which this (to be resolved) type exists.
+		 */
+		
+		// The case that the iType is RecoveredTypeBinding which leads to ProblemReferenceBinding and consequently to MissingTypeBinding
+		if(iType.isRecovered())
+		{
+			//Search in the ast explicitly and assign
+			String unresolvedTypeName = typeOfVar.toString().replace("[]", ""); //cover the Array case
+			SM_Type matchedType = manualLookupForUnresolvedType(parentProject, unresolvedTypeName, callerType);
+			if(matchedType != null) {
+				manualInferUnresolvedTypeType(typeInfo, matchedType);
+			}
+		}
+		else
+		{
+			inferPrimitiveType(parentProject, typeInfo, iType);
+			infereParametrized(parentProject, typeInfo, iType);
+		}
+	}
+	
+	private SM_Type manualLookupForUnresolvedType(SM_Project parentProject, String unresolvedTypeName, SM_Type callerType) {
+		SM_Type matchedType = null;
+		
+		int numberOfDots = new StringTokenizer(" " +unresolvedTypeName + " ", ".").countTokens()-1;
+
+		// Case of static call Type.field
+		if(numberOfDots == 1) {
+			unresolvedTypeName = unresolvedTypeName.substring(0,unresolvedTypeName.indexOf("."));
+		}
+		// Case of static call with full class name :: package.package.Type.field
+		else if(numberOfDots > 1) {
+			String packageName = getPackageName(unresolvedTypeName);
+			String typeName = getTypeName(unresolvedTypeName);
+			matchedType = findType(typeName, packageName, parentProject);
+			if (matchedType != null) {
+				return matchedType;
+			} 
+		}
+		
+		if( (matchedType = findType(unresolvedTypeName, callerType.getParentPkg())) != null ) {
+			return matchedType;
+		} 
+		//TODO break it to different lookups for * and simple.
+		else {
+			List<ImportDeclaration> importList = callerType.getImportList();
+			for (ImportDeclaration importEntry : importList) {
+				matchedType = findType(unresolvedTypeName, getPackageName(importEntry.getName().toString()), parentProject);	
+				if(matchedType !=null) {
+					return matchedType;
+				}
+			}
+		}
+		return null;
+	}
+		
+	private String getTypeName(String fullTypePath) {
+		return fullTypePath.substring(fullTypePath.lastIndexOf(".")+1);
+	}
+	
+	private String getPackageName(String fullTypePath) {
+		return fullTypePath.substring(0, fullTypePath.lastIndexOf('.'));
+	}
+	
+	private void manualInferUnresolvedTypeType(TypeInfo typeInfo, SM_Type type) {
+		typeInfo.setTypeObj(type);
+		typeInfo.setPrimitiveType(false);		
 	}
 	
 	private void inferPrimitiveType(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {

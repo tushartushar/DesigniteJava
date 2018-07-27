@@ -10,6 +10,12 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 		return typeInfo.isPrimitiveType();
 	}
 	
+	public SM_Type getParentType() {
+		// Always returns null.
+		// Should be overridden by subclasses
+		return null;
+	}
+	
 //	public boolean isTypeVariable() {
 //		return typeInfo.isTypeVariable();
 //	}

@@ -21,6 +21,11 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 	public SM_Method getParentMethod() {
 		return parentMethod;
 	}
+	
+	@Override
+	public SM_Type getParentType() {
+		return this.parentMethod.getParentType();
+	}
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
@@ -33,7 +38,8 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 				print(writer, "\t\t\tParameter types: " + typeInfo.getStringOfNonPrimitiveParameters());
 			}
 			else {
-				print(writer, "\t\t\tVariable type: " + getType().getName());
+//				print(writer, "\t\t\tVariable type: " + getType().getName());
+				print(writer, "\t\t\tVariable type: " + getType());
 			}
 		} /*else if (isTypeVariable()) {
 			print(writer, "\t\t\tType Variable :: " + getName());
@@ -46,7 +52,7 @@ public class SM_LocalVar extends SM_EntitiesWithType {
 	@Override
 	public void resolve() {
 		Resolver resolver = new Resolver();
-		typeInfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject());
+		typeInfo = resolver.resolveVariableType(localVarDecl.getType(), parentMethod.getParentType().getParentPkg().getParentProject(), getParentType());
 	}
 	
 	@Override

@@ -59,6 +59,11 @@ public class TypeMetrics implements MetricExtractor {
 		for (SM_Field field : type.getFieldList()) {
 			numOfFields++;
 			if (field.getAccessModifier() == AccessStates.PUBLIC) {
+				// do not calculate fields that belong to a nested class with a stricter access modifier
+				SM_Type nestedParent = field.getNestedParent();
+				if(nestedParent != null && nestedParent.getAccessModifier() != AccessStates.PUBLIC) {
+					continue;
+				}
 				numOfPublicFields++;
 			}	
 		}

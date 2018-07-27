@@ -1,9 +1,6 @@
 package Designite.SourceModel;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,26 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import Designite.metrics.MethodMetrics;
-import Designite.metrics.TypeMetrics;
-import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.implementationSmells.ImplementationSmellDetector;
-import Designite.smells.models.DesignCodeSmell;
 import Designite.smells.models.ImplementationCodeSmell;
 import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
-import Designite.utils.models.Graph;
 import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
@@ -53,11 +43,13 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private List<SM_Type> subTypes = new ArrayList<>();
 	private List<SM_Type> referencedTypeList = new ArrayList<>();
 	private List<SM_Type> typesThatReferenceThisList = new ArrayList<>();
+	private List<SM_Type> nestedTypesList = new ArrayList<>();
 	private List<ImportDeclaration> importList = new ArrayList<>();
 	private List<SM_Method> methodList = new ArrayList<>();
 	private List<SM_Field> fieldList = new ArrayList<>();
 	private List<Name> staticFieldAccesses = new ArrayList<>();
 	private List<SM_Type> staticFieldAccessList = new ArrayList<>();
+	private List<SM_Type> staticMethodInvocations = new ArrayList<>();
 	private Map<SM_Method, MethodMetrics> metricsMapping = new HashMap<>();
 	private Map<SM_Method, List<ImplementationCodeSmell>> smellMapping = new HashMap<>();
 
@@ -96,6 +88,31 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	
 	public void addReferencedTypeList(SM_Type type) {
 		referencedTypeList.add(type);
+	}
+	
+	public void addStaticMethodInvocation(SM_Type type) {
+		if (!this.staticMethodInvocations.contains(type)){
+			this.staticMethodInvocations.add(type);
+		} 
+	}
+	
+	public void addNestedClass(SM_Type type) {
+		if (!this.nestedTypesList.contains(type)) {
+			this.nestedTypesList.add(type);
+		}
+	}
+	
+	public SM_Type getNestedTypeFromName(String typeName) {
+		for(SM_Type nestedType : this.nestedTypesList) {
+			if(nestedType.name.equals(typeName)) {
+				return nestedType;
+			}
+		}
+		return null;
+	}
+	
+	public List<SM_Type> getNestedTypes() {
+		return this.nestedTypesList;
 	}
 	
 	public boolean containsTypeInReferencedTypeList(SM_Type type) {
@@ -286,6 +303,10 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		for (SM_Type staticAccessType : staticFieldAccessList) {
 			addUniqueReference(this, staticAccessType, false);
 		}
+		for (SM_Type methodInvocation : staticMethodInvocations){
+			addUniqueReference(this, methodInvocation, false);
+			
+		}
 	}
 	
 	private void setTypesThatReferenceThis() {
@@ -319,11 +340,11 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 			return;
 		if (invardReference) {
 			if (!type.containsTypeInTypesThatReferenceThisList(typeToAdd)) {
-				type.addTypesThatReferenceThisList(typeToAdd);
+				type.addTypesThatReferenceThisList(typeToAdd);//FAN-IN?
 			}
 		} else {
 			if (!type.containsTypeInReferencedTypeList(typeToAdd)) {
-				type.addReferencedTypeList(typeToAdd);
+				type.addReferencedTypeList(typeToAdd);//FAN-OUT?
 			}
 		}
 	}
