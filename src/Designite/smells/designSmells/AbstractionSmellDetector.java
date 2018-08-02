@@ -36,8 +36,8 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	public boolean hasImperativeAbstraction() {
-		return getTypeMetrics().getNumOfPublicFields() == 1 && 
-				getTypeMetrics().getNumOfLines() <= getThresholdsDTO().getImperativeAbstractionLargeNumOfLines();
+		return getTypeMetrics().getNumOfPublicMethods() == 1 && 
+				getTypeMetrics().getNumOfLines() >= getThresholdsDTO().getImperativeAbstractionLargeNumOfLines();
 	}
 	
 	public List<DesignCodeSmell> detectMultifacetedAbstraction() {
