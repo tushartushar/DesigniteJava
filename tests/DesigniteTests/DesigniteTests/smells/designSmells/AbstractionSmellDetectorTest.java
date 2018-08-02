@@ -3,16 +3,21 @@ package DesigniteTests.smells.designSmells;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
+import Designite.SourceModel.AccessStates;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
+import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.AbstractionSmellDetector;
@@ -42,9 +47,21 @@ public class AbstractionSmellDetectorTest {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getNumOfPublicMethods())
 			.thenReturn(1);
-		when(metrics.getNumOfLines())
+		
+		SM_Method method = mock(SM_Method.class);
+		when(method.getAccessModifier())
+			.thenReturn(AccessStates.PUBLIC);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getNumOfLines())
 			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() - 1);
-		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
+		SM_Type type = mock(SM_Type.class);
+		when(type.getMetricsFromMethod(any(SM_Method.class)))
+			.thenReturn(methodMetrics);
+		when(metrics.getType())
+			.thenReturn(type);
+		when(type.getMethodList())
+			.thenReturn(new ArrayList<>(Arrays.asList(method)));
+		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);		
 		
 		int expected = 0;
 		int actual = detector.detectImperativeAbstraction().size();
@@ -57,11 +74,23 @@ public class AbstractionSmellDetectorTest {
 		TypeMetrics metrics = mock(TypeMetrics.class);
 		when(metrics.getNumOfPublicMethods())
 			.thenReturn(1);
-		when(metrics.getNumOfLines())
+		
+		SM_Method method = mock(SM_Method.class);
+		when(method.getAccessModifier())
+			.thenReturn(AccessStates.PUBLIC);
+		MethodMetrics methodMetrics = mock(MethodMetrics.class);
+		when(methodMetrics.getNumOfLines())
 			.thenReturn(thresholds.getImperativeAbstractionLargeNumOfLines() + 1);
+		SM_Type type = mock(SM_Type.class);
+		when(type.getMetricsFromMethod(any(SM_Method.class)))
+			.thenReturn(methodMetrics);
+		when(metrics.getType())
+			.thenReturn(type);
+		when(type.getMethodList())
+			.thenReturn(new ArrayList<>(Arrays.asList(method)));
 		AbstractionSmellDetector detector = new AbstractionSmellDetector(metrics, info);
 		
-		int expected = 0;
+		int expected = 1;
 		int actual = detector.detectImperativeAbstraction().size();
 		
 		assertEquals(expected, actual);

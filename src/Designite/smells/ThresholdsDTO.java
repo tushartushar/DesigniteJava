@@ -9,7 +9,7 @@ public class ThresholdsDTO {
 	private int longParameterList = 5;
 	private int longStatement = 120;
 	
-	private int imperativeAbstractionLargeNumOfLines = 1;
+	private int imperativeAbstractionLargeNumOfLines = 50;
 	private double multifacetedAbstractionLargeLCOM = 0.8;
 	private int multifacetedAbstractionManyFields = 7;
 	private int multifacetedAbstractionManyMethods = 7;
