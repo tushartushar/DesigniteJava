@@ -2,8 +2,11 @@ package Designite.smells.designSmells;
 
 import java.util.List;
 
+import Designite.SourceModel.AccessStates;
+import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
+import Designite.metrics.MethodMetrics;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.models.DesignCodeSmell;
 
@@ -36,8 +39,21 @@ public class AbstractionSmellDetector extends DesignSmellDetector {
 	}
 	
 	public boolean hasImperativeAbstraction() {
-		return getTypeMetrics().getNumOfPublicFields() == 1 && 
-				getTypeMetrics().getNumOfLines() <= getThresholdsDTO().getImperativeAbstractionLargeNumOfLines();
+		SM_Type currentType = getTypeMetrics().getType();
+		if(getTypeMetrics().getNumOfPublicMethods() != 1 ) {
+			return false;
+		} else {
+			List<SM_Method> methods = currentType.getMethodList();
+			for(SM_Method method : methods) {
+				if (method.getAccessModifier() == AccessStates.PUBLIC) {
+					MethodMetrics metrics = currentType.getMetricsFromMethod(method);
+					if(metrics.getNumOfLines() > getThresholdsDTO().getImperativeAbstractionLargeNumOfLines()){
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 	}
 	
 	public List<DesignCodeSmell> detectMultifacetedAbstraction() {
