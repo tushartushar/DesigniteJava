@@ -67,14 +67,5 @@ After the previous step is done:
   ```
 * Run the jar
 ```text
-  java -jar Designite-<some version>.jar <path of the input parameter file>
+  java -jar Designite-<some version>.jar -i <path of the input source folder> -o <path of the output folder>
   ```
-
-### Format of the input parameter file
-```
-[Source folder]
-path/to/the/project/source/code
-[Output folder]
-path/to/the/output
-```
-
