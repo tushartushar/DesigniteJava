@@ -103,15 +103,21 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	}
 	
 	private boolean hasCyclicDependency(SM_Type superType) {
-		if (superType.getName().equals(getSourceItemInfo().getTypeName())) {
-			return true;
-		}
-		for (SM_Type superSuperType : superType.getSuperTypes()) {
-			if (hasCyclicDependency(superSuperType)) {
+		// FIXME : switch to iterative process to avoid stack overflows
+		try {
+			if (superType.getName().equals(getSourceItemInfo().getTypeName())) {
 				return true;
 			}
+			for (SM_Type superSuperType : superType.getSuperTypes()) {
+				if (hasCyclicDependency(superSuperType)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (StackOverflowError er) {
+			System.err.println("Cyclic dependency analysis skipped due to memory overflow.");
+			return false;
 		}
-		return false;
 	}
 	
 	public List<DesignCodeSmell> detectDeepHierarchy() {
@@ -147,13 +153,19 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 	}
 	
 	private List<SM_Type> getAllAncestors(SM_Type type, List<SM_Type> ancestors) {
-		for (SM_Type superType : type.getSuperTypes()) {
-			if (!ancestors.contains(superType)) {
-				ancestors.add(superType);
+		//FIXME : replace recursion with iterative loop to avoid stack overflows.
+		try {
+			for (SM_Type superType : type.getSuperTypes()) {
+				if (!ancestors.contains(superType)) {
+					ancestors.add(superType);
+				}
+				getAllAncestors(superType, ancestors);
 			}
-			getAllAncestors(superType, ancestors);
+			return ancestors;
+		} catch (StackOverflowError er) {
+			System.err.println("Ancestors analysis skipped due to memory overflow.");
+			return ancestors;
 		}
-		return ancestors;
 	}
 	
 	private List<SM_Type> setDifference(List<SM_Type> oneList, List<SM_Type> otherList) {
@@ -241,8 +253,13 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 			return true;
 		}
 		boolean flag = false;
+		// FIXME : switch to iterative process to avoid stack overflows
 		for (SM_Type superType : type.getSuperTypes()) {
-			flag = methodIsOverriden(method, superType);
+			try {
+				flag = methodIsOverriden(method, superType);
+			} catch (StackOverflowError er) {
+				System.err.println("Method is overriden analysis skipped due to memory overflow");
+			}
 		}
 		return flag;
 	}
