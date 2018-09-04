@@ -3,6 +3,9 @@ package Designite.SourceModel;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import Designite.InputArgs;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +15,19 @@ public class TypeVisitor extends ASTVisitor{
 	private CompilationUnit compilationUnit;
 	private SM_Type newType;
 	private SM_Package pkgObj;
+	private InputArgs inputArgs;
 	
-	public TypeVisitor(CompilationUnit cu, SM_Package pkgObj) {
+	public TypeVisitor(CompilationUnit cu, SM_Package pkgObj, InputArgs inputArgs) {
 		super();
 		this.compilationUnit = cu;
 		this.pkgObj = pkgObj;
+		this.inputArgs = inputArgs;
 	}
 	
 	@Override
 	public boolean visit(TypeDeclaration typeDeclaration){
 		typeDeclarationList.add(typeDeclaration);
-		newType = new SM_Type(typeDeclaration, compilationUnit, pkgObj);
+		newType = new SM_Type(typeDeclaration, compilationUnit, pkgObj, inputArgs);
 		types.add(newType);
 		
 		return super.visit(typeDeclaration);

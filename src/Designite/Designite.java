@@ -8,6 +8,7 @@ import Designite.utils.Logger;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import org.apache.commons.cli.*;
 
 /**
  * 
@@ -15,30 +16,75 @@ import java.util.Calendar;
  */
 public class Designite {
 	public static void main(String[] args) throws IOException {
-		// args[0]: filePath
-		if (args.length != 1) {
-			usage();
-			throw new IllegalArgumentException();
-		}
-		InputArgs argsObj = new InputArgs(args[0]);
+		InputArgs argsObj = parseArguments(args);
 		SM_Project project = new SM_Project(argsObj);
-		// set the logFile path to enable logging
 		Logger.logFile = getlogFileName(argsObj);
+		//TODO: log the version number
 		project.parse();
 		project.resolve();
-		project.extractMetrics();
-		project.extractCodeSmells();
+		project.computeMetrics();
+		project.detectCodeSmells();
+		writeDebugLog(argsObj, project);
+		Logger.log("Done.");
+	}
+
+	private static void writeDebugLog(InputArgs argsObj, SM_Project project) {
 		PrintWriter writer = getDebugLogStream(argsObj);
 		project.printDebugLog(writer);
 		if (writer != null)
 			writer.close();
-		Logger.log("Done.");
+	}
+
+	private static InputArgs parseArguments(String[] args) {
+		Options argOptions = new Options();
+
+        Option input = new Option("i", "Input", true, "Input source folder path");
+        input.setRequired(true);
+        argOptions.addOption(input);
+
+        Option output = new Option("o", "Output", true, "Path to the output folder");
+        output.setRequired(true);
+        argOptions.addOption(output);
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine cmd = null;
+
+        try {
+            cmd = parser.parse(argOptions, args);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("Designite", argOptions);
+            Logger.log("Quitting..");
+            System.exit(1);
+        }
+        if(cmd==null)
+        {
+        	System.out.println("Couldn't parse the command line arguments.");
+        	formatter.printHelp("Designite", argOptions);
+        	Logger.log("Quitting..");
+        	System.exit(2);
+        }
+        
+        	String inputFolderPath = cmd.getOptionValue("Input");
+        String outputFolderPath = cmd.getOptionValue("Output");
+        
+        InputArgs inputArgs= null;
+        try
+        {
+        	inputArgs = new InputArgs(inputFolderPath, outputFolderPath);
+        }
+        catch(IllegalArgumentException ex)
+        {
+        		Logger.log(ex.getMessage());
+        		Logger.log("Quitting..");
+        		System.exit(3);
+        }
+        return inputArgs;
 	}
 
 	private static String getlogFileName(InputArgs argsObj) {
 		String file = null;
-		//DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HHmm");
-		//Date date = new Date(0);
 		String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(Calendar.getInstance().getTime());
 		file = argsObj.getOutputFolder() + "DesigniteLog" + timeStamp + ".txt";
 		
@@ -53,15 +99,9 @@ public class Designite {
 			try {
 				writer = new PrintWriter(filename);
 			} catch (FileNotFoundException ex) {
-				// log the exception
+				Logger.log(ex.getMessage());
 			}
 		}
 		return writer;
-	}
-
-	private static void usage() {
-		System.err.println("First argument needs to be the path to a batch input file.");
-		System.out.println("Usage instructions:");
-		System.out.println("java -jar DesigniteJava<version>.jar <Path to a batch input file>\n");
 	}
 }

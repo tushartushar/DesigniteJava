@@ -136,10 +136,6 @@ public class Graph {
 		}
 	}
 	
-	private List<Vertex> getVertices() {
-		return vertices;
-	}
-	
 	private List<Vertex> getAdjacentVertices(Vertex vertex, GraphAlingment align) {
 		if (align == GraphAlingment.UNDIRECTED) {
 			return adjacencyList.get(vertex);

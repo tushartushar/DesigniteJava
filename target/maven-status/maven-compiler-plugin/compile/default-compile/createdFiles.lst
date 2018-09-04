@@ -40,7 +40,6 @@ Designite/utils/models/Graph.class
 Designite/InputArgs.class
 Designite/SourceModel/SM_LocalVar.class
 Designite/SourceModel/SM_Parameter.class
-Designite/InputArgs$InputStates.class
 Designite/Designite.class
 Designite/SourceModel/SM_Method.class
 Designite/smells/designSmells/AbstractionSmellDetector.class

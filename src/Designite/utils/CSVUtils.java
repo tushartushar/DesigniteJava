@@ -4,13 +4,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 public class CSVUtils {
 	//TODO create an integration test for checking the exporting feature
-	public static void initializeCSVDirectory(String projectName) {
-		File dir = new File(Constants.CSV_DIRECTORY_PATH);
+	public static void initializeCSVDirectory(String projectName, String dirPath) {
+		File dir = new File(dirPath);
 		createDirIfNotExists(dir);
 		cleanup(dir);
 		initializeNeededFiles(dir);
@@ -27,6 +26,7 @@ public class CSVUtils {
 					System.out.print("oops, couldn't create the directory " + dir);
 			} catch (Exception e) {
 				e.printStackTrace();
+				Logger.log(e.getMessage());
 			}
 		}
 	}
@@ -56,6 +56,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
+			Logger.log(e.getMessage());
 		}
 	}
 	
@@ -68,6 +69,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
+			Logger.log(e.getMessage());
 		}
 	}
 	
@@ -83,6 +85,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
+			Logger.log(e.getMessage());
 		}
 	}
 

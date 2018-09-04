@@ -2,6 +2,7 @@ package DesigniteTests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -22,8 +23,7 @@ public class SM_LocalVarTests extends DesigniteTests {
 
 	@Before
 	public void setUp() {
-		createFileForArguments(PARAMETER_TEST_INPUT_FILE_PATH, PARAMETER_TEST_INPUT_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(PARAMETER_TEST_INPUT_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_inputs", getTestingPath()));
 		project.parse();
 		project.resolve();
 		methods = project.getPackageList().get(0).getTypeList().get(0).getMethodList();

@@ -2,6 +2,8 @@ package DesigniteTests.metrics;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,13 +21,10 @@ public class MethodMetricsTest extends DesigniteTests {
 	
 	@Before
 	public void setUp() {
-		createFileForArguments(METRICS_FILE_PATH, METRICS_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(METRICS_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "metrics", getTestingPath()));
 		project.parse();
 		project.resolve();
-		project.extractMetrics();
-		//SM_Type type = project.getPackageList().get(0).getTypeList().get(7);
-		//SM_Method method = type.getMethodList().get(0);
+		project.computeMetrics();
 		SM_Type type = getSpecificType("TestMetricsClass");
 		SM_Method method = getSpecificMethod(type, "publicMethod");
 		methodMetrics = type.getMetricsFromMethod(method);
@@ -59,8 +58,6 @@ public class MethodMetricsTest extends DesigniteTests {
 	public void testNumberOfDirectFieldsUsed() {
 		SM_Type type = getSpecificType("TestMetricsClass");
 		SM_Method method = getSpecificMethod(type, "publicMethod");
-		//SM_Type child1 = project.getPackageList().get(0).getTypeList().get(2);
-		//SM_Method method = child1.getMethodList().get(0);
 		
 		int expected = 2;
 		int actual = type.getMetricsFromMethod(method).getDirectFieldAccesses().size();

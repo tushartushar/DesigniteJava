@@ -1,17 +1,17 @@
 package DesigniteTests.metrics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import Designite.InputArgs;
-import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.metrics.TypeMetrics;
-import Designite.utils.Constants;
 import DesigniteTests.DesigniteTests;
 
 public class TypeMetricsTest extends DesigniteTests {
@@ -22,15 +22,13 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Before
 	public void setUp() {
 		createFileForArguments(METRICS_FILE_PATH, METRICS_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(METRICS_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "metrics", getTestingPath()));
 		project.parse();
 		project.resolve();
-		project.extractMetrics();
+		project.computeMetrics();
 		SM_Package pkg = project.getPackageList().get(0);
-		//SM_Type type = pkg.getTypeList().get(7);
 		SM_Type type = getSpecificType("TestMetricsClass");
 		typeMetrics = pkg.getMetricsFromType(type);
-//		System.out.println(pkg.getTypeList());
 	}
 	
 	private SM_Type getSpecificType(String name) {
@@ -110,7 +108,7 @@ public class TypeMetricsTest extends DesigniteTests {
 		int expected = 5;
 		int actual = typeMetrics.getNumOfFanOutTypes();
 		
-		SM_Type type = getSpecificType("TestMetricsClass");
+		//SM_Type type = getSpecificType("TestMetricsClass");
 		//System.out.println(type.getReferencedTypeList().toString());
 		
 		assertEquals(expected, actual);
@@ -174,7 +172,6 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testLCOMWhenHasOneComponent() {
 		SM_Package pkg = project.getPackageList().get(0);
-		//SM_Type child2 = pkg.getTypeList().get(5);
 		SM_Type child2 = getSpecificType("Child2");
 		double delta = 0.01;
 		

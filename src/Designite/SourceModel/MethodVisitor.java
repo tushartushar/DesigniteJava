@@ -9,12 +9,12 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class MethodVisitor extends ASTVisitor {
 	List<SM_Method> methods = new ArrayList<SM_Method>();
-	private TypeDeclaration typeDeclaration;
+	//private TypeDeclaration typeDeclaration;
 	private SM_Type parentType;
 	
 	public MethodVisitor(TypeDeclaration typeDeclaration, SM_Type typeObj) {
 		super();
-		this.typeDeclaration = typeDeclaration;
+		//this.typeDeclaration = typeDeclaration;
 		this.parentType = typeObj;
 	}
 	

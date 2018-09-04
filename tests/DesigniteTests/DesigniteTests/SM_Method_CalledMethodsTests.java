@@ -3,6 +3,8 @@ package DesigniteTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +22,7 @@ public class SM_Method_CalledMethodsTests extends DesigniteTests {
 	@Before
 	public void setUp() {
 		createFileForArguments(CALLED_METHOD_TEST_INPUT_FILE_PATH, CALLED_METHOD_TEST_INPUT_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(CALLED_METHOD_TEST_INPUT_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_inputs2", getTestingPath()));
 		project.parse();
 		project.resolve();
 	}

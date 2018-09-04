@@ -1,19 +1,11 @@
 package Designite.metrics;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Field;
-import Designite.SourceModel.SM_LocalVar;
 import Designite.SourceModel.SM_Method;
-import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Type;
 import Designite.utils.models.Edge;
 import Designite.utils.models.Graph;
@@ -138,7 +130,7 @@ public class TypeMetrics implements MetricExtractor {
 	}
 	
 	private void initializeVertices() {
-		List<Vertex> vertices = new ArrayList<>();
+		//List<Vertex> vertices = new ArrayList<>();
 		graph = new Graph();
 		for (SM_Method method : type.getMethodList()) {
 			graph.addVertex(method);

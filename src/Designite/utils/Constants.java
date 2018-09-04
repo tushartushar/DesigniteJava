@@ -4,13 +4,13 @@ import java.io.File;
 
 public class Constants {
 	
-	public static final String PATH_OF_THRESHOLDS = System.getProperty("user.dir") 
+	/*public static final String PATH_OF_THRESHOLDS = System.getProperty("user.dir") 
 			+ File.separator
-			+ "thresholds.txt";
+			+ "thresholds.txt";*/
 	
-	public static String CSV_DIRECTORY_PATH = System.getProperty("user.dir") 
-			+ File.separator
-			+ "default_csv";
+	//public static String CSV_DIRECTORY_PATH = System.getProperty("user.dir") 
+	//		+ File.separator
+	//			+ "default_csv";
 	
 	public static final String TYPE_METRICS_PATH_SUFFIX = "typeMetrics.csv";
 	public static final String METHOD_METRICS_PATH_SUFFIX = "methodMetrics.csv";
@@ -54,4 +54,5 @@ public class Constants {
 			+ ",Method Name"
 			+ ",Code Smell"
 			+ "\n";
+	public static final boolean DEBUG = false;
 }

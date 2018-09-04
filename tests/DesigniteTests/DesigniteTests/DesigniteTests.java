@@ -46,7 +46,6 @@ public abstract class DesigniteTests {
 				File.separator + "tests" + 
 				File.separator + "TestFiles";
 		
-//		System.out.println("@@ Requested testing path :: "+ path);
 		return path;
 	}
 	

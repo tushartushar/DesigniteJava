@@ -15,16 +15,14 @@ import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;
 import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.TypeMetrics;
-import Designite.smells.ThresholdsDTO;
-import Designite.smells.designSmells.AbstractionSmellDetector;
+//import Designite.smells.ThresholdsDTO;
 import Designite.smells.designSmells.EncapsulationSmellDetector;
 import Designite.utils.models.Graph;
-import Designite.utils.models.Vertex;
 
 public class EncapsulationSmellDetectorTest {
 
 	private SourceItemInfo info = new SourceItemInfo("testProject", "testPackage", "testType");
-	private ThresholdsDTO thresholds = new ThresholdsDTO();
+	//private ThresholdsDTO thresholds = new ThresholdsDTO();
 	
 	@Test
 	public void testDeficientEncapsulationWhenHappyPath() {

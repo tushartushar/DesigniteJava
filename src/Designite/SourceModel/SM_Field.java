@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
@@ -19,11 +18,11 @@ public class SM_Field extends SM_EntitiesWithType implements Vertex {
 	private SM_Type nestedParentType = null;
 	private boolean finalField = false;
 	private boolean staticField = false;
-	private VariableDeclarationFragment variableDeclaration;
+	//private VariableDeclarationFragment variableDeclaration;
 	
 	public SM_Field(FieldDeclaration fieldDeclaration, VariableDeclarationFragment varDecl, SM_Type parentType) {
 		this.fieldDeclaration = fieldDeclaration;
-		this.variableDeclaration = varDecl;
+		//this.variableDeclaration = varDecl;
 		this.parentType = parentType;
 		setAccessModifier(fieldDeclaration.getModifiers());
 		setFieldInfo(fieldDeclaration);

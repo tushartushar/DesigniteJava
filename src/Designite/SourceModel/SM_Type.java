@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import Designite.InputArgs;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.implementationSmells.ImplementationSmellDetector;
 import Designite.smells.models.ImplementationCodeSmell;
@@ -32,10 +32,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private boolean isInterface = false;
 	private SM_Package parentPkg;
 
-	private CompilationUnit compilationUnit;
 	private TypeDeclaration typeDeclaration;
-	private ITypeBinding IType;
-
 	private TypeDeclaration containerClass;
 	private boolean nestedClass;
 	
@@ -52,15 +49,16 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	private List<SM_Type> staticMethodInvocations = new ArrayList<>();
 	private Map<SM_Method, MethodMetrics> metricsMapping = new HashMap<>();
 	private Map<SM_Method, List<ImplementationCodeSmell>> smellMapping = new HashMap<>();
+	private InputArgs inputArgs;
 
-	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg) {
+	public SM_Type(TypeDeclaration typeDeclaration, CompilationUnit compilationUnit, SM_Package pkg, InputArgs inputArgs) {
 		parentPkg = pkg;
 		if (typeDeclaration == null || compilationUnit == null)
 			throw new NullPointerException();
 
 		name = typeDeclaration.getName().toString();
 		this.typeDeclaration = typeDeclaration;
-		this.compilationUnit = compilationUnit;
+		this.inputArgs = inputArgs;
 		setTypeInfo();
 		setAccessModifier(typeDeclaration.getModifiers());
 		setImportList(compilationUnit);
@@ -363,7 +361,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	}
 	
 	public void exportMethodMetricsToCSV(MethodMetrics metrics, String methodName) {
-		String path = Constants.CSV_DIRECTORY_PATH
+		String path = inputArgs.getOutputFolder()
 				+ File.separator + Constants.METHOD_METRICS_PATH_SUFFIX;
 		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, methodName));
 	}
@@ -393,7 +391,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 	}
 	
 	private void exportDesignSmellsToCSV(SM_Method method) {
-		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
+		CSVUtils.addAllToCSVFile(inputArgs.getOutputFolder()
 				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(method));
 	}

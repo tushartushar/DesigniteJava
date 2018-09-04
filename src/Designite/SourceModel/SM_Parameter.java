@@ -2,7 +2,6 @@ package Designite.SourceModel;
 
 import java.io.PrintWriter;
 
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 

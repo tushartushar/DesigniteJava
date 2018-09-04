@@ -9,18 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.text.Document;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.text.Document;
 
 import Designite.InputArgs;
 import Designite.utils.CSVUtils;
 import Designite.utils.Logger;
-import Designite.utils.models.Edge;
 import Designite.utils.models.Graph;
-import Designite.utils.models.Vertex;
 
 public class SM_Project extends SM_SourceItem {
 
@@ -64,7 +62,7 @@ public class SM_Project extends SM_SourceItem {
 		return packageList;
 	}
 
-	public int getPackageCounter() {
+	public int getPackageCount() {
 		return packageList.size();
 	}
 
@@ -103,7 +101,7 @@ public class SM_Project extends SM_SourceItem {
 			SM_Package pkgObj = searchPackage(packageName);
 			// If pkgObj is null, package has not yet created
 			if (pkgObj == null) {
-				pkgObj = new SM_Package(packageName, this);
+				pkgObj = new SM_Package(packageName, this, inputArgs);
 				packageList.add(pkgObj);
 			}
 			pkgObj.addCompilationUnit(unit);
@@ -114,6 +112,7 @@ public class SM_Project extends SM_SourceItem {
 		if (list == null) {
 			Logger.log("Application couldn't find any source code files in the specified path.");
 			System.exit(1);
+			Logger.log("Quitting..");
 		}
 	}
 
@@ -218,15 +217,15 @@ public class SM_Project extends SM_SourceItem {
 		dependencyGraph.computeStronglyConnectedComponents();
 	}
 	
-	public void extractMetrics() {
+	public void computeMetrics() {
 		Logger.log("Extracting metrics...");
-		CSVUtils.initializeCSVDirectory(name);
+		CSVUtils.initializeCSVDirectory(name, inputArgs.getOutputFolder());
 		for (SM_Package pkg : packageList) {
 			pkg.extractTypeMetrics();
 		}
 	}
 
-	public void extractCodeSmells() {
+	public void detectCodeSmells() {
 		Logger.log("Extracting code smells...");
 		for (SM_Package pkg : packageList) {
 			pkg.extractCodeSmells();

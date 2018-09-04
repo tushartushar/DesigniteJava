@@ -1,15 +1,12 @@
 package Designite.smells;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import Designite.utils.Constants;
 import Designite.utils.Logger;
 
 public class ThresholdsParser {
@@ -49,6 +46,7 @@ public class ThresholdsParser {
 				if (!isWellFormatted(line)) {
 					String message = "Line: " + line + "\nis not of the form 'someDescription' = 'someNumber'";
 					Logger.log(message);
+					bufferedReader.close();
 					throw new IllegalArgumentException(message);
 				}
 				String[] decomposedLine = line.replaceAll("\\s", "").split("=");

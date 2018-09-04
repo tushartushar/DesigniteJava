@@ -2,6 +2,7 @@ package DesigniteTests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
@@ -11,7 +12,6 @@ import Designite.InputArgs;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Parameter;
 import Designite.SourceModel.SM_Project;
-import Designite.SourceModel.SM_Type;
 
 public class SM_ParameterTest extends DesigniteTests {
 	
@@ -22,9 +22,7 @@ public class SM_ParameterTest extends DesigniteTests {
 
 	@Before
 	public void setUp() {
-		createFileForArguments(PARAMETER_TEST_INPUT_FILE_PATH, PARAMETER_TEST_INPUT_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(PARAMETER_TEST_INPUT_FILE_PATH));
-		//CompilationUnit unit = project.createCU(TESTS_PATH + File.separator + "test_package" + File.separator + "TestMethods.java");
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_inputs", getTestingPath()));
 		project.parse();
 		project.resolve();
 		methods = project.getPackageList().get(0).getTypeList().get(0).getMethodList();

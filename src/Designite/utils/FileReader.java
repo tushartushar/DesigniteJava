@@ -4,11 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class FileReader {
-	private ArrayList<String> pathList = new ArrayList();
-	private String sourcePath;
-
+	private ArrayList<String> pathList = new ArrayList<String>();
 	public FileReader(String sourcePath) {
-		this.sourcePath = sourcePath;
 		listFiles(sourcePath);
 	}
 

@@ -26,13 +26,12 @@ public class SM_MethodTest extends DesigniteTests {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() {
-		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_package", getTestingPath()));
 		CompilationUnit unit = project.createCU(getTestingPath() + File.separator + "test_package" + File.separator + "TestMethods.java");
 		List<TypeDeclaration> typeList = unit.types();
 		
 		for(TypeDeclaration typeDecl: typeList){
-			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project, null), null);
 			type.parse();
 		}
 

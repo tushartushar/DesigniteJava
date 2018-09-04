@@ -1,6 +1,7 @@
 package DesigniteTests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
@@ -23,8 +24,7 @@ public class SM_TypeTest extends DesigniteTests {
 	
 	@Before
 	public void setUp() {
-		createFileForArguments(TEST_BATCH_FILE_PATH, TEST_BATCH_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(TEST_BATCH_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_package", getTestingPath()));
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ public class SM_TypeTest extends DesigniteTests {
 
 		SM_Type type = null;
 		for (TypeDeclaration typeDecl : typeList)
-			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project, null), null);
 			
 		assertEquals(type.getName(), "TestClass");		
 	}
@@ -46,7 +46,7 @@ public class SM_TypeTest extends DesigniteTests {
 
 		SM_Type type = null;
 		for (TypeDeclaration typeDecl : typeList)
-			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project, null), null);
 		assertEquals(type.getAccessModifier(), AccessStates.DEFAULT);		
 	}
 	
@@ -57,7 +57,7 @@ public class SM_TypeTest extends DesigniteTests {
 
 		SM_Type type = null;
 		for (TypeDeclaration typeDecl : typeList)
-			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project, null), null);
 		assertTrue(type.isAbstract());		
 	}
 	
@@ -68,13 +68,13 @@ public class SM_TypeTest extends DesigniteTests {
 
 		SM_Type type = null;
 		for (TypeDeclaration typeDecl : typeList)
-			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project));
+			type = new SM_Type(typeDecl, unit, new SM_Package("Test", project, null), null);
 		assertTrue(type.isInterface());		
 	}
 	
 	@Test //too complicated for the moment 
 	public void SM_Type_check_isNestedClass() {		
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"test_package", getTestingPath()));
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
 		
@@ -92,7 +92,7 @@ public class SM_TypeTest extends DesigniteTests {
 	@Test(expected = NullPointerException.class)
 	public void SM_Type_nullTypeDeclaration() {
 		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package"+File.separator +"TestClass.java");
-		type = new SM_Type(null, unit, null);	
+		type = new SM_Type(null, unit, null, null);	
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -100,7 +100,7 @@ public class SM_TypeTest extends DesigniteTests {
 		CompilationUnit unit = project.createCU(getTestingPath() + File.separator +"test_package"+File.separator +"TestClass.java");
 		List<TypeDeclaration> listOfTypes = unit.types();
 		
-		type = new SM_Type(listOfTypes.get(0), null, null);	
+		type = new SM_Type(listOfTypes.get(0), null, null, null);	
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class SM_TypeTest extends DesigniteTests {
 	
 	@Test
 	public void SM_Type_countMethods() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator +"test_package", getTestingPath()));
 		project.parse();
 		List<SM_Package> packageList = project.getPackageList();
 		
@@ -138,8 +138,7 @@ public class SM_TypeTest extends DesigniteTests {
 	
 	@Test
 	public void testHierarchyGraph() {
-		createFileForArguments(METRICS_FILE_PATH, METRICS_FILE_CONTENT);
-		project = new SM_Project(new InputArgs(METRICS_FILE_PATH));
+		project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "metrics", getTestingPath()));
 		project.parse();
 		project.resolve();
 		
@@ -148,20 +147,4 @@ public class SM_TypeTest extends DesigniteTests {
 		
 		assertEquals(expected, actual);
 	}
-	
-	/*@Test
-	public void SM_Type_getParent() {
-		project.parse();
-		List<SM_Package> packageList = project.getPackageList();
-		
-		for (SM_Package pkg: packageList) {
-			if (pkg.getName().equals("test_package")) {
-				List<SM_Type> list = pkg.getTypeList();
-				for (SM_Type type:list) {
-					if (type.getName().equals("TestMethods")) 
-						assertEquals(type.getParent().getName(), "test_package");
-				}
-			}
-		}
-	}*/
 }

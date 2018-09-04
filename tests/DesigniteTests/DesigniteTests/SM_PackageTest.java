@@ -22,7 +22,7 @@ public class SM_PackageTest extends DesigniteTests {
 
 	@Test
 	public void SM_Package_positive_case() {
-		SM_Project project = new SM_Project(new InputArgs(IN_BATCH_FILE_PATH));
+		SM_Project project = new SM_Project(new InputArgs(System.getProperty("user.dir"), getTestingPath()));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 
@@ -37,7 +37,7 @@ public class SM_PackageTest extends DesigniteTests {
 	@Test
 	// assert that every CU in pkgCUList is included in projectCUList
 	public void SM_Package_cuList() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_package", getTestingPath()));
 		project.parse();
 
 		List<CompilationUnit> projectCUList = project.getCompilationUnitList();
@@ -52,13 +52,13 @@ public class SM_PackageTest extends DesigniteTests {
 
 	@Test
 	public void SM_Package_nullInput() {
-		SM_Package pkg = new SM_Package(null, null);
+		SM_Package pkg = new SM_Package(null, null, null);
 		assertEquals(pkg.getName(), null);
 	}
 
 	@Test
 	public void SM_Package_countTypes() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_package", getTestingPath()));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 
@@ -75,7 +75,7 @@ public class SM_PackageTest extends DesigniteTests {
 
 	@Test
 	public void SM_Package_getParent() {
-		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "testBatchFile.txt"));
+		SM_Project project = new SM_Project(new InputArgs(getTestingPath() + File.separator + "test_package", getTestingPath()));
 		project.parse();
 		List<SM_Package> pkgList = project.getPackageList();
 

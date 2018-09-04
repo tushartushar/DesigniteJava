@@ -87,7 +87,7 @@ class Resolver {
 //					}
 				}
 				// scan (only the simple cases) the method parameters. 
-				List<Expression> arguments = new ArrayList(method.arguments());
+				List<Expression> arguments = new ArrayList<Expression>(method.arguments());
 				ListIterator<Expression> itr = arguments.listIterator();
 				
 				while(itr.hasNext()) {
@@ -106,7 +106,7 @@ class Resolver {
 							itr.add(temp);
 						}
 					} else if (exp instanceof ClassInstanceCreation) {
-						Type type = ((ClassInstanceCreation)exp).getType();
+						//Type type = ((ClassInstanceCreation)exp).getType();
 						// add all arguments to the list
 						addExpressionArguments(((ClassInstanceCreation)exp).arguments(), itr);
 					}

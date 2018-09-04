@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ImportDeclaration;
 
+import Designite.InputArgs;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;
@@ -19,17 +19,17 @@ import Designite.utils.models.Edge;
 
 public class SM_Package extends SM_SourceItem {
 	private List<CompilationUnit> compilationUnitList;
-	// private List<ImportDeclaration> imports = new ArrayList<>();
 	private List<SM_Type> typeList = new ArrayList<>();
-	// private List<SM_Type> nestedClassList;
 	private SM_Project parentProject;
 	private Map<SM_Type, TypeMetrics> metricsMapping = new HashMap<>();
 	private Map<SM_Type, List<DesignCodeSmell>> smellMapping = new HashMap<>();
+	private InputArgs inputArgs;
 
-	public SM_Package(String packageName, SM_Project parentObj) {
+	public SM_Package(String packageName, SM_Project parentObj, InputArgs inputArgs) {
 		name = packageName;
 		compilationUnitList = new ArrayList<CompilationUnit>();
 		parentProject = parentObj;
+		this.inputArgs = inputArgs;
 	}
 
 	public SM_Project getParentProject() {
@@ -53,8 +53,8 @@ public class SM_Package extends SM_SourceItem {
 	private void addNestedClass(List<SM_Type> list) {
 		if (list.size() > 1) {
 			for (int i = 1; i < list.size(); i++) {
-				SM_Type nested = list.get(i);
-				SM_Type outer = list.get(0);
+				//SM_Type nested = list.get(i);
+				//SM_Type outer = list.get(0);
 				typeList.add(list.get(i));
 				list.get(0).addNestedClass(list.get(i));
 				list.get(i).setNestedClass(list.get(0).getTypeDeclaration());
@@ -89,7 +89,7 @@ public class SM_Package extends SM_SourceItem {
 			 * imports.addAll(importList);
 			 */
 
-			TypeVisitor visitor = new TypeVisitor(unit, this);
+			TypeVisitor visitor = new TypeVisitor(unit, this, inputArgs);
 			unit.accept(visitor);
 			List<SM_Type> list = visitor.getTypeList();
 			if (list.size() > 0) {
@@ -139,7 +139,7 @@ public class SM_Package extends SM_SourceItem {
 	}
 	
 	private void exportMetricsToCSV(TypeMetrics metrics, String typeName) {
-		String path = Constants.CSV_DIRECTORY_PATH
+		String path = inputArgs.getOutputFolder()
 				+ File.separator + Constants.TYPE_METRICS_PATH_SUFFIX;
 		CSVUtils.addToCSVFile(path, getMetricsAsARow(metrics, typeName));
 	}
@@ -176,7 +176,7 @@ public class SM_Package extends SM_SourceItem {
 	}
 
 	private void exportDesignSmellsToCSV(SM_Type type) {
-		CSVUtils.addAllToCSVFile(Constants.CSV_DIRECTORY_PATH
+		CSVUtils.addAllToCSVFile(inputArgs.getOutputFolder()
 				+ File.separator + Constants.DESIGN_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(type));
 	}
