@@ -1,8 +1,10 @@
 package Designite;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import Designite.SourceModel.*;
+import Designite.utils.Constants;
 import Designite.utils.Logger;
 
 import java.io.PrintWriter;
@@ -24,7 +26,8 @@ public class Designite {
 		project.resolve();
 		project.computeMetrics();
 		project.detectCodeSmells();
-		writeDebugLog(argsObj, project);
+		if (Constants.DEBUG)
+			writeDebugLog(argsObj, project);
 		Logger.log("Done.");
 	}
 
@@ -86,7 +89,7 @@ public class Designite {
 	private static String getlogFileName(InputArgs argsObj) {
 		String file = null;
 		String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(Calendar.getInstance().getTime());
-		file = argsObj.getOutputFolder() + "DesigniteLog" + timeStamp + ".txt";
+		file = argsObj.getOutputFolder() + File.separator + "DesigniteLog" + timeStamp + ".txt";
 		
 		return file;
 	}

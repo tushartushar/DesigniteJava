@@ -199,7 +199,12 @@ class Resolver {
 		 */
 		
 		// The case that the iType is RecoveredTypeBinding which leads to ProblemReferenceBinding and consequently to MissingTypeBinding
-		if(iType.isRecovered())
+		if (iType==null)
+		{
+			inferPrimitiveType(parentProject, typeInfo, iType);
+			infereParametrized(parentProject, typeInfo, iType);
+		}
+		else if(iType.isRecovered())
 		{
 			//Search in the ast explicitly and assign
 			String unresolvedTypeName = typeOfVar.toString().replace("[]", ""); //cover the Array case
