@@ -48,6 +48,9 @@ DesigniteJava is a code quality assessment tool for code written in Java. It det
 	- FANIN (Fan-in - Class)
 	- FANOUT (Fan-out - Class)
 	
+## Where can I get the latest release?
+You may download the executable jar from the [Designite](http://www.designite-tools.com/DesigniteJava) website.
+
 ## Compilation
 We use maven to develop and build this application with the help of Eclipse IDE and libraries.
 To create a runnable jar, run the following command in the directory where the repository is cloned:
@@ -58,14 +61,21 @@ If you use Eclipse:
 * open the project using Eclipse
 * then right-click on the project name and select 'run as > maven install'
 
-
 ## Execute the tool
 After the previous step is done:
-* Open a command line and then ```cd``` inside the project folder.
- ```text
-  cd target
-  ```
-* Run the jar
+* Open terminal/command line console and run the jar
 ```text
-  java -jar Designite-<some version>.jar -i <path of the input source folder> -o <path of the output folder>
+  java -jar Designite.jar -i <path of the input source folder> -o <path of the output folder>
   ```
+
+## Contribute
+Feel free to clone/fork/contribute to the DesigniteJava open-source project.
+
+## Report Bugs
+Open an issue if you encounter a bug in the tool.
+
+## Credits
+Apart from [me](http://www.tusharma.in), following people generously contributed efforts to this project.
+- Antonis Gkortzis
+- Theodore Stassinopoulos
+- Alexandra Chaniotakis
