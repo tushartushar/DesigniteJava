@@ -8,6 +8,9 @@ import Designite.utils.Constants;
 import Designite.utils.Logger;
 
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.apache.commons.cli.*;
@@ -90,10 +93,31 @@ public class Designite {
 		String file = null;
 		String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(Calendar.getInstance().getTime());
 		file = argsObj.getOutputFolder() + File.separator + "DesigniteLog" + timeStamp + ".txt";
-		
+		ensureOutputFolderExists(argsObj.getOutputFolder());
 		return file;
 	}
 
+	private static void ensureOutputFolderExists(String outputFolder) {
+		if (outputFolder == null)
+			return;
+		File folder = new File(outputFolder);
+		
+		if (folder.exists() && folder.isDirectory())
+			return;
+		
+		try
+		{
+			boolean isCreated = folder.mkdirs();
+			if (!isCreated)
+			{
+				System.out.println("Couldn't create output folder.");
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Couldn't create output folder. " + ex.getMessage());
+		}
+	}
 	private static PrintWriter getDebugLogStream(InputArgs argsObj) {
 		PrintWriter writer = null;
 		if (!argsObj.getOutputFolder().equals("")) {
