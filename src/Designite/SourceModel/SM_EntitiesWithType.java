@@ -40,7 +40,9 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 		if (isPrimitiveType()) {
 			return getPrimitiveType();
 		} else {
-			return getType().getName();
+			return getType() != null 
+					? getType().getName() 
+					: "UnresolvedType"; // in case of unresolved types
 		}
 //		if (typeInfo != null) {
 //			if (isPrimitiveType()) {
