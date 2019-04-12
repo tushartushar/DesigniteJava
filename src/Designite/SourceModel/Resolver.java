@@ -260,7 +260,11 @@ class Resolver {
 	}
 	
 	private String getPackageName(String fullTypePath) {
-		return fullTypePath.substring(0, fullTypePath.lastIndexOf('.'));
+		int index = fullTypePath.lastIndexOf('.');
+		if(index>=0)
+			return fullTypePath.substring(0, fullTypePath.lastIndexOf('.'));
+		else
+			return "default";
 	}
 	
 	private void manualInferUnresolvedTypeType(TypeInfo typeInfo, SM_Type type) {
