@@ -166,10 +166,10 @@ public class SM_Project extends SM_SourceItem {
 			// I tried to figure out but it seems it is coming from the parser library.
 			// Hence, leaving it silently.
 		}
-
-		if (!cu.getAST().hasBindingsRecovery()) {
-			System.out.println("Binding not activated.");
-		}
+		if (cu != null)
+			if (!cu.getAST().hasBindingsRecovery()) {
+				System.out.println("Binding not activated.");
+			}
 
 		return cu;
 	}
