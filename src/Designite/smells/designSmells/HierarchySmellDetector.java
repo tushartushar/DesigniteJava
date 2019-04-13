@@ -205,6 +205,10 @@ public class HierarchySmellDetector extends DesignSmellDetector {
 			return true;
 		}
 		for (SM_Type deeperAncestor : ancestorType.getSuperTypes()) {
+			//This looks crazy but in some cases 'getSuperTypes()' call returns itself as supertype
+			//The following check is to avoid StackOverFlow Exception.
+			if (ancestorType == deeperAncestor)
+				return false;
 			if (sameAsSomeAncestor(targetType, deeperAncestor)) {
 				return true;
 			}

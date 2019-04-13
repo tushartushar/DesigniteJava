@@ -28,9 +28,17 @@ class Resolver {
 		for (Name typeName : staticFieldAccesses) {
 			if (typeName.resolveBinding() instanceof ITypeBinding) {
 				ITypeBinding iType = (ITypeBinding) typeName.resolveBinding();
-				if (iType != null) {
-					SM_Package sm_pkg = findPackage(iType.getPackage().getName().toString(),
+				
+				if (iType != null && iType.getPackage() != null) {
+					SM_Package sm_pkg=null;
+					try{
+					sm_pkg = findPackage(iType.getPackage().getName().toString(),
 							type.getParentPkg().getParentProject());
+					}
+					catch(NullPointerException ex)
+					{
+						System.out.println("Null pointer");
+					}
 					if (sm_pkg != null) {
 						SM_Type sm_type = findType(iType.getName().toString(), sm_pkg);
 						if (sm_type != null) {
