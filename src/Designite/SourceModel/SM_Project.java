@@ -49,7 +49,7 @@ public class SM_Project extends SM_SourceItem {
 	}
 
 	public void setCompilationUnitList(List<CompilationUnit> list) {
-		if(list == null)
+		if (list == null)
 			throw new NullPointerException();
 		compilationUnitList = list;
 	}
@@ -80,11 +80,11 @@ public class SM_Project extends SM_SourceItem {
 			pkg.parse();
 		}
 	}
-	
+
 	public Graph getHierarchyGraph() {
 		return hierarchyGraph;
 	}
-	
+
 	public Graph getDependencyGraph() {
 		return dependencyGraph;
 	}
@@ -156,11 +156,21 @@ public class SM_Project extends SM_SourceItem {
 		parser.setEnvironment(null, sources, null, true);
 		parser.setSource(doc.get().toCharArray());
 
-		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+		CompilationUnit cu = null;
+		try {
+			cu = (CompilationUnit) parser.createAST(null);
+		} catch (NullPointerException ex) {
+			// Consume it.
+			// In some rare situations, the above statement in try block results in a
+			// NullPointer exception.
+			// I tried to figure out but it seems it is coming from the parser library.
+			// Hence, leaving it silently.
+		}
 
-		 if (!cu.getAST().hasBindingsRecovery()) {
-		 System.out.println("Binding not activated."); }
-		 
+		if (!cu.getAST().hasBindingsRecovery()) {
+			System.out.println("Binding not activated.");
+		}
+
 		return cu;
 	}
 
@@ -216,7 +226,7 @@ public class SM_Project extends SM_SourceItem {
 		hierarchyGraph.computeConnectedComponents();
 		dependencyGraph.computeStronglyConnectedComponents();
 	}
-	
+
 	public void computeMetrics() {
 		Logger.log("Extracting metrics...");
 		CSVUtils.initializeCSVDirectory(name, inputArgs.getOutputFolder());
