@@ -370,7 +370,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		return getParentPkg().getParentProject().getName()
 				+ "," + getParentPkg().getName()
 				+ "," + getName()
-				+ "," + name
+				+ "," + methodName
 				+ "," + metrics.getNumOfLines()
 				+ "," + metrics.getCyclomaticComplexity()
 				+ "," + metrics.getNumOfParameters()
