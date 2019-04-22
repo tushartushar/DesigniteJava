@@ -67,6 +67,7 @@ After the previous step is done:
 ```text
   java -jar Designite.jar -i <path of the input source folder> -o <path of the output folder>
   ```
+**Note:** Make sure that the output folder is empty. Tool deletes all the existing files in the output folder.
 
 ## Contribute
 Feel free to clone/fork/contribute to the DesigniteJava open-source project.
