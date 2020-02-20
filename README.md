@@ -69,6 +69,9 @@ After the previous step is done:
   ```
 **Note:** Make sure that the output folder is empty. Tool deletes all the existing files in the output folder.
 
+## Notes
+The implemented LCOM is a custom implementation to avoid the problems of existing LCOM alternatives. Traditional, LCOM value may range only between 0 and 1. However, there are many cases, when computing LCOM is not feasible and traditional implementations give value 0 giving us a false sense of satisfaction. So, when you find -1 as LCOM value for a class, this means we do not have enough information or LCOM is not applicable (for instance, for an interface). More details can be found here (though, it is an old post): http://www.tusharma.in/technical/revisiting-lcom/
+
 ## Contribute
 Feel free to clone/fork/contribute to the DesigniteJava open-source project.
 
