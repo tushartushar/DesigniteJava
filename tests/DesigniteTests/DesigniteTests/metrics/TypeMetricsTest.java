@@ -125,7 +125,8 @@ public class TypeMetricsTest extends DesigniteTests {
 	@Test
 	public void testLCOMWhenInterface() {
 		SM_Package pkg = project.getPackageList().get(0);
-		SM_Type someInterface = pkg.getTypeList().get(0);
+//		SM_Type someInterface = pkg.getTypeList().get(0);
+		SM_Type someInterface = getSpecificType("InterfaceChild2");
 		double delta = 0.01;
 		
 		double expected = -1.0;
