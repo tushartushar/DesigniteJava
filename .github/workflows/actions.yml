@@ -29,6 +29,6 @@ jobs:
     - name: ls all
       run: ls -lf
     - name: Analyze project with DesigniteJava
-      run: java -jar DesigniteJava.jar -i ./ −o ./analysis -f XML
+      run: java -jar DesigniteJava.jar -i ./ −o ./ -f XML
     - name: ls analysis
       run: ls
