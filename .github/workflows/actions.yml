@@ -18,10 +18,12 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn clean install -DskipTests
     - name: Download DesigniteJava
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
+    - name: ensure dj
+      run: ls
     - name: Analyze project with DesigniteJava
-      run: java -jar designitejava.jar -i "src" −o "analysis" -f XML
+      run: java -jar DesigniteJava.jar -i "src" −o "analysis" -f XML
     - name: ls analysis
       run: ls
