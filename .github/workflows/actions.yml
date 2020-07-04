@@ -28,6 +28,6 @@ jobs:
     - name: ensure folder create
       run: ls
     - name: Analyze project with DesigniteJava
-      run: java -jar DesigniteJava.jar -i "./src" −o "./analysis" -f XML
+      run: java -jar DesigniteJava.jar -i ./src −o ./analysis -f XML
     - name: ls analysis
       run: ls
