@@ -21,10 +21,12 @@ jobs:
       run: mvn clean install -DskipTests
     - name: Download DesigniteJava
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
-    - name: ensure dj
-      run: ls
+    - name: pwd
+      run: pwd
     - name: create folder
-      run: mkdir analysis 
+      run: mkdir analysis
+    - name: ensure folder create
+      run: ls
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i "./src" −o "./analysis" -f XML
     - name: ls analysis
