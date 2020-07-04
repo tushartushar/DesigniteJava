@@ -23,6 +23,8 @@ jobs:
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
     - name: ensure dj
       run: ls
+    - name: create folder
+      run: mkdir analysis 
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i "./src" −o "./analysis" -f XML
     - name: ls analysis
