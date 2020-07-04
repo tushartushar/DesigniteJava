@@ -26,4 +26,4 @@ jobs:
     - name: curl
       run: curl --version
     - name: Upload the code quality results to QScored
-      run: curl -X PUT -H 'username: ts.iitm@gmail.com' --url 'https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava' -F 'file=@analysis/DesigniteAnalysis.xml'
+      run: curl --header 'username: ts.iitm@gmail.com' -X PUT --url 'https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava' -F 'file=@analysis/DesigniteAnalysis.xml'
