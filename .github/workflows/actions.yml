@@ -8,27 +8,21 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-
+    - name: Build with Maven
+      run: mvn clean install
+  analyze:
     - name: Download DesigniteJava
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
-    - name: pwd
-      run: pwd
     - name: create folder
       run: mkdir analysis
-    - name: ls src
-      run: ls src
-    - name: ls all
-      run: ls -lf
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i ./src -o ./analysis -f XML
-    - name: ls analysis
-      run: ls -lf analysis
+    - name: upload the code quality results to QScored
+      run: curl -X PUT -H"Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "username: ts.iitm@gmail.com" -H "Content-Type: multipart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
