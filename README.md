@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/tushartushar/DesigniteJava.svg?token=qqYCSPgxVmWCxpyzFpz5&branch=master)](https://travis-ci.com/tushartushar/DesigniteJava)
-
 ![QScored rank](https://qscored.com/badge/0928f694ca42e3beb09f34ac4964a45091769b05ad93ab908b1d98cc9e6be432/rank/)
 
 # DesigniteJava
