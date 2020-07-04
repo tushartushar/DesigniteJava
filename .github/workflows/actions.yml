@@ -24,6 +24,6 @@ jobs:
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i ./src -o ./analysis -f XML
     - name: curl
-      run: curl -X GET https://qscored.com
+      run: curl -v
     - name: Upload the code quality results to QScored
-      run: curl -X PUT -H "username: ts.iitm@gmail.com" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
+      run: curl -X PUT --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
