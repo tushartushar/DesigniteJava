@@ -25,4 +25,4 @@ jobs:
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i ./src -o ./analysis -f XML
     - name: Upload the code quality results to QScored
-      run: curl -X PUT -H "Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "username: ts.iitm@gmail.com" -H "Content-Type: multipart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
+      run: curl -X PUT -H"Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "username: ts.iitm@gmail.com" -H "Content-Type: multipart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
