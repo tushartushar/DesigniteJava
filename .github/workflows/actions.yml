@@ -22,10 +22,6 @@ jobs:
     - name: Download DesigniteJava
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
     - name: Analyze project with DesigniteJava
-      run: pwd
-    - name: ls
-      run: ls
-    - name: analyze
-      run: java -jar designitejava.jar -i "c:\path\to\java\project" −o "C:\output\folder\path" -f XML
-    - name: ls
+      run: java -jar designitejava.jar -i "src" −o "analysis" -f XML
+    - name: ls analysis
       run: ls
