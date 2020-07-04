@@ -15,8 +15,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven
-      run: mvn clean install
+    # - name: Build with Maven
+      # run: mvn clean install
     - name: Download DesigniteJava
       run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
     - name: Create 'analysis' folder
@@ -24,6 +24,6 @@ jobs:
     - name: Analyze project with DesigniteJava
       run: java -jar DesigniteJava.jar -i ./src -o ./analysis -f XML
     - name: curl
-      run: curl -v
-    - name: Upload the code quality results to QScored
-      run: curl -X PUT --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
+      run: curl --version
+    # - name: Upload the code quality results to QScored
+      # run: curl -X PUT --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
