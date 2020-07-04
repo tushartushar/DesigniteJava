@@ -26,4 +26,4 @@ jobs:
     - name: curl
       run: curl -X GET https://qscored.com
     - name: Upload the code quality results to QScored
-      run: curl -X PUT -H "Authorization: Token=7216f8263399187198ba5aa8c95a0f8d690907de" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
+      run: curl -X PUT --header "Authorization: Token=7216f8263399187198ba5aa8c95a0f8d690907de" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=2.1&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
