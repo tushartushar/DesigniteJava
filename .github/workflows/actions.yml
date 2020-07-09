@@ -23,7 +23,7 @@ jobs:
       run: mkdir analysis
     - name: Analyze project with DesigniteJava
       run: |
-      java -jar DesigniteJava.jar -i ./src -o ./analysis -f XML
+      java -jar DesigniteJava.jar -i ./src/ -o ./analysis/ -f XML
       dir
     - name: upload
       run: curl -X PUT -H "Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "repository-link:https://github.com/tushartushar/DesigniteJava" -H "username: ts.iitm@gmail.com" -H "Content-Type: mulitpart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
