@@ -10,19 +10,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    # - name: Set up JDK 1.8
-      # uses: actions/setup-java@v1
-      # with:
-      #   java-version: 1.8
-    # - name: Build with Maven
-      # run: mvn clean install
-    - name: Download DesigniteJava
-      run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
-    - name: Create 'analysis' folder
-      run: mkdir analysis
-    - name: Analyze project with DesigniteJava
-      run: |
-        java -jar DesigniteJava.jar -i . -o analysis/ -f XML
-        ls
-        curl -X PUT -H "Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "repository-link:https://github.com/tushartushar/DesigniteJava" -H "username: ts.iitm@gmail.com" -H "Content-Type: mulitpart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
+#    - uses: actions/checkout@v2
+     - name: Set up JDK 1.8
+       uses: actions/setup-java@v1
+       with:
+         java-version: 11
+     - name: Build with Maven
+       run: mvn clean install
+#    - name: Download DesigniteJava
+#      run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
+#    - name: Create 'analysis' folder
+#      run: mkdir analysis
+#    - name: Analyze project with DesigniteJava
+#      run: |
+#        java -jar DesigniteJava.jar -i . -o analysis/ -f XML
+#        ls
+#        curl -X PUT -H "Authorization: Token ${{ secrets.QSCORED_API_KEY }}" -H "repository-link:https://github.com/tushartushar/DesigniteJava" -H "username: ts.iitm@gmail.com" -H "Content-Type: mulitpart/form-data" --url "https://qscored.com/api/upload/file.xml?is_open_access=on&version=$GITHUB_RUN_NUMBER&project_name=DesigniteJava" -F "file=@analysis/DesigniteAnalysis.xml"
