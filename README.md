@@ -1,5 +1,3 @@
-![QScored rank](https://qscored.com/badge/0928f694ca42e3beb09f34ac4964a45091769b05ad93ab908b1d98cc9e6be432/rank/)
-
 # DesigniteJava
 DesigniteJava is a code quality assessment tool for code written in Java. It detects numerous design and implementation smells. It also computes many commonly used object-oriented metrics.
 
