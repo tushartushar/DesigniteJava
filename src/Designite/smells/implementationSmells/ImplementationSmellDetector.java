@@ -306,10 +306,10 @@ public class ImplementationSmellDetector {
 		List<Statement> statetmentsOfSwitch = switchStatement.statements();
 		for(Statement stm : statetmentsOfSwitch) {
 			if ((stm instanceof SwitchCase) && ((SwitchCase)stm).isDefault()) {
-				return true;
+				return false;
 			}
 		}
-		return false;			
+		return true;			
 	}
 	
 	public List<ImplementationCodeSmell> getSmells() {
