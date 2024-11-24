@@ -103,9 +103,46 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		return methodDeclaration;
 	}
 
+	private void prepareCalledMethodsList() {
+		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
+		methodDeclaration.accept(invVisitor);
+		List<MethodInvocation> invList = invVisitor.getCalledMethods();
+		if (invList.size() > 0) {
+			calledMethods.addAll(invList);
+		}
+	}
+
+	private void prepareInstanceOfVisitorList() {
+		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
+		methodDeclaration.accept(instanceOfVisitor);
+		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
+		if (instanceOfTypes.size() > 0) {
+			typesInInstanceOf.addAll(instanceOfTypes);
+		}
+	}
+
+	private void prepareParametersList(SingleVariableDeclaration var) {
+		VariableVisitor parameterVisitor = new VariableVisitor(this);
+		// methodDeclaration.accept(parameterVisitor);
+		var.accept(parameterVisitor);
+		List<SM_Parameter> pList = parameterVisitor.getParameterList();
+		if (pList.size() > 0) {
+			parameterList.addAll(pList);
+		}
+	}
+
 	private void parseParameters() {
 		for (SM_Parameter param : parameterList) {
 			param.parse();
+		}
+	}
+
+	private void prepareLocalVarList() {
+		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
+		methodDeclaration.accept(localVarVisitor);
+		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
+		if (lList.size() > 0) {
+			localVarList.addAll(lList);
 		}
 	}
 
@@ -145,31 +182,15 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	//TODO: Modularize parser with private functions
 	@Override
 	public void parse() {
-		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
-		methodDeclaration.accept(invVisitor);
-		List<MethodInvocation> invList = invVisitor.getCalledMethods();
-		if (invList.size() > 0) {
-			calledMethods.addAll(invList);
-		}
+		prepareCalledMethodsList();
 
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for (SingleVariableDeclaration var : variableList) {
-			VariableVisitor parameterVisitor = new VariableVisitor(this);
-			// methodDeclaration.accept(parameterVisitor);
-			var.accept(parameterVisitor);
-			List<SM_Parameter> pList = parameterVisitor.getParameterList();
-			if (pList.size() > 0) {
-				parameterList.addAll(pList);
-			}
+			prepareParametersList(var);
 			parseParameters();
 		}
 
-		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
-		methodDeclaration.accept(localVarVisitor);
-		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
-		if (lList.size() > 0) {
-			localVarList.addAll(lList);
-		}
+		prepareLocalVarList();
 		parseLocalVar();
 		
 		DirectAceessFieldVisitor directAceessFieldVisitor = new DirectAceessFieldVisitor();
@@ -182,14 +203,8 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		if (thisAccesses.size() > 0) {
 			thisAccessesInMethod.addAll(thisAccesses);
 		}
-		
-		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
-		methodDeclaration.accept(instanceOfVisitor);
-		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
-		if (instanceOfTypes.size() > 0) {
-			typesInInstanceOf.addAll(instanceOfTypes);
-		}
-		
+		prepareInstanceOfVisitorList();
+
 		ThrowVisitor throwVisithor = new ThrowVisitor();
 		methodDeclaration.accept(throwVisithor);
 		throwsException = throwVisithor.throwsException();
