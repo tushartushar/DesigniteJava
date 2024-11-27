@@ -17,7 +17,7 @@ import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
 
-public class SM_Package extends SM_SourceItem {
+public class SM_Package extends SM_SourceItem implements Parsable{
 	private List<CompilationUnit> compilationUnitList;
 	private List<SM_Type> typeList = new ArrayList<>();
 	private SM_Project parentProject;

@@ -20,7 +20,7 @@ import Designite.utils.CSVUtils;
 import Designite.utils.Logger;
 import Designite.utils.models.Graph;
 
-public class SM_Project extends SM_SourceItem {
+public class SM_Project extends SM_SourceItem implements Parsable {
 
 	private InputArgs inputArgs;
 	private List<String> sourceFileList;

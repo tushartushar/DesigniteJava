@@ -17,7 +17,7 @@ import Designite.visitors.DirectAceessFieldVisitor;
 import Designite.visitors.InstanceOfVisitor;
 import Designite.visitors.ThrowVisitor;
 
-public class SM_Method extends SM_SourceItem implements Vertex {
+public class SM_Method extends SM_SourceItem implements Vertex, Parsable {
 		
 	private boolean abstractMethod;
 	private boolean finalMethod;
@@ -131,11 +131,12 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		}
 	}
 
-	private void parseParameters() {
-		for (SM_Parameter param : parameterList) {
-			param.parse();
-		}
-	}
+	//SM_Parameter uses an empty parse method. So commenting this.
+//	private void parseParameters() {
+//		for (SM_Parameter param : parameterList) {
+//			param.parse();
+//		}
+//	}
 
 	private void prepareLocalVarList() {
 		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
@@ -146,11 +147,12 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		}
 	}
 
-	private void parseLocalVar() {
-		for (SM_LocalVar var : localVarList) {
-			var.parse();
-		}
-	}
+//SM_LocalVar inherits SM_EntitiesWithType which inter uses an empty parse method. So, commenting this.
+//	private void parseLocalVar() {
+//		for (SM_LocalVar var : localVarList) {
+//			var.parse();
+//		}
+//	}
 	
 	public String getMethodBody() {
 		if (this.hasBody())
@@ -187,11 +189,11 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for (SingleVariableDeclaration var : variableList) {
 			prepareParametersList(var);
-			parseParameters();
+//			parseParameters();
 		}
 
 		prepareLocalVarList();
-		parseLocalVar();
+//		parseLocalVar();
 		
 		DirectAceessFieldVisitor directAceessFieldVisitor = new DirectAceessFieldVisitor();
 		methodDeclaration.accept(directAceessFieldVisitor);

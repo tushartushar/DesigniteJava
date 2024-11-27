@@ -30,7 +30,8 @@ public class SM_PackageTest extends DesigniteTests {
 			if (pkg.getName().equals("Designite"))
 				assertEquals(pkg.getTypeList().size(), 2);
 			if (pkg.getName().equals("Designite.SourceModel"))
-				assertEquals(20, pkg.getTypeList().size());
+				//Added additional class in the package.
+				assertEquals(21, pkg.getTypeList().size());
 		}
 	}
 

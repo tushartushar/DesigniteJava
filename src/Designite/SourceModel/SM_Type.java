@@ -25,7 +25,7 @@ import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
 //TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
-public class SM_Type extends SM_SourceItem implements Vertex {
+public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 	
 	
 	private boolean isAbstract = false;
@@ -221,11 +221,12 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		}
 	}
 
-	private void parseFields() {
-		for (SM_Field field : fieldList) {
-			field.parse();
-		}
-	}
+	//SM_Field inherits SM_EntitiesWithType which inter uses an empty parse method. So, commenting this.
+//	private void parseFields() {
+//		for (SM_Field field : fieldList) {
+//			field.parse();
+//		}
+//	}
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
@@ -263,7 +264,7 @@ public class SM_Type extends SM_SourceItem implements Vertex {
 		List<SM_Field> fList = fieldVisitor.getFields();
 		if (fList.size() > 0)
 			fieldList.addAll(fList);
-		parseFields();
+//		parseFields();
 		
 		StaticFieldAccessVisitor fieldAccessVisitor = new StaticFieldAccessVisitor();
 		typeDeclaration.accept(fieldAccessVisitor);
