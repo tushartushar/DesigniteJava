@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Designite.metrics.MethodMetricsExtractor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -350,8 +351,7 @@ public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 
 	public void extractMethodMetrics() {
 		for (SM_Method method : methodList) {
-			MethodMetrics metrics = new MethodMetrics(method);
-			metrics.extractMetrics();
+			MethodMetrics metrics = new MethodMetricsExtractor(method).extractMetrics();
 			metricsMapping.put(method, metrics);
 			exportMethodMetricsToCSV(metrics, method.getName());
 		}

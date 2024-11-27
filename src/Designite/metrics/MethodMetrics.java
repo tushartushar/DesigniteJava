@@ -5,60 +5,14 @@ import java.util.List;
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Type;
-import Designite.visitors.MethodControlFlowVisitor;
 
-public class MethodMetrics implements MetricExtractor {
+public class MethodMetrics extends Metrics {
 
 	private int numOfParameters;
 	private int cyclomaticComplexity;
 	private int numOfLines;
-	
 	private SM_Method method;
-	
-	public MethodMetrics(SM_Method method) {
-		this.method = method;
-	}
-	
-	@Override
-	public void extractMetrics() {
-		extractNumOfParametersMetrics();
-		extractCyclomaticComplexity();
-		extractNumberOfLines();
-	}
-	
-	private void extractNumOfParametersMetrics() {
-		numOfParameters = method.getParameterList().size();
-	}
-	
-	private void extractCyclomaticComplexity() {
-		cyclomaticComplexity = calculateCyclomaticComplexity();
-	}
-	
-	private int calculateCyclomaticComplexity() {
-		MethodControlFlowVisitor visitor = new MethodControlFlowVisitor();
-		method.getMethodDeclaration().accept(visitor);
-		return visitor.getNumOfIfStatements()
-			 + visitor.getNumOfSwitchCaseStatementsWitoutDefault()
-			 + visitor.getNumOfForStatements()
-			 + visitor.getNumOfWhileStatements()
-		     + visitor.getNumOfDoStatements()
-			 + visitor.getNumOfForeachStatements()
-			 + 1;
-	}
-	
-	private void extractNumberOfLines() {
-		if (methodHasBody()) {
-			String body = method.getMethodDeclaration().getBody().toString();
-			int length = body.length();
-//			long newlines = body.lines().count();
-			numOfLines = length - body.replace("\n", "").length();
-		}
-	}
-	
-	private boolean methodHasBody() {
-		return method.getMethodDeclaration().getBody() != null;
-	}
-	
+
 	public int getNumOfParameters() {
 		return numOfParameters;
 	}
@@ -71,16 +25,32 @@ public class MethodMetrics implements MetricExtractor {
 		return numOfLines;
 	}
 
+	public void setNumOfParameters(int numOfParameters) {
+		this.numOfParameters = numOfParameters;
+	}
+
+	public void setCyclomaticComplexity(int cyclomaticComplexity) {
+		this.cyclomaticComplexity = cyclomaticComplexity;
+	}
+
+	public void setNumOfLines(int numOfLines) {
+		this.numOfLines = numOfLines;
+	}
+
+	public void setMethod(SM_Method method){
+		this.method = method;
+	}
+
+	public SM_Method getMethod() {
+		return method;
+	}
+
 	public List<SM_Field> getDirectFieldAccesses() {
 		return method.getDirectFieldAccesses();
 	}
-	
+
 	public List<SM_Type> getSMTypesInInstanceOf() {
 		return method.getSMTypesInInstanceOf();
-	}
-	
-	public SM_Method getMethod() {
-		return method;
 	}
 
 }

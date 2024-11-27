@@ -2,5 +2,5 @@ package Designite.metrics;
 
 public interface MetricExtractor {
 	
-	void extractMetrics();
+	Metrics extractMetrics();
 }
