@@ -58,9 +58,9 @@ public class SM_Parameter extends SM_EntitiesWithType {
 				+ ", is=" + getTypeBinding().getNodeType();
 	}
 	
-	@Override
-	public void parse() {
-		
-	}
+//	@Override
+//	public void parse() {
+//
+//	}
 	
 }

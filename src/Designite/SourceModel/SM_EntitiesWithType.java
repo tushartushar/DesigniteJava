@@ -54,8 +54,8 @@ public abstract class SM_EntitiesWithType extends SM_SourceItem {
 //			return "generic";
 	}
 	
-	@Override
-	public void parse() {
-		
-	}
+//	@Override
+//	public void parse() {
+//
+//	}
 }

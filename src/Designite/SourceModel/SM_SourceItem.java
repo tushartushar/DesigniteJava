@@ -19,7 +19,7 @@ public abstract class SM_SourceItem {
 	/**
 	 * This is the first pass of parsing a source code entity.
 	 */
-	public abstract void parse();
+//	public abstract void parse();
 
 	/**
 	 * This method establishes relationships among source-code entities. Such

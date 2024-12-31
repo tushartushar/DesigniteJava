@@ -11,6 +11,8 @@ public class TypeInfo {
 	private boolean parametrizedType;
 	private List<SM_Type> nonPrimitiveTypeParameters = new ArrayList<>();
 
+	private static final int COMMA_LENGTH = 2;
+
 	public SM_Type getTypeObj() {
 		return typeObj;
 	}
@@ -56,7 +58,7 @@ public class TypeInfo {
 	}
 	
 	private String removeLastComma(String str) {
-		return (str.length() > 2) ? str.substring(0, str.length() - 2) : str;
+		return (str.length() > COMMA_LENGTH) ? str.substring(0, str.length() - COMMA_LENGTH) : str;
 	}
 	 
 	public int getNumOfNonPrimitiveParameters() {

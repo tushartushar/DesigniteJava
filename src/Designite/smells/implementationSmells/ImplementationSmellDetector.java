@@ -33,7 +33,7 @@ public class ImplementationSmellDetector {
 	private SourceItemInfo info;
 	private ThresholdsDTO thresholdsDTO;
 	
-	private static final String ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR = "Abstract Function Call From Constructor";
+	private static final String ABST_FUNC_CALL_FRM_CTOR = "Abstract Function Call From Constructor";
 	private static final String COMPLEX_CONDITIONAL = "Complex Conditional";
 	private static final String COMPLEX_METHOD = "Complex Method";
 	private static final String EMPTY_CATCH_CLAUSE = "Empty catch clause";
@@ -72,7 +72,7 @@ public class ImplementationSmellDetector {
 	
 	public List<ImplementationCodeSmell> detectAbstractFunctionCallFromConstructor() {
 		if (hasAbstractFunctionCallFromConstructor()) {
-			addToSmells(initializeCodeSmell(ABSTRACT_FUMCTION_CALL_FROM_CONSTRUCTOR));
+			addToSmells(initializeCodeSmell(ABST_FUNC_CALL_FRM_CTOR));
 		}
 		return smells;
 	}

@@ -17,7 +17,7 @@ import Designite.visitors.DirectAceessFieldVisitor;
 import Designite.visitors.InstanceOfVisitor;
 import Designite.visitors.ThrowVisitor;
 
-public class SM_Method extends SM_SourceItem implements Vertex {
+public class SM_Method extends SM_SourceItem implements Vertex, Parsable {
 		
 	private boolean abstractMethod;
 	private boolean finalMethod;
@@ -103,17 +103,56 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		return methodDeclaration;
 	}
 
-	private void parseParameters() {
-		for (SM_Parameter param : parameterList) {
-			param.parse();
+	private void prepareCalledMethodsList() {
+		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
+		methodDeclaration.accept(invVisitor);
+		List<MethodInvocation> invList = invVisitor.getCalledMethods();
+		if (invList.size() > 0) {
+			calledMethods.addAll(invList);
 		}
 	}
 
-	private void parseLocalVar() {
-		for (SM_LocalVar var : localVarList) {
-			var.parse();
+	private void prepareInstanceOfVisitorList() {
+		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
+		methodDeclaration.accept(instanceOfVisitor);
+		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
+		if (instanceOfTypes.size() > 0) {
+			typesInInstanceOf.addAll(instanceOfTypes);
 		}
 	}
+
+	private void prepareParametersList(SingleVariableDeclaration var) {
+		VariableVisitor parameterVisitor = new VariableVisitor(this);
+		// methodDeclaration.accept(parameterVisitor);
+		var.accept(parameterVisitor);
+		List<SM_Parameter> pList = parameterVisitor.getParameterList();
+		if (pList.size() > 0) {
+			parameterList.addAll(pList);
+		}
+	}
+
+	//SM_Parameter uses an empty parse method. So commenting this.
+//	private void parseParameters() {
+//		for (SM_Parameter param : parameterList) {
+//			param.parse();
+//		}
+//	}
+
+	private void prepareLocalVarList() {
+		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
+		methodDeclaration.accept(localVarVisitor);
+		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
+		if (lList.size() > 0) {
+			localVarList.addAll(lList);
+		}
+	}
+
+//SM_LocalVar inherits SM_EntitiesWithType which inter uses an empty parse method. So, commenting this.
+//	private void parseLocalVar() {
+//		for (SM_LocalVar var : localVarList) {
+//			var.parse();
+//		}
+//	}
 	
 	public String getMethodBody() {
 		if (this.hasBody())
@@ -145,32 +184,16 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 	//TODO: Modularize parser with private functions
 	@Override
 	public void parse() {
-		MethodInvVisitor invVisitor = new MethodInvVisitor(methodDeclaration);
-		methodDeclaration.accept(invVisitor);
-		List<MethodInvocation> invList = invVisitor.getCalledMethods();
-		if (invList.size() > 0) {
-			calledMethods.addAll(invList);
-		}
+		prepareCalledMethodsList();
 
 		List<SingleVariableDeclaration> variableList = methodDeclaration.parameters();
 		for (SingleVariableDeclaration var : variableList) {
-			VariableVisitor parameterVisitor = new VariableVisitor(this);
-			// methodDeclaration.accept(parameterVisitor);
-			var.accept(parameterVisitor);
-			List<SM_Parameter> pList = parameterVisitor.getParameterList();
-			if (pList.size() > 0) {
-				parameterList.addAll(pList);
-			}
-			parseParameters();
+			prepareParametersList(var);
+//			parseParameters();
 		}
 
-		LocalVarVisitor localVarVisitor = new LocalVarVisitor(this);
-		methodDeclaration.accept(localVarVisitor);
-		List<SM_LocalVar> lList = localVarVisitor.getLocalVarList();
-		if (lList.size() > 0) {
-			localVarList.addAll(lList);
-		}
-		parseLocalVar();
+		prepareLocalVarList();
+//		parseLocalVar();
 		
 		DirectAceessFieldVisitor directAceessFieldVisitor = new DirectAceessFieldVisitor();
 		methodDeclaration.accept(directAceessFieldVisitor);
@@ -182,14 +205,8 @@ public class SM_Method extends SM_SourceItem implements Vertex {
 		if (thisAccesses.size() > 0) {
 			thisAccessesInMethod.addAll(thisAccesses);
 		}
-		
-		InstanceOfVisitor instanceOfVisitor = new InstanceOfVisitor();
-		methodDeclaration.accept(instanceOfVisitor);
-		List<Type> instanceOfTypes = instanceOfVisitor.getTypesInInstanceOf();
-		if (instanceOfTypes.size() > 0) {
-			typesInInstanceOf.addAll(instanceOfTypes);
-		}
-		
+		prepareInstanceOfVisitorList();
+
 		ThrowVisitor throwVisithor = new ThrowVisitor();
 		methodDeclaration.accept(throwVisithor);
 		throwsException = throwVisithor.throwsException();

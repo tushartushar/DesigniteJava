@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Designite.metrics.TypeMetricsExtractor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import Designite.InputArgs;
@@ -17,7 +18,7 @@ import Designite.utils.CSVUtils;
 import Designite.utils.Constants;
 import Designite.utils.models.Edge;
 
-public class SM_Package extends SM_SourceItem {
+public class SM_Package extends SM_SourceItem implements Parsable{
 	private List<CompilationUnit> compilationUnitList;
 	private List<SM_Type> typeList = new ArrayList<>();
 	private SM_Project parentProject;
@@ -117,8 +118,7 @@ public class SM_Package extends SM_SourceItem {
 	public void extractTypeMetrics() {
 		for (SM_Type type : typeList) {
 			type.extractMethodMetrics();
-			TypeMetrics metrics = new TypeMetrics(type);
-			metrics.extractMetrics();
+			TypeMetrics metrics = new TypeMetricsExtractor(type).extractMetrics();
 			metricsMapping.put(type, metrics);
 			exportMetricsToCSV(metrics, type.getName());
 			updateDependencyGraph(type);
