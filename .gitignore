@@ -7,6 +7,8 @@
 */*/*.csv
 csv/
 
+/output
+
 tempDesigniteDebugLog*.txt
 tempDesigniteLog*.txt
 designCodeSmells.txt

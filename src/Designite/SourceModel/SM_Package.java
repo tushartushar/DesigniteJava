@@ -10,7 +10,7 @@ import java.util.Map;
 import Designite.metrics.TypeMetricsExtractor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.metrics.TypeMetrics;
 import Designite.smells.designSmells.DesignSmellFacade;
 import Designite.smells.models.DesignCodeSmell;

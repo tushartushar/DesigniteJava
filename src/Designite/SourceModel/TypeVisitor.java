@@ -4,7 +4,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 
 import java.util.ArrayList;
 import java.util.List;

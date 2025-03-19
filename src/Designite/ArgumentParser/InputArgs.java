@@ -1,4 +1,4 @@
-package Designite;
+package Designite.ArgumentParser;
 
 import java.io.File;
 

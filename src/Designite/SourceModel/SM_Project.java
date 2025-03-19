@@ -1,23 +1,21 @@
 package Designite.SourceModel;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import Designite.utils.DJLogger;
+import Designite.utils.FileManager;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.text.Document;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.utils.CSVUtils;
-import Designite.utils.Logger;
 import Designite.utils.models.Graph;
 
 public class SM_Project extends SM_SourceItem implements Parsable {
@@ -39,6 +37,18 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 		dependencyGraph = new Graph();
 		setName(this.inputArgs.getProjectName());
 	}
+
+	public SM_Project() {
+		sourceFileList = new ArrayList<String>();
+		compilationUnitList = new ArrayList<CompilationUnit>();
+		packageList = new ArrayList<SM_Package>();
+		hierarchyGraph = new Graph();
+		dependencyGraph = new Graph();
+		setName(this.inputArgs.getProjectName());
+	}
+
+
+
 
 	public void setName(String name) {
 		this.name = name;
@@ -68,7 +78,7 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 
 	// method used in tests
 	public CompilationUnit createCU(String filePath) {
-		String fileToString = readFileToString(filePath);
+		String fileToString = FileManager.getInstance().readFileToString(filePath);
 		int startingIndex = filePath.lastIndexOf(File.separatorChar);
 		unitName = filePath.substring(startingIndex + 1);
 
@@ -110,9 +120,9 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 
 	private void checkNotNull(List<CompilationUnit> list) {
 		if (list == null) {
-			Logger.log("Application couldn't find any source code files in the specified path.");
+			DJLogger.log("Application couldn't find any source code files in the specified path.");
 			System.exit(1);
-			Logger.log("Quitting..");
+			DJLogger.log("Quitting..");
 		}
 	}
 
@@ -126,10 +136,9 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 
 	private void createCompilationUnits() {
 		try {
-			getFileList(inputArgs.getSourceFolder());
-
+			sourceFileList = FileManager.getInstance().listFiles(inputArgs.getSourceFolder());
 			for (String file : sourceFileList) {
-				String fileToString = readFileToString(file);
+				String fileToString = FileManager.getInstance().readFileToString(file);
 				int startingIndex = file.lastIndexOf(File.separatorChar);
 				unitName = file.substring(startingIndex + 1);
 				CompilationUnit unit = createAST(fileToString, unitName);
@@ -174,32 +183,35 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 		return cu;
 	}
 
-	private void getFileList(String path) {
-		File root = new File(path);
-		File[] list = root.listFiles();
+	// TODO : Duplicate code found in FileManager.
+	// VIOLATION: Single Responsibility
+//	private void getFileList(String path) {
+//		File root = new File(path);
+//		File[] list = root.listFiles();
+//
+//		if (list == null)
+//			return;
+//		for (File f : list) {
+//			if (f.isDirectory()) {
+//				getFileList(f.getAbsolutePath());
+//			} else {
+//
+//				if (f.getName().endsWith(".java"))
+//					sourceFileList.add(f.getAbsolutePath());
+//			}
+//		}
+//		return;
+//	}
 
-		if (list == null)
-			return;
-		for (File f : list) {
-			if (f.isDirectory()) {
-				getFileList(f.getAbsolutePath());
-			} else {
-
-				if (f.getName().endsWith(".java"))
-					sourceFileList.add(f.getAbsolutePath());
-			}
-		}
-		return;
-	}
-
-	private String readFileToString(String sourcePath) {
-		try {
-			return new String(Files.readAllBytes(Paths.get(sourcePath)));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new String();
-		}
-	}
+	// VIOLATION: Single Responsibility
+//	private String readFileToString(String sourcePath) {
+//		try {
+//			return new String(Files.readAllBytes(Paths.get(sourcePath)));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return new String();
+//		}
+//	}
 
 	@Override
 	public void printDebugLog(PrintWriter writer) {
@@ -212,14 +224,14 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 
 	@Override
 	public void parse() {
-		Logger.log("Parsing the source code ...");
+		DJLogger.log("Parsing the source code ...");
 		createCompilationUnits();
 		createPackageObjects();
 		parseAllPackages();
 	}
 
 	public void resolve() {
-		Logger.log("Resolving symbols...");
+		DJLogger.log("Resolving symbols...");
 		for (SM_Package pkg : packageList) {
 			pkg.resolve();
 		}
@@ -228,7 +240,7 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 	}
 
 	public void computeMetrics() {
-		Logger.log("Extracting metrics...");
+		DJLogger.log("Extracting metrics...");
 		CSVUtils.initializeCSVDirectory(name, inputArgs.getOutputFolder());
 		for (SM_Package pkg : packageList) {
 			pkg.extractTypeMetrics();
@@ -236,7 +248,7 @@ public class SM_Project extends SM_SourceItem implements Parsable {
 	}
 
 	public void detectCodeSmells() {
-		Logger.log("Extracting code smells...");
+		DJLogger.log("Extracting code smells...");
 		for (SM_Package pkg : packageList) {
 			pkg.extractCodeSmells();
 		}

@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import Designite.utils.Logger;
+import Designite.utils.DJLogger;
 
 public class ThresholdsParser {
 	
@@ -32,7 +32,7 @@ public class ThresholdsParser {
 	private void checkFileExists() throws FileNotFoundException {
 		if (!file.exists()) {
 			String message = "constants.txt file not found in project folder.";
-			Logger.log(message);
+			DJLogger.log(message);
 			throw new FileNotFoundException(message);
 		}
 	}
@@ -45,7 +45,7 @@ public class ThresholdsParser {
 			if (isNotEmpty(line)) {
 				if (!isWellFormatted(line)) {
 					String message = "Line: " + line + "\nis not of the form 'someDescription' = 'someNumber'";
-					Logger.log(message);
+					DJLogger.log(message);
 					bufferedReader.close();
 					throw new IllegalArgumentException(message);
 				}
@@ -65,23 +65,27 @@ public class ThresholdsParser {
 	}
 	
 	private void setThresholdsStrategy(String key, Double value) throws IllegalArgumentException {
-		if (key.equals("deepHierarchy")) {
-			thresholds.setDeepHierarchy(value.intValue());
-		} else if (key.equals("wideHierarchy")) {
-			thresholds.setWideHierarchy(value.intValue());
-		} else if (key.equals("insufficientModularizationLargePublicInterface")) {
-			thresholds.setInsufficientModularizationLargePublicInterface(value.intValue());
-		} else if (key.equals("insufficientModularizationLargeNumOfMethods")) {
-			thresholds.setInsufficientModularizationLargeNumOfMethods(value.intValue());
-		} else if (key.equals("insufficientModularizationHighComplexity")) {
-			thresholds.setInsufficientModularizationHighComplexity(value.intValue());
-		} else if (key.equals("wideHierarchy")) {
-			thresholds.setWideHierarchy(value.intValue());
-		} else {
-			String message = "No such threshold: " + key;
-			Logger.log(message);
-			throw new IllegalArgumentException(message);
-		}
+        switch (key) {
+            case "deepHierarchy":
+                thresholds.setDeepHierarchy(value.intValue());
+                break;
+            case "insufficientModularizationLargePublicInterface":
+                thresholds.setInsufficientModularizationLargePublicInterface(value.intValue());
+                break;
+            case "insufficientModularizationLargeNumOfMethods":
+                thresholds.setInsufficientModularizationLargeNumOfMethods(value.intValue());
+                break;
+            case "insufficientModularizationHighComplexity":
+                thresholds.setInsufficientModularizationHighComplexity(value.intValue());
+                break;
+            case "wideHierarchy":
+                thresholds.setWideHierarchy(value.intValue());
+                break;
+            default:
+                String message = "No such threshold: " + key;
+                DJLogger.log(message);
+                throw new IllegalArgumentException(message);
+        }
 	}
 	
 	public ThresholdsDTO getThresholds() {

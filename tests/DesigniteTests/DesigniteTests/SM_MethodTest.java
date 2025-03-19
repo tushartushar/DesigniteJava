@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Method;
 import Designite.SourceModel.SM_Package;

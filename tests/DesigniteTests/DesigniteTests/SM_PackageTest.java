@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 

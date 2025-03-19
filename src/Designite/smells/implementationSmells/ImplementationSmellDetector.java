@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import Designite.utils.DJLogger;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CatchClause;
 import org.eclipse.jdt.core.dom.IfStatement;
@@ -21,7 +22,6 @@ import Designite.SourceModel.SourceItemInfo;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.ThresholdsDTO;
 import Designite.smells.models.ImplementationCodeSmell;
-import Designite.utils.Logger;
 import Designite.visitors.MethodControlFlowVisitor;
 import Designite.visitors.NumberLiteralVisitor;
 
@@ -274,7 +274,7 @@ public class ImplementationSmellDetector {
 			}
 		} catch (NumberFormatException ex) {
 			String logMessage = "Exception while parsing literal number (during Magic Number detection). " + ex.getMessage();
-			Logger.log(logMessage);
+			DJLogger.log(logMessage);
 			literalValue = 0.0;
 		}
 		return literalValue != 0.0 && literalValue != 1.0;

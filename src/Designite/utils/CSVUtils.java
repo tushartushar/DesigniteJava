@@ -26,7 +26,7 @@ public class CSVUtils {
 					System.out.print("oops, couldn't create the directory " + dir);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Logger.log(e.getMessage());
+				DJLogger.log(e.getMessage());
 			}
 		}
 	}
@@ -56,7 +56,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
-			Logger.log(e.getMessage());
+			DJLogger.log(e.getMessage());
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
-			Logger.log(e.getMessage());
+			DJLogger.log(e.getMessage());
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class CSVUtils {
 			bufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
-			Logger.log(e.getMessage());
+			DJLogger.log(e.getMessage());
 		}
 	}
 

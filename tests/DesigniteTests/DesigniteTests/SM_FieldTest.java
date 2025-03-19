@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.junit.Before;
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.AccessStates;
 import Designite.SourceModel.SM_Field;
 import Designite.SourceModel.SM_Package;
