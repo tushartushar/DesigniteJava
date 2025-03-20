@@ -210,7 +210,7 @@ class Resolver {
 		// ProblemReferenceBinding and consequently to MissingTypeBinding
 		if (iType == null) {
 			inferPrimitiveType(parentProject, typeInfo, iType);
-			infereParametrized(parentProject, typeInfo, iType);
+			inferParametrized(parentProject, typeInfo, iType);
 		} else if (iType.isRecovered()) {
 			// Search in the ast explicitly and assign
 			String unresolvedTypeName = typeOfVar.toString().replace("[]", ""); // cover the Array case
@@ -220,7 +220,7 @@ class Resolver {
 			}
 		} else {
 			inferPrimitiveType(parentProject, typeInfo, iType);
-			infereParametrized(parentProject, typeInfo, iType);
+			inferParametrized(parentProject, typeInfo, iType);
 		}
 	}
 
@@ -297,7 +297,7 @@ class Resolver {
 		}
 	}
 
-	private void infereParametrized(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
+	private void inferParametrized(SM_Project parentProject, TypeInfo typeInfo, ITypeBinding iType) {
 		if (iType != null && iType.isParameterizedType()) {
 			typeInfo.setParametrizedType(true);
 			addNonPrimitiveParameters(parentProject, typeInfo, iType);
