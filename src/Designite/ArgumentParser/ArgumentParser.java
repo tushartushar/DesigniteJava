@@ -2,9 +2,7 @@ package Designite.ArgumentParser;
 
 import org.apache.commons.cli.Option;
 
-/**
- * {@code ArgumentParser} is an abstract class to share responsibility between console and debugging application
- */
+
 public abstract class ArgumentParser {
     /**
      * {@code createRequiredOption}. A method to initialise required {@link Option}.
