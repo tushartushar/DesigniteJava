@@ -8,6 +8,7 @@
 csv/
 
 /output
+/.idea/
 
 tempDesigniteDebugLog*.txt
 tempDesigniteLog*.txt
