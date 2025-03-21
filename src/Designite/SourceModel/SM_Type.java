@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.metrics.MethodMetrics;
 import Designite.smells.implementationSmells.ImplementationSmellDetector;
 import Designite.smells.models.ImplementationCodeSmell;

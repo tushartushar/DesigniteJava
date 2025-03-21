@@ -54,5 +54,5 @@ public class Constants {
 			+ ",Method Name"
 			+ ",Code Smell"
 			+ "\n";
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 }

@@ -3,12 +3,10 @@ package DesigniteTests;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Iterator;
 
 import org.junit.Test;
 
-import Designite.InputArgs;
-import Designite.SourceModel.SM_Package;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.SM_Project;
 
 public class SM_ProjectTest extends DesigniteTests {
@@ -20,7 +18,7 @@ public class SM_ProjectTest extends DesigniteTests {
 
 		/*for (SM_Package pkg : project.getPackageList())
 			System.out.println(pkg.getName());*/
-		assertEquals(21, project.getPackageCount());
+		assertEquals(22, project.getPackageCount());
 
 	}
 	

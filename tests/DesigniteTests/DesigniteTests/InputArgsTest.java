@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 
 public class InputArgsTest extends DesigniteTests {
 

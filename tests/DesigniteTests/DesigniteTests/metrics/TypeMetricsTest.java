@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 import Designite.SourceModel.SM_Type;

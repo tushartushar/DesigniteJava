@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 
-import Designite.InputArgs;
+import Designite.ArgumentParser.InputArgs;
 import Designite.SourceModel.SM_Package;
 import Designite.SourceModel.SM_Project;
 
@@ -28,7 +28,7 @@ public class SM_PackageTest extends DesigniteTests {
 
 		for (SM_Package pkg : pkgList) {
 			if (pkg.getName().equals("Designite"))
-				assertEquals(pkg.getTypeList().size(), 2);
+				assertEquals(pkg.getTypeList().size(), 1);
 			if (pkg.getName().equals("Designite.SourceModel"))
 				//Added additional class in the package.
 				assertEquals(21, pkg.getTypeList().size());
