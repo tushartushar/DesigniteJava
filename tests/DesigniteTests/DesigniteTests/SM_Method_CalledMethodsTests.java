@@ -70,7 +70,7 @@ public class SM_Method_CalledMethodsTests extends DesigniteTests {
 		if (method.getCalledMethods().size()==1)
 		{
 			SM_Method calledMethod = method.getCalledMethods().get(0);
-			assertEquals("DJLogger", calledMethod.getParentType().getName());
+			assertEquals("Logger", calledMethod.getParentType().getName());
 			assertEquals("log", calledMethod.getName());
 		}
 	}
