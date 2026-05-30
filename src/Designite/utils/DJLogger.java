@@ -29,7 +29,12 @@ public class DJLogger {
      */
     public void setOutputDirectory(String outputDirectory) throws FileNotFoundException {
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(Calendar.getInstance().getTime());
-        String logAbsolutePath = outputDirectory + File.separator + "DesigniteLog" + timeStamp + ".txt";
+        String dirPath = outputDirectory;
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String logAbsolutePath = dirPath + File.separator + "DesigniteLog" + timeStamp + ".txt";
         FileManager.getInstance().createFileIfNotExists(logAbsolutePath);
         this.logFile = logAbsolutePath;
     }

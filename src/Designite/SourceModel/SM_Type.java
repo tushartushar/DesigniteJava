@@ -25,7 +25,6 @@ import Designite.utils.models.Edge;
 import Designite.utils.models.Vertex;
 import Designite.visitors.StaticFieldAccessVisitor;
 
-//TODO check EnumDeclaration, AnnotationTypeDeclaration and nested classes
 public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 	
 	
@@ -253,7 +252,7 @@ public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 
 	@Override
 	public void parse() {
-		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration, this);
+		MethodVisitor methodVisitor = new MethodVisitor(typeDeclaration, this, getSourceCode());
 		typeDeclaration.accept(methodVisitor);
 		List<SM_Method> mList = methodVisitor.getMethods();
 		if (mList.size() > 0)
@@ -368,14 +367,32 @@ public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 	}
 	
 	private String getMetricsAsARow(MethodMetrics metrics, String methodName) {
-		return getParentPkg().getParentProject().getName()
-				+ "," + getParentPkg().getName()
-				+ "," + getName()
-				+ "," + methodName
+		return sanitizeCsvValue(getParentPkg().getParentProject().getName())
+				+ "," + sanitizeCsvValue(getParentPkg().getName())
+				+ "," + sanitizeCsvValue(getName())
+				+ "," + sanitizeCsvValue(methodName)
 				+ "," + metrics.getNumOfLines()
 				+ "," + metrics.getCyclomaticComplexity()
 				+ "," + metrics.getNumOfParameters()
+				+ "," + metrics.getCommentLines()
+				+ "," + metrics.getTotalComments()
+				+ "," + metrics.getGoodComments()
+				+ "," + metrics.getBadComments()
+				+ "," + metrics.getUnclassifiedComments()
+				+ "," + sanitizeCsvValue(metrics.getCommentQuality())
+				+ "," + metrics.getLlmGoodComments()
+				+ "," + metrics.getLlmBadComments()
+				+ "," + metrics.getLlmNeutralComments()
+				+ "," + metrics.getCommentQualityScore()
+				+ "," + sanitizeCsvValue(metrics.getCqiCategory())
 				+ "\n";
+	}
+
+	private String sanitizeCsvValue(String value) {
+		if (value == null) {
+			return "";
+		}
+		return value.replace(",", " ").replace("\n", " ");
 	}
 	
 	public void extractCodeSmells() {
@@ -395,6 +412,59 @@ public class SM_Type extends SM_SourceItem implements Vertex, Parsable {
 		CSVUtils.addAllToCSVFile(inputArgs.getOutputFolder()
 				+ File.separator + Constants.IMPLEMENTATION_CODE_SMELLS_PATH_SUFFIX
 				, smellMapping.get(method));
+	}
+
+	private String getSourceCode() {
+    // Attempt 1 — JDT property (works if parser stored it)
+    if (typeDeclaration.getRoot() instanceof org.eclipse.jdt.core.dom.CompilationUnit) {
+        org.eclipse.jdt.core.dom.CompilationUnit cu =
+            (org.eclipse.jdt.core.dom.CompilationUnit) typeDeclaration.getRoot();
+
+        // Attempt 1a — explicit property set by parser
+        Object src = cu.getProperty("source");
+        if (src instanceof String) return (String) src;
+
+        // Attempt 1b — JDT internal: some versions store source as char[]
+        Object srcChars = cu.getProperty("sourceChars");
+        if (srcChars instanceof char[]) return new String((char[]) srcChars);
+    }
+
+    // Attempt 2 — walk SM_Package's compilationUnitList to find the matching CU,
+    // then read the source from the package's parent project input folder
+    try {
+        // Get the source folder from inputArgs
+        String sourceFolder = inputArgs.getSourceFolder();
+        if (sourceFolder == null) sourceFolder = inputArgs.getSourceFolder();
+
+        // Build the expected file path from package name + type name
+        String pkgPath = parentPkg.getName().equals("(default package)")
+                       ? ""
+                       : parentPkg.getName().replace(".", File.separator);
+
+        java.io.File file = pkgPath.isEmpty()
+            ? new java.io.File(sourceFolder + File.separator + name + ".java")
+            : new java.io.File(sourceFolder + File.separator + pkgPath
+                             + File.separator + name + ".java");
+
+        if (file.exists()) {
+            byte[] bytes = java.nio.file.Files.readAllBytes(file.toPath());
+            return new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        // Attempt 3 — search recursively under sourceFolder for <TypeName>.java
+        java.util.Optional<java.nio.file.Path> found = java.nio.file.Files
+            .walk(java.nio.file.Paths.get(sourceFolder))
+            .filter(p -> p.getFileName().toString().equals(name + ".java"))
+            .findFirst();
+        if (found.isPresent()) {
+            byte[] bytes = java.nio.file.Files.readAllBytes(found.get());
+            return new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+    } catch (Exception e) {
+        // fall through to null — countCommentLines() will use cu.toString() as fallback
+    }
+    return null;
 	}
 	
 	@Override

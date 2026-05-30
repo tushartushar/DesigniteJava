@@ -21,6 +21,7 @@ public class MethodMetricsExtractor implements MetricExtractor{
         extractNumOfParametersMetrics();
         extractCyclomaticComplexity();
         extractNumberOfLines();
+        extractCommentMetrics();
         methodMetrics.setMethod(method);
         return methodMetrics;
     }
@@ -54,6 +55,21 @@ public class MethodMetricsExtractor implements MetricExtractor{
             methodMetrics.setNumOfLines(length - body.replace("\n", "").length());
         }
     }
+
+    private void extractCommentMetrics() {
+        methodMetrics.setCommentLines(method.getCommentLines());
+        methodMetrics.setTotalComments(method.getTotalComments());
+        methodMetrics.setGoodComments(method.getGoodComments());
+        methodMetrics.setBadComments(method.getBadComments());
+        methodMetrics.setUnclassifiedComments(method.getUnclassifiedComments());
+        methodMetrics.setCommentQuality(method.getCommentQuality());
+        methodMetrics.setLlmGoodComments(method.getLlmGoodComments());
+        methodMetrics.setLlmBadComments(method.getLlmBadComments());
+        methodMetrics.setLlmNeutralComments(method.getLlmNeutralComments());
+        methodMetrics.setCommentQualityScore(method.getCommentQualityScore());
+        methodMetrics.setCqiCategory(method.getCqiCategory());
+    }
+
 
     private boolean methodHasBody() {
         return method.getMethodDeclaration().getBody() != null;

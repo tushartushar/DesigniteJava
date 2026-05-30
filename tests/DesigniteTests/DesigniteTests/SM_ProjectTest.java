@@ -18,7 +18,7 @@ public class SM_ProjectTest extends DesigniteTests {
 
 		/*for (SM_Package pkg : project.getPackageList())
 			System.out.println(pkg.getName());*/
-		assertEquals(22, project.getPackageCount());
+		assertEquals(23, project.getPackageCount());
 
 	}
 	

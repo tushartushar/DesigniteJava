@@ -12,13 +12,16 @@ public class CLIArgumentParser extends ArgumentParser {
     @Override
     public InputArgs parseArguments(String[] args) {
         Options argOptions = new Options();
+        this.addSharedOptions(argOptions);
         argOptions.addOption(this.createRequiredOption("i", "Input", "Input source folder path"));
         argOptions.addOption(this.createRequiredOption("o", "Output", "Path to the output folder"));
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
+        String[] normalizedArgs = this.normalizeArgs(args);
         try {
-            cmd = parser.parse(argOptions, args);
+            cmd = parser.parse(argOptions, normalizedArgs);
+            this.handleSharedOptions(cmd);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             formatter.printHelp("Designite", argOptions);

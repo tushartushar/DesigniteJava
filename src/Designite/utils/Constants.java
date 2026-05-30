@@ -40,6 +40,17 @@ public class Constants {
 			+ ",LOC"
 			+ ",CC"
 			+ ",PC"
+			+ ",CommentLines"
+			+ ",TotalComments"
+			+ ",GoodComments"
+			+ ",BadComments"
+			+ ",UnclassifiedComments"
+			+ ",CommentQuality"
+			+ ",LLMGoodComments"
+			+ ",LLMBadComments"
+			+ ",LLMNeutralComments"
+			+ ",CQI"
+			+ ",CQI_Category"
 			+ "\n";
 	
 	public static final String DESIGN_CODE_SMELLS_HEADER = "Project Name"
@@ -54,5 +65,5 @@ public class Constants {
 			+ ",Method Name"
 			+ ",Code Smell"
 			+ "\n";
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 }
